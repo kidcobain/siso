@@ -1,0 +1,2 @@
+{{dd($request)}}
+{{'hello'}}
