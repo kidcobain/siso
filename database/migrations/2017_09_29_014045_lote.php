@@ -16,10 +16,10 @@ class Lote extends Migration
         //
         Schema::create('lote', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('numero');
             $table->string('tipo');
-            $table->string('nombre');
-            $table->string('fecha_entrada');
-            $table->string('fecha_salida');
+            $table->datetime('fecha_entrada');
+            $table->datetime('fecha_salida');
         });
     }
 
