@@ -14,6 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/tabla', function () {
+    $lotes = App\Lote::all();
+	    return view('tabla', compact('lotes'));
+});
+
+Route::get('/pruebatabla', function () {
+		$lotes = App\Lote::all();
+	    return view('pruebatabla', compact('lotes'));
+	});
 
 Auth::routes();
 
@@ -23,4 +32,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Route::post('/sisor/public/datosAjax/InventarioPoliducto', return 'hello';
 
 Route::get('/sisor/public/datosAjax/InventarioPoliducto', 'PruebaController@prueba');
+
+Route::get('/InventarioPoliducto', 'PruebaController@prueba');
 

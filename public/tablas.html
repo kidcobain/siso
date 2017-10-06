@@ -136,47 +136,16 @@
 
 			var idfila = 0;
 			var colfila = 0;
-			var tipocolfila = 0;
+			var tipofila = 0;
 
 			// $(element).attr("class").split(' ');
 			 var clases = $('.editando').parent().attr("class").split(' ');
-			 console.log(clases);
+			 //console.log(clases);
 
-			/*
+			 colfila = clases[0] || 0;
+			 tipofila = clases[1] || 0;
 
-			if($el.parent().hasClass('reposicion')){
-				colfila = 'reposicion';
-			}
-			else if($el.parent().hasClass('inicial')){
-				colfila = 'inicial';
-			}
-			else if($el.parent().hasClass('final')){
-				colfila = 'final';
-			}
-			else if($el.parent().hasClass('autonomia')){
-				colfila = 'autonomia';
-			}
-			else if($el.parent().hasClass('nombrelote')){
-				colfila = 'nombrelote';
-			}
-
-
-			if($el.parent().hasClass('g95')){
-				tipocolfila = 'g95';
-			}
-			else if($el.parent().hasClass('g91')){
-				tipocolfila = 'g91';
-			}
-			else if($el.parent().hasClass('dsl')){
-				tipocolfila = 'dsl';
-			}
-
-			*/
-
-
-
-
-
+			
 			
 			trow = $el.parent().parent();
 
@@ -233,13 +202,13 @@
 
 				$.ajax({
 						    type: 'get',
-						    url: '/sisor/public/datosAjax/InventarioPoliducto',
+						    url: '/InventarioPoliducto',
 						    data: {
 						        valor:valor,
 
 						        idfila: idfila,
 						        colfila: colfila,
-						        tipocolfila: tipocolfila,
+						        tipofila: tipofila,
 						        lote_id: idfila,
 
 

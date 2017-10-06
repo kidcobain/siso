@@ -20,8 +20,12 @@ class Proyeccion extends Migration
             $table->string('g95');
             $table->string('g91');
             $table->string('dsl');
-            $table->string('lote_id');
+            $table->integer('lote_id')->unsigned();
+
+            $table->foreign('lote_id')->references('id')->on('lote')->onDelete('cascade')->onUpdate('cascade');
         });
+
+        
     }
 
     /**

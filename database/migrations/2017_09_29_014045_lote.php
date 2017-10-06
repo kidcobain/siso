@@ -18,8 +18,8 @@ class Lote extends Migration
             $table->increments('id');
             $table->string('numero');
             $table->string('tipo');
-            $table->datetime('fecha_entrada');
-            $table->datetime('fecha_salida');
+            $table->datetime('fecha_entrada')->nullable();
+            $table->datetime('fecha_salida')->nullable();
         });
     }
 
