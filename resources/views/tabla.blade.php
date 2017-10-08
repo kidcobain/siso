@@ -5,6 +5,12 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
+                buscar 
+                <form action="/buscarlote" method="get">
+                <input name="numero" type="text">
+                <input type="submit" value="buscar">
+                    
+                </form>
                 <div class="panel-heading">proyeccion</div>
 
                 <div class="panel-body">
@@ -16,6 +22,7 @@
                                     <th colspan="3">Inventario inicial</th>
                                     <th colspan="3">Inventario final</th>
                                     <th colspan="3">Autonomia</th>
+                                    <th colspan="1">accion</th>
                                 </tr>
                                 <tr>
                                     <th>nombre</th>
@@ -23,6 +30,7 @@
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
+                                    <th>accion</th>
                                 </tr>
                                 @foreach ($lotes as $lote)           
                                     <tr class="datos" id="{{ $lote->numero}}">
@@ -46,7 +54,7 @@
 
                                           @endphp
 
-                                        <td class="reposicion G95">{{ $proreposicion->g95 }}</td>
+                                        <td class="reposicion G95">{{ $proreposicion->g95?$proreposicion->g95:0 }}</td>
                                         <td class="reposicion G91">{{ $proreposicion->g91 }}</td>
                                         <td class="reposicion DSL">{{ $proreposicion->dsl }}</td>
 
@@ -61,6 +69,8 @@
                                         <td class="autonomia G95">{{ $proautonomia->g95 }}</td>
                                         <td class="autonomia G91">{{ $proautonomia->g91 }}</td>
                                         <td class="autonomia DSL">{{ $proautonomia->dsl }}</td>
+
+                                        <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> ELIMINAR</a></td>
                                         @break
                                         @endforeach
                                     </tr>
@@ -97,6 +107,7 @@
                                     <td class="autonomia G95">0</td> \
                                     <td class="autonomia G91">0</td> \
                                     <td class="autonomia DSL">0</td> \
+                                    <td class="accion"><a href="/eliminarfila/"> ELIMINAR</a></td> \
                                 </tr> \
                             ';
 
@@ -108,7 +119,13 @@
 
                             var editarCelda = function () {
 
-                                var texto = $(this).text();
+                                 texto = $(this).text();
+                                if($(this).hasClass('accion')){
+
+                                }
+
+                                else{
+
 
                                 $(this).html('<input class="editando" type="text" size="5" value="'+texto+'">');
                                 var $el = $(this).find('input');
@@ -119,6 +136,7 @@
                                     });
                                     $('.latabla').off('click','td');
                                 $('.agregar').off('click');
+                                }
                             };
 
                             var agregarFila = function () {
@@ -143,6 +161,7 @@
                                 var $el = $('.editando');
 
                                 var valor = $el.val();
+                                console.log(valor);
 
                                 var idfila = 0;
                                 var colfila = 0;
@@ -212,11 +231,12 @@
 
                                     $.ajax({
                                                 type: 'get',
-                                                url: '/InventarioPoliducto',
+                                                url: '/poliducto',
                                                 data: {
                                                     valor:valor,
 
                                                     idfila: idfila,
+                                                    oldidfila : texto,
                                                     colfila: colfila,
                                                     tipofila: tipofila,
                                                     lote_id: idfila,

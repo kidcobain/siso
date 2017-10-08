@@ -21,6 +21,8 @@ class Proyeccion extends Migration
             $table->string('g91');
             $table->string('dsl');
             $table->integer('lote_id')->unsigned();
+            $table->timestamps();
+            $table->softDeletes();  //deleted_at
 
             $table->foreign('lote_id')->references('id')->on('lote')->onDelete('cascade')->onUpdate('cascade');
         });

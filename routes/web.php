@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Route::group(['middleware' => 'auth'], function () {
+
 Route::get('/tabla', function () {
     $lotes = App\Lote::all();
 	    return view('tabla', compact('lotes'));
@@ -31,7 +34,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/sisor/public/datosAjax/InventarioPoliducto', 'HomeController@index')->name('home');
 //Route::post('/sisor/public/datosAjax/InventarioPoliducto', return 'hello';
 
-Route::get('/sisor/public/datosAjax/InventarioPoliducto', 'PruebaController@prueba');
+//Route::get('/sisor/public/datosAjax/InventarioPoliducto', 'PruebaController@prueba');
 
-Route::get('/InventarioPoliducto', 'PruebaController@prueba');
+Route::get('/poliducto', 'Pruebacontroller@guardar');
+
+//Route::get('/buscarlote/{numero}', 'Pruebacontroller@buscar');
+
+Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
+
+//Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
+
+Route::get('/buscarlote',['uses' => 'PruebaController@buscar','as' => 'buscar']);
+
+//});
+
+
 

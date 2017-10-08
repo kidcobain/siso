@@ -15,6 +15,6 @@ class proyeccion extends Model
     }
 
     protected $fillable = [
-        'tipo','g95','g91','gsl','lote_id' ];
+        'tipo','g95','g91','dsl','lote_id' ];
 
 }

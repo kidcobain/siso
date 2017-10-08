@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Sisor Ciudad Bolivar 
+                    Sisor Ciudad Bolivar
                 </div>
                 <p></p>
                     <div>
