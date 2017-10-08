@@ -173,15 +173,27 @@ class PruebaController extends Controller
      	else
      	{
 
-            /*
+            
             $lote = $this->buscarPorNumero($request->idfila);
             //$lote->numero = $request->idfila;
-            $jaja = proyeccion::where("lote_id", $lote->id)->first();
+            //$jaja = proyeccion::where("lote_id", $lote->id)->first();
+            //App\Lote::with('proyeccion')->first()->proyeccion->where('tipo','inicial');
+            // App\Lote::first()->proyeccion->where('tipo','inicial')
+            //App\Lote::where('numero','123434')->first()->proyeccion->where('tipo','inicial')
+            $columna = $lote->proyeccion->where('tipo',$request->colfila);
+            //dd($request->valor);
+            //var_dump($columna);
+            $tipofila = $request->tipofila;
+            $valor = $request->valor;
+            //$columna->first()->$tipofila = $valor;
+            $columna->first()
+            ->update([$tipofila => $valor]);
+            //$columna->first()->$request->tipofila = $request->valor;
 
 
-                $lote->save();
-                return 'actualizado';
-                */
+                //$lote->save();
+                return 'actualizado valor';
+                
 
      	}
      }

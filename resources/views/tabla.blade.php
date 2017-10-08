@@ -54,21 +54,21 @@
 
                                           @endphp
 
-                                        <td class="reposicion G95">{{ $proreposicion->g95?$proreposicion->g95:0 }}</td>
-                                        <td class="reposicion G91">{{ $proreposicion->g91 }}</td>
-                                        <td class="reposicion DSL">{{ $proreposicion->dsl }}</td>
+                                        <td class="reposicion g95">{{ $proreposicion->g95?$proreposicion->g95:0 }}</td>
+                                        <td class="reposicion g91">{{ $proreposicion->g91 }}</td>
+                                        <td class="reposicion dsl">{{ $proreposicion->dsl }}</td>
 
-                                        <td class="inicial G95">{{ $proinicial->g95 }}</td>
-                                        <td class="inicial G91">{{ $proinicial->g91 }}</td>
-                                        <td class="inicial DSL">{{ $proinicial->dsl }}</td>
+                                        <td class="inicial g95">{{ $proinicial->g95 }}</td>
+                                        <td class="inicial g91">{{ $proinicial->g91 }}</td>
+                                        <td class="inicial dsl">{{ $proinicial->dsl }}</td>
 
-                                        <td class="final G95">{{ $profinal->g95 }}</td>
-                                        <td class="final G91">{{ $profinal->g91 }}</td>
-                                        <td class="final DSL">{{ $profinal->dsl }}</td>
+                                        <td class="final g95">{{ $profinal->g95 }}</td>
+                                        <td class="final g91">{{ $profinal->g91 }}</td>
+                                        <td class="final dsl">{{ $profinal->dsl }}</td>
 
-                                        <td class="autonomia G95">{{ $proautonomia->g95 }}</td>
-                                        <td class="autonomia G91">{{ $proautonomia->g91 }}</td>
-                                        <td class="autonomia DSL">{{ $proautonomia->dsl }}</td>
+                                        <td class="autonomia g95">{{ $proautonomia->g95 }}</td>
+                                        <td class="autonomia g91">{{ $proautonomia->g91 }}</td>
+                                        <td class="autonomia dsl">{{ $proautonomia->dsl }}</td>
 
                                         <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> ELIMINAR</a></td>
                                         @break
@@ -92,21 +92,21 @@
                                 <tr class="datos " id="">  \
                                     <td class="nombrelote"><input class="editando" type="text" size="5"/></td> \
                      \
-                                    <td class="reposicion G95">0</td> \
-                                    <td class="reposicion G91">0</td> \
-                                    <td class="reposicion DSL">0</td> \
+                                    <td class="reposicion g95">0</td> \
+                                    <td class="reposicion g91">0</td> \
+                                    <td class="reposicion dsl">0</td> \
                      \
-                                    <td class="inicial G95">0</td> \
-                                    <td class="inicial G91">0</td> \
-                                    <td class="inicial DSL">0</td> \
+                                    <td class="inicial g95">0</td> \
+                                    <td class="inicial g91">0</td> \
+                                    <td class="inicial dsl">0</td> \
                      \
-                                    <td class="final G95">0</td> \
-                                    <td class="final G91">0</td> \
-                                    <td class="final DSL">0</td> \
+                                    <td class="final g95">0</td> \
+                                    <td class="final g91">0</td> \
+                                    <td class="final dsl">0</td> \
                      \
-                                    <td class="autonomia G95">0</td> \
-                                    <td class="autonomia G91">0</td> \
-                                    <td class="autonomia DSL">0</td> \
+                                    <td class="autonomia g95">0</td> \
+                                    <td class="autonomia g91">0</td> \
+                                    <td class="autonomia dsl">0</td> \
                                     <td class="accion"><a href="/eliminarfila/"> ELIMINAR</a></td> \
                                 </tr> \
                             ';
