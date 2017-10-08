@@ -96,82 +96,86 @@ class PruebaController extends Controller
      			$lote->save();
      			return 'actualizado';
      		}
+
+            else{
+                
             
-     		 //$this->buscarPorNumero($request->oldidfila);
-     		$ident = Lote::create([
-     		    'numero' => $request->idfila,
-     		    'tipo' => 'tipo',
- 			]);
+             //$this->buscarPorNumero($request->oldidfila);
+            $ident = Lote::create([
+                'numero' => $request->idfila,
+                'tipo' => 'tipo',
+            ]);
             $elid =$ident->id;
-     		    
+                
 
-     		 proyeccion::create([
+             proyeccion::create([
 
-     		    'tipo' => 'reposicion',
+                'tipo' => 'reposicion',
 
-     		     'g95' => 0,
-     		    
-     		     'g91' => 0,
-     		    
-     		     'dsl' => 0,
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
 
-     		     'lote_id' => $ident->id,
+                 'lote_id' => $ident->id,
 
-     		 ]);
+             ]);
 
-     		  proyeccion::create([
+              proyeccion::create([
 
-     		    'tipo' => 'inicial',
+                'tipo' => 'inicial',
 
-     		     'g95' => 0,
-     		    
-     		     'g91' => 0,
-     		    
-     		     'dsl' => 0,
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
 
-     		     'lote_id' => $ident->id,
+                 'lote_id' => $ident->id,
 
-     		 ]);
+             ]);
 
-     		  proyeccion::create([
+              proyeccion::create([
 
-     		    'tipo' => 'final',
+                'tipo' => 'final',
 
-     		     'g95' => 0,
-     		    
-     		     'g91' => 0,
-     		    
-     		     'dsl' => 0,
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
 
-     		     'lote_id' => $ident->id,
-
-
-     		 ]);
-     		  
-     		  proyeccion::create([
-
-     		    'tipo' => 'autonomia',
-
-     		     'g95' => 0,
-     		    
-     		     'g91' => 0,
-     		    
-     		     'dsl' => 0,
-
-     		     'lote_id' => $ident->id,
-     		  	
-
-     		 ]);
+                 'lote_id' => $ident->id,
 
 
-     		     
+             ]);
+              
+              proyeccion::create([
 
-     		 return 'nuevo';
-     		 
-     	}
+                'tipo' => 'autonomia',
 
-     	else
-     	{
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
+
+                 'lote_id' => $ident->id,
+                
+
+             ]);
+
+
+                 
+
+             return 'nuevo';
+            }
+             
+        }
+
+        else
+        {
 
             
             $lote = $this->buscarPorNumero($request->idfila);

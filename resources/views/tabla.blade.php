@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<link rel="stylesheet" href="css/sweetalert2.css">
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +15,7 @@
                 <div class="panel-heading">proyeccion</div>
 
                 <div class="panel-body">
-                        <table class="latabla table table-bordered table-striped table-responsive">
+                        <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <tr>
                                 <tr>
                                     <th>lote</th>
@@ -85,6 +86,7 @@
                     </body>
                     <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
                     <script src="js/bootstrap-datepicker.js"></script>
+                    <script src="js/sweetalert2.all.min.js"></script>
                     <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
                     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
                         <script>
@@ -119,15 +121,20 @@
 
                             var editarCelda = function () {
 
-                                 texto = $(this).text();
+                                 var texto = $(this).text();
                                 if($(this).hasClass('accion')){
 
                                 }
 
                                 else{
 
+                                    if($(this).hasClass('nombrelote')){
+                                        $(this).html('<input class="editando" type="text" size="5" value="'+texto+'">');
+                                    }
+                                    else{
 
-                                $(this).html('<input class="editando" type="text" size="5" value="'+texto+'">');
+                                        $(this).html('<input class="editando" type="number" size="3" max="300" value="'+texto+'">');
+                                    }
                                 var $el = $(this).find('input');
 
                                     $el.focus();
@@ -228,6 +235,9 @@
                                                     }
                                                 });
                                     */
+                                    //var texto = texto || null;
+                                    //texto = (isset(texto))?texto:valor;
+                                    var texto = texto || valor;
 
                                     $.ajax({
                                                 type: 'get',
@@ -278,7 +288,7 @@
                                 //$('#198-DSL199-G95 > .inicial.DSL').css('opacity','0.3')
                                 //$('tr:last').after($('.datos:first').clone(true));
                                 //.attr("id","capainterior3")
-
+                                /*
                                 $('.form-date').datepicker({
                                     format: "dd/mm/yyyy",
                                     maxViewMode: 3,
@@ -290,6 +300,46 @@
 
                                 $(".dada").mask("999-aaa-999-a99",{placeholder:"000-xxx-000-x00"});
                                 //$(body).on('asdf','.editando .nombrelote',mask("999-aaa-999-a99"));
+                                */
+
+                                $('.latabla').on('click','.accion > a', function(e){
+                                    e.preventDefault();
+                                    var $_this = $(this);
+
+                                  swal({
+                                    title: 'Confirmación',
+                                    text: "¿Desea borrar la fila?",
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Si, borrar',
+                                    cancelButtonText: 'No, cancelar!',
+                                    confirmButtonClass: 'btn btn-success',
+                                    cancelButtonClass: 'btn btn-danger',
+                                    buttonsStyling: false
+                                  }).then(function () {
+                                    swal(
+                                      'Borrado!',
+                                      'La fila fue borrada',
+                                      'success'
+                                    )
+                                     $lnk = $_this.attr('href');
+                                     window.location = $lnk;
+                                  }, function (dismiss) {
+                                    // dismiss can be 'cancel', 'overlay',
+                                    // 'close', and 'timer'
+                                    if (dismiss === 'cancel') {
+                                      swal(
+                                        'Cancelado',
+                                        'No se ha borrado la fila',
+                                        'error'
+                                      )
+                                    }
+                                  })
+                                })
+
+
 
                                 
                                 
