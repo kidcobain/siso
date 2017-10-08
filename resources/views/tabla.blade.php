@@ -4,16 +4,23 @@
 <link rel="stylesheet" href="css/sweetalert2.css">
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                buscar 
+     <div class="col-md-8 col-md-offset-2">
+         <div class="panel panel-default">
+
+            <div class="panel-heading">busqueda</div>
+
+            <div class="panel-body">
                 <form action="/buscarlote" method="get">
                 <input name="numero" type="text">
                 <input type="submit" value="buscar">
-                    
                 </form>
+         </div>
+      </div>  
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
                 <div class="panel-heading">proyeccion</div>
-
                 <div class="panel-body">
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <tr>
@@ -71,7 +78,7 @@
                                         <td class="autonomia g91">{{ $proautonomia->g91 }}</td>
                                         <td class="autonomia dsl">{{ $proautonomia->dsl }}</td>
 
-                                        <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> ELIMINAR</a></td>
+                                        <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> <button type="button" class="btn btn-danger">Eliminar</button></a></td>
                                         @break
                                         @endforeach
                                     </tr>
@@ -80,7 +87,7 @@
                             </tr>
                         </table>
                         <p></p>
-                        <input type="button" class="agregar" value="agregar nueva fila">
+                        <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
 
                             
                     </body>
@@ -109,7 +116,7 @@
                                     <td class="autonomia g95">0</td> \
                                     <td class="autonomia g91">0</td> \
                                     <td class="autonomia dsl">0</td> \
-                                    <td class="accion"><a href="/eliminarfila/"> ELIMINAR</a></td> \
+                                    <td class="accion"><a href="/eliminarfila/"><button type="button" class="btn btn-danger">Eliminar</button></a></td> \
                                 </tr> \
                             ';
 
@@ -202,6 +209,7 @@
 
                                     $el.parent().text(valor);
                                     trow.css('background-color', '');
+                                    trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
                                     $('.latabla').on('click','td', editarCelda);
                                     //trow.find('td').on('click', editarCelda);
                                     $('.agregar').on('click',agregarFila);
@@ -339,7 +347,16 @@
                                   })
                                 })
 
+/*
 
+background: #3db2e1;
+background: -o-linear-gradient(top, #69c4e8, #21a1d4);
+background: -ms-linear-gradient(top, #69c4e8, #21a1d4);
+background: -webkit-linear-gradient(top, #69c4e8, #21a1d4);
+background: -moz-linear-gradient(top, #69c4e8, #21a1d4);
+background: linear-gradient(to bottom, #69c4e8, #21a1d4);
+box-shadow: inset 0 -3px 0 #1f97c7, inset 0 -3px 3px #1f9acc, inset 0 2px 2px #9ad7ef, inset 1px 0 2px #22a4d9, inset -1px 0 2px #22a4d9, 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06), 0 3px 3px rgba(0, 0, 0, 0.17), 2px 1px 2px rgba(0, 0, 0, 0.05), -2px 1px 2px rgba(0, 0, 0, 0.05);
+*/
 
                                 
                                 
