@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container">
+    <style>
+    /*
+    .container {
+    margin-right: auto;
+    margin-left: auto;
+    background: url(img/comercio_suministro.jpg) 50% 50% no-repeat fixed;
+    filter: blur(5px); 
+    }
+    */
+    </style>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

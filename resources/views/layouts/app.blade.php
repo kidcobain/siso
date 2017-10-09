@@ -12,6 +12,25 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .panel-default>.panel-heading {
+            color: #333;
+            background-color: #fff;
+            border-color: #d3e0e9;
+            background-image: -webkit-gradient(linear,left top, left bottom,from(#fefefe), color-stop(0.5,#f0f0f0), color-stop(0.51, #e6e6e6));
+        }
+        .navbar-default {
+            background-color: #fff;
+            border-color: #d3e0e9;
+            background: #3db2e1;
+            background: -o-linear-gradient(top, #69c4e8, #21a1d4);
+            background: -ms-linear-gradient(top, #69c4e8, #21a1d4);
+            background: -webkit-linear-gradient(top, #69c4e8, #21a1d4);
+            background: -moz-linear-gradient(top, #69c4e8, #21a1d4);
+            background: linear-gradient(to bottom, #69c4e8, #21a1d4);
+            box-shadow: inset 0 -3px 0 #1f97c7, inset 0 -3px 3px #1f9acc, inset 0 2px 2px #9ad7ef, inset 1px 0 2px #22a4d9, inset -1px 0 2px #22a4d9, 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06), 0 3px 3px rgba(0, 0, 0, 0.17), 2px 1px 2px rgba(0, 0, 0, 0.05), -2px 1px 2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -28,7 +47,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/tabla') }}">
+                        {{-- <img src="img/logo.svg"> --}}
                         {{ config('app.name', 'Sisor') }}
                     </a>
                 </div>

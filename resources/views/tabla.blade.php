@@ -403,6 +403,9 @@
 
 /*
 
+filter:blur(5px);
+
+
 background: #3db2e1;
 background: -o-linear-gradient(top, #69c4e8, #21a1d4);
 background: -ms-linear-gradient(top, #69c4e8, #21a1d4);

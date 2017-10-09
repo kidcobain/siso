@@ -32,7 +32,6 @@ class PruebaController extends Controller
     public function buscarfecha(Request $request)
     {
             $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
-            //dd($fecha);
             $lotes = Lote::all()->where('fecha_entrada', $fecha);
             return view('tabla', compact('lotes')); 
     }
