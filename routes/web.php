@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 */
+Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -28,7 +29,6 @@ Route::get('/pruebatabla', function () {
 	    return view('pruebatabla', compact('lotes'));
 	});
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 //Route::post('/datosAjax/InventarioPoliducto', 'HomeController@index')->name('home');
