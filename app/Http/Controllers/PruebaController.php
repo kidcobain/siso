@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Lote;
 use App\proyeccion;
+use \Carbon\Carbon ;
 
 class PruebaController extends Controller
 {
@@ -87,9 +88,8 @@ class PruebaController extends Controller
      {
         $informacion = [];
      	if($request->colfila=='nombrelote')
-     	{ 
+        { 
 
-            
      		if(count($this->buscarPorNumero($request->oldidfila))>0)
      		{
      			$lote = $this->buscarPorNumero($request->oldidfila);
@@ -101,88 +101,110 @@ class PruebaController extends Controller
                         //echo json_encode( $informacion );
      			return json_encode( $informacion );
      		}
+        
+        
 
             else{
 
-            
-             //$this->buscarPorNumero($request->oldidfila);
-            $ident = Lote::create([
-                'numero' => $request->idfila,
-                'tipo' => 'tipo',
-            ]);
-            $elid =$ident->id;
                 
+                 //$this->buscarPorNumero($request->oldidfila);
+                    $fecha = Carbon::now();
+                    //$fecha = DateTime::createFromFormat('d-m-Y');
+                $ident = Lote::create([
+                    'numero' => $request->idfila,
+                    'tipo' => 'tipo',
+                    'fecha_entrada' => $fecha,
+                ]);
+                $elid =$ident->id;
+                    
 
-             proyeccion::create([
+                 proyeccion::create([
 
-                'tipo' => 'reposicion',
+                    'tipo' => 'reposicion',
 
-                 'g95' => 0,
-                
-                 'g91' => 0,
-                
-                 'dsl' => 0,
+                     'g95' => 0,
+                    
+                     'g91' => 0,
+                    
+                     'dsl' => 0,
 
-                 'lote_id' => $ident->id,
+                     'lote_id' => $ident->id,
 
-             ]);
+                 ]);
 
-              proyeccion::create([
+                  proyeccion::create([
 
-                'tipo' => 'inicial',
+                    'tipo' => 'inicial',
 
-                 'g95' => 0,
-                
-                 'g91' => 0,
-                
-                 'dsl' => 0,
+                     'g95' => 0,
+                    
+                     'g91' => 0,
+                    
+                     'dsl' => 0,
 
-                 'lote_id' => $ident->id,
+                     'lote_id' => $ident->id,
 
-             ]);
+                 ]);
 
-              proyeccion::create([
+                  proyeccion::create([
 
-                'tipo' => 'final',
+                    'tipo' => 'final',
 
-                 'g95' => 0,
-                
-                 'g91' => 0,
-                
-                 'dsl' => 0,
+                     'g95' => 0,
+                    
+                     'g91' => 0,
+                    
+                     'dsl' => 0,
 
-                 'lote_id' => $ident->id,
-
-
-             ]);
-              
-              proyeccion::create([
-
-                'tipo' => 'autonomia',
-
-                 'g95' => 0,
-                
-                 'g91' => 0,
-                
-                 'dsl' => 0,
-
-                 'lote_id' => $ident->id,
-                
-
-             ]);
+                     'lote_id' => $ident->id,
 
 
-                 
-                       $informacion["respuesta"] = "agregarLote";
-                               //echo json_encode( $informacion );
-                        return json_encode( $informacion );
-             //return 'nuevo';
-            }
+                 ]);
+                  
+                  proyeccion::create([
+
+                    'tipo' => 'autonomia',
+
+                     'g95' => 0,
+                    
+                     'g91' => 0,
+                    
+                     'dsl' => 0,
+
+                     'lote_id' => $ident->id,
+                    
+
+                 ]);
+
+
+                     
+                           $informacion["respuesta"] = "agregarLote";
+                                   //echo json_encode( $informacion );
+                            return json_encode( $informacion );
+                 //return 'nuevo';
+                }
              
         }
 
+        else if($request->colfila==='fecha'){
+               $lote = $this->buscarPorNumero($request->idfila);
+                //$lote->numero = $request->idfila;
+               $fecha = Carbon::createFromFormat('m/d/Y', $request->valor);
+                $lote->fecha_entrada = $fecha;
+                $lote->save();
+                $informacion["oldlote"] = $request->oldidfila;
+                $informacion["fechanueva"] = $request->valor;
+                $informacion["lote"] = $request->idfila;
+                $informacion["respuesta"] = "actualizarLote";
+                        //echo json_encode( $informacion );
+                return json_encode( $informacion ); 
+
+            }
+
         else
         {
+
+             $tipo = $request->colfila;
 
             
             $lote = $this->buscarPorNumero($request->idfila);
@@ -191,7 +213,7 @@ class PruebaController extends Controller
             //App\Lote::with('proyeccion')->first()->proyeccion->where('tipo','inicial');
             // App\Lote::first()->proyeccion->where('tipo','inicial')
             //App\Lote::where('numero','123434')->first()->proyeccion->where('tipo','inicial')
-            $columna = $lote->proyeccion->where('tipo',$request->colfila);
+            $columna = $lote->proyeccion->where('tipo',$tipo);
             //dd($request->valor);
             //var_dump($columna);
             $tipofila = $request->tipofila;
@@ -203,7 +225,7 @@ class PruebaController extends Controller
 
 
                 //$lote->save();
-                $informacion["columna"] = $request->colfila;
+                $informacion["columna"] = $tipo;
                 $informacion["tipo"] = $request->tipofila;
                 $informacion["lote"] = $request->idfila;
                 $informacion["respuesta"] = "actualizardata";

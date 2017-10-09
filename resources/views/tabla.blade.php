@@ -31,6 +31,7 @@
                             <tr>
                                 <tr>
                                     <th>lote</th>
+                                    <th colspan="1">fecha</th>
                                     <th colspan="3">Reposicion por poliducto</th>
                                     <th colspan="3">Inventario inicial</th>
                                     <th colspan="3">Inventario final</th>
@@ -39,6 +40,7 @@
                                 </tr>
                                 <tr>
                                     <th>nombre</th>
+                                    <th class="fecha">fecha</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
@@ -48,6 +50,17 @@
                                 @foreach ($lotes as $lote)           
                                     <tr class="datos" id="{{ $lote->numero}}">
                                         <td class="nombrelote">{{ $lote->numero}}</td>
+                                        <td class="fecha">
+                                            {{-- \Carbon\Carbon::createFromFormat('d/m/Y', $lote->fecha_entrada) --}}
+
+                                                {{-- (Carbon::createFromFormat('d/m/Y', $lote->fecha_entrada)?$lote->fecha_entrada:'00/00/0000' --}}
+
+                                                {{ ($lote->fecha_entrada)?$lote->fecha_entrada:'00/00/0000' }}
+
+                                                
+
+
+                                        </td>
 
                                         @foreach($lote->proyeccion as $pro)
                                          {{-- $proyection = collect($pro)--}}
@@ -94,12 +107,12 @@
                         <p></p>
                         <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
 
-                            
                     </body>
                     <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
+                    <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
                     <script src="js/bootstrap-datepicker.js"></script>
-                    <script src="js/sweetalert2.all.min.js"></script>
                     <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
+                    <script src="js/sweetalert2.all.min.js"></script>
                     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
                         <script>
                             var elhtml = ' \
@@ -143,6 +156,10 @@
                                     if($(this).hasClass('nombrelote')){
                                         $(this).html('<input class="editando" type="text" size="5" value="'+texto+'">');
                                     }
+                                    else if($(this).hasClass('fecha')){
+                                        $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
+
+                                    }
                                     else{
 
                                         $(this).html('<input class="editando" type="number" size="3" max="300" value="'+texto+'">');
@@ -155,6 +172,22 @@
                                     });
                                     $('.latabla').off('click','td');
                                 $('.agregar').off('click');
+
+                                
+                                $('.fecha > .editando').datepicker({
+                                    format: "dd/mm/yyyy",
+                                    maxViewMode: 3,
+                                    todayBtn: "linked",
+                                    clearBtn: true,
+                                    language: "es",
+                                    autoclose: false
+                                });
+
+                                
+                                
+                                
+                                $el.focus();
+                                $el.trigger('click');
                                 }
                             };
 
@@ -392,9 +425,9 @@ var mostrar_mensaje = function( informacion ){
 */
 var mostrarMensaje = function(informacion){
             var html = "";
-            if( informacion.respuesta == "agregarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong> se ha actualizado el lote numero"+informacion.oldidfila+"a "+informacion.lote+"</div>";
+            if( informacion.respuesta == "actualizarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong> se ha actualizado el lote numero "+informacion.oldlote+" a "+informacion.lote+"</div>";
             else if( informacion.respuesta == "agregarLote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha registrado un nuevo lote</div>";
-            else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+"de "+informacion.columna+"del lote "+informacion.lote+"</div>";
+            else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+" de "+informacion.columna+"del lote "+informacion.lote+"</div>";
 
 
             $(".mensaje").html( html );
@@ -425,8 +458,44 @@ var mostrarMensaje = function(informacion){
         });         
     }
 */
-                                
-                                
+
+/*
+$('.latabla ').on('click','td', applyDatapicker);
+
+
+    var applyDatapicker = function () {
+        
+        $('.fecha > .editando').datepicker({
+            format: "dd/mm/yyyy",
+            maxViewMode: 3,
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            autoclose: true
+        });
+    }
+   */ 
+//$('.prueba').on('click', myDatepicker.show());
+/*
+if (jQuery.ui) {
+    var datepicker = $.fn.datepicker.noConflict();
+    $.fn.bootstrapDP = datepicker;
+} else {
+    $.fn.bootstrapDP = $.fn.datepicker;
+}
+*/
+
+$('input').datepicker({
+            format: "dd/mm/yyyy",
+            maxViewMode: 3,
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "es",
+            autoclose: true
+        });
+
+          
+
 
                             
                         });
