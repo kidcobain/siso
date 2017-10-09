@@ -13,7 +13,7 @@
       
       display: block;
       background-image: url(img/comercio_suministro.jpg);
-       /* background-size: cover; */
+       background-size: cover;
       
       /* width: 1200px; */
       min-height: 800px;
@@ -31,6 +31,47 @@
       right: 0;
       z-index: 0;
     }
+   
+    /* latin-ext */
+    
+
+
+    .logo >img {
+        width: 320px;
+        height: 100px;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .logo {
+        display: inline-block;
+        text-align: center;
+        /* vertical-align: middle; */
+        overflow: hidden;
+        margin-left: 200px;
+        height: 175px;
+        margin-top: 75px;
+    }
+
+    form.form-horizontal {
+        margin-bottom: 50px;
+    }
+
+    .col-md-8.col-md-offset-2 {
+        /* -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075); */
+        /* box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.095); */
+        /* -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s; */
+        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+/*
+    .logo >img {
+        width: 500px;
+        height: 350px;
+        display: inline-block;
+        margin-left: 100px;
+*/
+
     /*
       body {
    
@@ -47,9 +88,11 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Inicio</div>
+               <!--  <div class="panel-heading">Inicio</div> -->
 
                 <div class="panel-body">
+                  <div class="logo"><img src="img/PDVSA-Logo.png" alt=""></div>
+                  <!-- <div class="logo"><img src="img/logo.svg" alt=""></div> -->
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 

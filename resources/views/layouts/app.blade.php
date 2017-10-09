@@ -33,6 +33,30 @@
         .navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
             color: #fefefe;
             font-weight: bold;
+        }
+
+        .logoheader>img {
+            width: 110px;
+            /* height: 30px; */
+            display: inline-block;
+        }
+
+        .logoheader {
+            display: inline-block;
+            margin-left: -10px;
+            margin-top: -20px;
+        }
+        a.navbar-brand {
+            color: #fefefe !important;
+            font-weight: bold;
+            text-shadow: 2px 2px 1px rgb(66, 177, 221);
+            color: #ffffff;
+            font-size: 23px;
+        }
+
+        .panel.panel-default {
+            margin-top: 50px;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +75,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/tabla') }}">
+                        <div class="logoheader"><img src="img/PDVSA-Logo.png" alt=""></div>
                         {{-- <img src="img/logo.svg"> --}}
                         {{ config('app.name', 'Sisor') }}
                     </a>

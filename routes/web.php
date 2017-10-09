@@ -10,12 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
 
-//Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/tabla', function () {
     $lotes = App\Lote::all();
@@ -47,7 +48,7 @@ Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
 Route::get('/buscarlote',['uses' => 'PruebaController@buscar','as' => 'buscar']);
 Route::get('/buscarlotefecha',['uses' => 'PruebaController@buscarfecha','as' => 'buscarfecha']);
 
-//});
+});
 
 
 
