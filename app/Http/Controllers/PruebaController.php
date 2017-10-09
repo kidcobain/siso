@@ -189,7 +189,12 @@ class PruebaController extends Controller
         else if($request->colfila==='fecha'){
                $lote = $this->buscarPorNumero($request->idfila);
                 //$lote->numero = $request->idfila;
-               $fecha = Carbon::createFromFormat('m/d/Y', $request->valor);
+               $fecha = Carbon::createFromFormat('d/m/Y', $request->valor);
+               //$date = new DateTime($request->valor);
+                //$fecha = date_format($date, 'Y-m-d');
+               //$fecha = date_format($request->valor, 'Y-m-d');
+               //$fecha = Carbon::createFromFormat('Y/m/d', $request->valor);
+               //$fecha = Carbon::createFromFormat('Y-m-d',$request->valor )->toDateTimeString();
                 $lote->fecha_entrada = $fecha;
                 $lote->save();
                 $informacion["oldlote"] = $request->oldidfila;

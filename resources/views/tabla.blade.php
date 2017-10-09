@@ -55,7 +55,12 @@
 
                                                 {{-- (Carbon::createFromFormat('d/m/Y', $lote->fecha_entrada)?$lote->fecha_entrada:'00/00/0000' --}}
 
-                                                {{ ($lote->fecha_entrada)?$lote->fecha_entrada:'00/00/0000' }}
+                                                {{-- ($lote->fecha_entrada)?$lote->fecha_entrada:'00/00/0000' --}}
+                                                @php 
+                                                $date = new DateTime($lote->fecha_entrada);
+                                                $fecha = date_format($date, 'd/m/Y');
+                                                @endphp
+                                                {{ ($fecha)?$fecha :'00/00/0000' }}
 
                                                 
 
@@ -284,6 +289,8 @@
                                     //var texto = texto || null;
                                     //texto = (isset(texto))?texto:valor;
                                     var texto = texto || valor;
+                                    
+
 
                                     $.ajax({
                                                 type: 'get',
