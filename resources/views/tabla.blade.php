@@ -159,7 +159,7 @@
 
                             var editarCelda = function () {
 
-                                 var texto = $(this).text();
+                                  var texto = $(this).text();
                                 if($(this).hasClass('accion')){
 
                                 }
@@ -168,6 +168,8 @@
 
                                     if($(this).hasClass('nombrelote')){
                                         $(this).html('<input class="editando" type="text" size="5" value="'+texto+'">');
+                                        $(this).attr('id',texto);
+
                                     }
                                     else if($(this).hasClass('fecha')){
                                         $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
@@ -223,6 +225,7 @@
                             };
 
                             var guardarDatoCelda = function () {
+                                //console.log(texto);
                                 var $el = $('.editando');
 
                                 var valor = $el.val();
@@ -234,6 +237,7 @@
 
                                 // $(element).attr("class").split(' ');
                                  var clases = $('.editando').parent().attr("class").split(' ');
+                                  var anterior = $(this).parent().attr('id');
                                  //console.log(clases);
 
                                  colfila = clases[0] || 0;
@@ -296,7 +300,9 @@
                                     */
                                     //var texto = texto || null;
                                     //texto = (isset(texto))?texto:valor;
-                                    var texto = texto || valor;
+                                   
+
+                                    var texto = anterior || valor;
 
 
 

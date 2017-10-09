@@ -3,12 +3,44 @@
 @section('content')
 <div class="container">
     <style>
+
+    #app:before {
+      content: "";
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: -1;
+      
+      display: block;
+      background-image: url(img/comercio_suministro.jpg);
+       /* background-size: cover; */
+      
+      /* width: 1200px; */
+      min-height: 800px;
+      
+      -webkit-filter: blur(5px);
+      -moz-filter: blur(5px);
+      -o-filter: blur(5px);
+      -ms-filter: blur(5px);
+      filter: blur(3px);
+    }
+
+    #app {
+      position: fixed;
+      left: 0;
+      right: 0;
+      z-index: 0;
+    }
     /*
-    .container {
-    margin-right: auto;
-    margin-left: auto;
+      body {
+   
     background: url(img/comercio_suministro.jpg) 50% 50% no-repeat fixed;
     filter: blur(5px); 
+    background-size: cover;
+    }
+
+    body:before{
+        filter: blur(5px);
     }
     */
     </style>

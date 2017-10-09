@@ -30,6 +30,9 @@
             background: linear-gradient(to bottom, #69c4e8, #21a1d4);
             box-shadow: inset 0 -3px 0 #1f97c7, inset 0 -3px 3px #1f9acc, inset 0 2px 2px #9ad7ef, inset 1px 0 2px #22a4d9, inset -1px 0 2px #22a4d9, 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06), 0 3px 3px rgba(0, 0, 0, 0.17), 2px 1px 2px rgba(0, 0, 0, 0.05), -2px 1px 2px rgba(0, 0, 0, 0.05);
         }
+        .navbar-default .navbar-nav>li>a, .navbar-default .navbar-text {
+            color: #fefefe;
+            font-weight: bold;
     </style>
 </head>
 <body>
