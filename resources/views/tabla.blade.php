@@ -16,9 +16,16 @@
 
             <div class="panel-body">
                 <form action="/buscarlote" method="get">
-                <input name="numero" type="text">
+                    buscar por numero de lote
+                <input name="numero" type="text" class="busqueda numero">
                 <input type="submit" value="buscar">
                 </form>
+                <form action="/buscarlotefecha" method="get">
+                    buscar por fecha
+                <input name="fecha" type="text" class="busqueda fecha">
+                <input type="submit" value="buscar">
+                </form>
+
          </div>
       </div>  
     </div>
@@ -123,6 +130,7 @@
                             var elhtml = ' \
                                 <tr class="datos " id="">  \
                                     <td class="nombrelote"><input class="editando" type="text" size="5"/></td> \
+                                    <td class="fecha">00/00/000</td> \
                      \
                                     <td class="reposicion g95">0</td> \
                                     <td class="reposicion g91">0</td> \
@@ -289,7 +297,7 @@
                                     //var texto = texto || null;
                                     //texto = (isset(texto))?texto:valor;
                                     var texto = texto || valor;
-                                    
+
 
 
                                     $.ajax({
@@ -492,7 +500,7 @@ if (jQuery.ui) {
 }
 */
 
-$('input').datepicker({
+$('.busqueda.fecha').datepicker({
             format: "dd/mm/yyyy",
             maxViewMode: 3,
             todayBtn: "linked",
@@ -501,7 +509,7 @@ $('input').datepicker({
             autoclose: true
         });
 
-          
+         
 
 
                             

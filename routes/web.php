@@ -45,6 +45,7 @@ Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
 //Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
 
 Route::get('/buscarlote',['uses' => 'PruebaController@buscar','as' => 'buscar']);
+Route::get('/buscarlotefecha',['uses' => 'PruebaController@buscarfecha','as' => 'buscarfecha']);
 
 //});
 
