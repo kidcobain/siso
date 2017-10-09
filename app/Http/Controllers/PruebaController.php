@@ -85,6 +85,7 @@ class PruebaController extends Controller
 
      public function guardar(Request $request)
      {
+        $informacion = [];
      	if($request->colfila=='nombrelote')
      	{ 
 
@@ -94,11 +95,15 @@ class PruebaController extends Controller
      			$lote = $this->buscarPorNumero($request->oldidfila);
      			$lote->numero = $request->idfila;
      			$lote->save();
-     			return 'actualizado';
+                $informacion["oldlote"] = $request->oldidfila;
+                $informacion["lote"] = $request->idfila;
+                $informacion["respuesta"] = "actualizarLote";
+                        //echo json_encode( $informacion );
+     			return json_encode( $informacion );
      		}
 
             else{
-                
+
             
              //$this->buscarPorNumero($request->oldidfila);
             $ident = Lote::create([
@@ -168,8 +173,10 @@ class PruebaController extends Controller
 
 
                  
-
-             return 'nuevo';
+                       $informacion["respuesta"] = "agregarLote";
+                               //echo json_encode( $informacion );
+                        return json_encode( $informacion );
+             //return 'nuevo';
             }
              
         }
@@ -196,7 +203,13 @@ class PruebaController extends Controller
 
 
                 //$lote->save();
-                return 'actualizado valor';
+                $informacion["columna"] = $request->colfila;
+                $informacion["tipo"] = $request->tipofila;
+                $informacion["lote"] = $request->idfila;
+                $informacion["respuesta"] = "actualizardata";
+                        //echo json_encode( $informacion );
+                return json_encode( $informacion );
+                //return 'actualizado valor';
                 
 
      	}

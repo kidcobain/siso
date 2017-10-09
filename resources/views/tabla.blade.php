@@ -3,6 +3,11 @@
 @section('content')
 <link rel="stylesheet" href="css/sweetalert2.css">
 <div class="container">
+
+    <div class="row">
+        <div class="mensaje " style="height: 80px">
+        </div>
+    </div>
     <div class="row">
      <div class="col-md-8 col-md-offset-2">
          <div class="panel panel-default">
@@ -267,8 +272,9 @@
                                                     //alert('listo');
                                                 },
 
-                                                success: function(){
-                                                    //alert('exito');
+                                                success: function(data){
+                                                    //console.log(data);
+                                                    mostrarMensaje(data);
                                                 }
                                             });
 
@@ -357,7 +363,68 @@ background: -moz-linear-gradient(top, #69c4e8, #21a1d4);
 background: linear-gradient(to bottom, #69c4e8, #21a1d4);
 box-shadow: inset 0 -3px 0 #1f97c7, inset 0 -3px 3px #1f9acc, inset 0 2px 2px #9ad7ef, inset 1px 0 2px #22a4d9, inset -1px 0 2px #22a4d9, 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06), 0 3px 3px rgba(0, 0, 0, 0.17), 2px 1px 2px rgba(0, 0, 0, 0.05), -2px 1px 2px rgba(0, 0, 0, 0.05);
 */
+/*
+var mostrar_mensaje = function( informacion ){
+    var texto = "", color = "";
+    if( informacion.respuesta == "BIEN" ){
+            texto = "<strong>Bien!</strong> Se han guardado los cambios correctamente.";
+            color = "#379911";
+    }else if( informacion.respuesta == "ERROR"){
+            texto = "<strong>Error</strong>, no se ejecutó la consulta.";
+            color = "#C9302C";
+    }else if( informacion.respuesta == "EXISTE" ){
+            texto = "<strong>Información!</strong> el usuario ya existe.";
+            color = "#5b94c5";
+    }else if( informacion.respuesta == "VACIO" ){
+            texto = "<strong>Advertencia!</strong> debe llenar todos los campos solicitados.";
+            color = "#ddb11d";
+    }else if( informacion.respuesta == "OPCION_VACIA" ){
+            texto = "<strong>Advertencia!</strong> la opción no existe o esta vacia, recargar la página.";
+            color = "#ddb11d";
+    }
 
+    $(".mensaje").html( texto ).css({"color": color });
+    $(".mensaje").fadeOut(5000, function(){
+            $(this).html("");
+            $(this).fadeIn(3000);
+    });         
+}
+*/
+var mostrarMensaje = function(informacion){
+            var html = "";
+            if( informacion.respuesta == "agregarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong> se ha actualizado el lote numero"+informacion.oldidfila+"a "+informacion.lote+"</div>";
+            else if( informacion.respuesta == "agregarLote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha registrado un nuevo lote</div>";
+            else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+"de "+informacion.columna+"del lote "+informacion.lote+"</div>";
+
+
+            $(".mensaje").html( html );
+            $(".mensaje").fadeOut(12000, function(){
+                    $(this).html("");
+                    $(this).fadeIn(3000);
+            });         
+        }
+/*
+    var mostrarMensaje = function( informacion ){
+        var texto = "", color = "";
+        if( informacion.respuesta == "BIEN" ){
+                texto = "<strong>Exito!</strong> se ha actualizado el lote numero"+informacion.oldidfila+"a "+informacion.lote;
+                color = "#379911";
+        }else if( informacion.respuesta == "agregarLote"){
+                texto = "<strong>Exito!</strong>, se ha registrado un nuevo lote.";
+                color = "#C9302C";
+        }else if( informacion.respuesta == "actualizardata"){
+                texto = "<strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+"de "+informacion.columna+"del lote "+informacion.lote;
+                color = "#C9302C";
+        }
+        
+
+        $(".mensaje").html( texto ).css({"color": color });
+        $(".mensaje").fadeOut(5000, function(){
+                $(this).html("");
+                $(this).fadeIn(3000);
+        });         
+    }
+*/
                                 
                                 
 
