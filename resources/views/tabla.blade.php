@@ -118,12 +118,21 @@
                         </table>
                         <p></p>
                         <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
-
-                    </body>
-                    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
+    <!-- /body -->
                     <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
+                    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
+
+                    <!-- 
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                    <script src="include/bootstrap-datetimepicker.js" type="text/javascript"></script>
+                     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+                     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+                    <script src="//www.fuelcdn.com/fuelux/3.13.0/js/fuelux.min.js"></script>
+                     -->
                     <script src="js/bootstrap-datepicker.js"></script>
                     <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
+                    <link href="//www.fuelcdn.com/fuelux/3.13.0/css/fuelux.min.css" rel="stylesheet">
+                    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
                     <script src="js/sweetalert2.all.min.js"></script>
                     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
                         <script>
@@ -152,6 +161,12 @@
                             ';
 
                         $(document).ready(function() {
+                            if (jQuery.ui) {
+                                var datepicker = $.fn.datepicker.noConflict();
+                                $.fn.bootstrapDP = datepicker;
+                            } else {
+                                $.fn.bootstrapDP = $.fn.datepicker;
+                            }
                             
                             
                             
@@ -249,6 +264,7 @@
 
                                 if($el.parent().hasClass('nombrelote')){
                                     trow.attr('id', valor)
+                                    trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
                                 }
                                 idfila = trow.attr('id');
                                 console.log(idfila);
@@ -264,11 +280,8 @@
 
                                     $el.parent().text(valor);
                                     trow.css('background-color', '');
-                                    trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
                                     $('.latabla').on('click','td', editarCelda);
-                                    //trow.find('td').on('click', editarCelda);
                                     $('.agregar').on('click',agregarFila);
-                                    //url: '/datosAjax/InventarioPoliducto',
 
                                     /*
                                         
@@ -509,6 +522,7 @@ if (jQuery.ui) {
 }
 */
 
+
 $('.busqueda.fecha').datepicker({
             format: "dd/mm/yyyy",
             maxViewMode: 3,
@@ -518,11 +532,12 @@ $('.busqueda.fecha').datepicker({
             autoclose: true
         });
 
-         
-
+      
+//$('.busqueda.fecha').datepicker();
 
                             
-                        });
+                        
+});
                         </script>
                 </div>
             </div>

@@ -11,7 +11,13 @@
     <title>{{ config('app.name','Sisor') }}</title>
 
     <!-- Styles -->
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Styles 
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//www.fuelcdn.com/fuelux/3.13.0/css/fuelux.min.css" rel="stylesheet">
+    -->
     <style>
         .panel-default>.panel-heading {
             color: #333;
@@ -58,8 +64,9 @@
             margin-top: 50px;
         }
     </style>
+
 </head>
-<body>
+<body class="fuelux">
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
@@ -123,8 +130,14 @@
     </div>
 
     <!-- Scripts -->
+      <!-- 
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+        Include all compiled plugins (below), or include individual files as needed 
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <script src="//www.fuelcdn.com/fuelux/3.13.0/js/fuelux.min.js"></script>
 
-    <script src="{{-- asset('js/app.js') --}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    -->
 
 </body>
 </html>
