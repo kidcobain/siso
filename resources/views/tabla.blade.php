@@ -7,9 +7,7 @@
     <div class="row">
         <div class="mensaje " style="height: 80px">
         </div>
-        @can('eliminar_lotes')
-        permisooo
-        @endcan
+        
     </div>
     <div class="row">
      <div class="col-md-8 col-md-offset-2">
@@ -98,21 +96,45 @@
 
                                           @endphp
 
-                                        <td class="reposicion g95">{{ $proreposicion->g95?$proreposicion->g95:0 }}</td>
-                                        <td class="reposicion g91">{{ $proreposicion->g91 }}</td>
-                                        <td class="reposicion dsl">{{ $proreposicion->dsl }}</td>
+                                        <td class="reposicion g95">
+                                            {{ $proreposicion->g95?$proreposicion->g95:0 }}
+                                        </td>
+                                        <td class="reposicion g91">
+                                            {{ $proreposicion->g91?$proreposicion->g91:0 }}
+                                        </td>
+                                        <td class="reposicion dsl">
+                                            {{ $proreposicion->dsl?$proreposicion->dsl:0 }}
+                                        </td>
 
-                                        <td class="inicial g95">{{ $proinicial->g95 }}</td>
-                                        <td class="inicial g91">{{ $proinicial->g91 }}</td>
-                                        <td class="inicial dsl">{{ $proinicial->dsl }}</td>
+                                        <td class="inicial g95">
+                                            {{ $proinicial->g95?$proinicial->g95:0 }}
+                                        </td>
+                                        <td class="inicial g91">
+                                            {{ $proinicial->g91?$proinicial->g91:0 }}
+                                        </td>
+                                        <td class="inicial dsl">
+                                            {{ $proinicial->dsl?$proinicial->dsl:0 }}
+                                        </td>
 
-                                        <td class="final g95">{{ $profinal->g95 }}</td>
-                                        <td class="final g91">{{ $profinal->g91 }}</td>
-                                        <td class="final dsl">{{ $profinal->dsl }}</td>
+                                        <td class="final g95">
+                                            {{ $profinal->g95?$profinal->g95:0 }}
+                                        </td>
+                                        <td class="final g91">
+                                            {{ $profinal->g91?$profinal->g91:0 }}
+                                        </td>
+                                        <td class="final dsl">
+                                            {{ $profinal->dsl?$profinal->dsl:0 }}
+                                        </td>
 
-                                        <td class="autonomia g95">{{ $proautonomia->g95 }}</td>
-                                        <td class="autonomia g91">{{ $proautonomia->g91 }}</td>
-                                        <td class="autonomia dsl">{{ $proautonomia->dsl }}</td>
+                                        <td class="autonomia g95">
+                                            {{ $proautonomia->g95?$proautonomia->g95:0 }}
+                                        </td>
+                                        <td class="autonomia g91">
+                                            {{ $proautonomia->g91?$proautonomia->g91:0 }}
+                                        </td>
+                                        <td class="autonomia dsl">
+                                            {{ $proautonomia->dsl?$proautonomia->dsl:0 }}
+                                        </td>
 
                                         <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> <button type="button" class="btn btn-danger">Eliminar</button></a></td>
                                         @break
@@ -565,6 +587,11 @@ $role->givePermissionTo('destroy_notes');
 
 $role->hasPermissionTo('destroy_notes'); // Validamos que el rol contenga el permiso
 $role->revokePermissionTo('destroy_notes'); // Eliminamos el permiso del rol
+
+
+
+->with('flash_message', 'Article,
+             '. $post->title.' created');
 
 */
                             

@@ -16,7 +16,7 @@
        background-size: cover;
       
       /* width: 1200px; */
-      min-height: 800px;
+      min-height: 100%;
       
       -webkit-filter: blur(5px);
       -moz-filter: blur(5px);
@@ -85,11 +85,15 @@
     }
     */
     </style>
+                @if (session('exito'))
+                    <div class="alert alert-success col-sm-offset-2 col-sm-8 mensaje">
+                        {{ Session::get('exito') }}
+                    </div>
+                @endif
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                <!--  <div class="panel-heading">Inicio</div> -->
-
                 <div class="panel-body">
                   <div class="logo"><img src="img/PDVSA-Logo.png" alt=""></div>
                   <!-- <div class="logo"><img src="img/logo.svg" alt=""></div> -->
@@ -147,6 +151,7 @@
                         </div>
                     </form>
                 </div>
+                
             </div>
         </div>
     </div>
