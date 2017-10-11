@@ -63,6 +63,15 @@
         .panel.panel-default {
             margin-top: 50px;
         }
+
+        .buscarfecha label {
+            margin-right: 70px;
+        }
+
+        .buscarnumero label {
+            margin-right: 5px;
+        }
+
     </style>
 
 </head>

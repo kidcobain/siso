@@ -2,11 +2,14 @@
 
 @section('content')
 <link rel="stylesheet" href="css/sweetalert2.css">
-<div class="container">
+<div class="container" style=" width: unset;">
 
     <div class="row">
         <div class="mensaje " style="height: 80px">
         </div>
+        @can('eliminar_lotes')
+        permisooo
+        @endcan
     </div>
     <div class="row">
      <div class="col-md-8 col-md-offset-2">
@@ -15,22 +18,25 @@
             <div class="panel-heading">busqueda</div>
 
             <div class="panel-body">
-                <form action="/buscarlote" method="get">
-                    buscar por numero de lote
-                <input name="numero" type="text" class="busqueda numero">
-                <input type="submit" value="buscar">
-                </form>
-                <form action="/buscarlotefecha" method="get">
-                    buscar por fecha
-                <input name="fecha" type="text" class="busqueda fecha">
-                <input type="submit" value="buscar">
-                </form>
-
+                <div class="buscarnumero">
+                    <form action="/buscarlote" method="get">
+                        <label for="numero">buscar por numero de lote</label>
+                        <input name="numero" type="text" class="busqueda numero">
+                        <input type="submit" value="buscar">
+                    </form>
+                </div>
+                <div class="buscarfecha">
+                    <form action="/buscarlotefecha" method="get">
+                        <label for="fecha">buscar por fecha</label>
+                        <input name="fecha" type="text" class="busqueda fecha">
+                        <input type="submit" value="buscar">
+                    </form>
+                </div>
          </div>
       </div>  
     </div>
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2"">
             <div class="panel panel-default">
                 <div class="panel-heading">proyeccion</div>
                 <div class="panel-body">
@@ -223,9 +229,9 @@
 
                             var agregarFila = function () {
 
-                                $('tr:last').after(elhtml);
+                                $('.latabla tr:last').after(elhtml);
                                 //var el = $('tr:last > td');
-                                $('tr:last').css('background-color', 'gray');
+                                $('.latabla tr:last').css('background-color', 'gray');
                                 $('.agregar').off('click');
                                 $('.latabla').off('click','td');
 
@@ -522,7 +528,13 @@ if (jQuery.ui) {
 }
 */
 
+//eliminar_lotes
+/*
+@can('eliminar_lotes')
+        alert('aloo');
+        @endcan
 
+*/
 $('.busqueda.fecha').datepicker({
             format: "dd/mm/yyyy",
             maxViewMode: 3,
@@ -534,7 +546,27 @@ $('.busqueda.fecha').datepicker({
 
       
 //$('.busqueda.fecha').datepicker();
+//https://www.bignox.com/blog/error-code-0xc000007b/
 
+/*
+
+use Spatie\Permission\Models\Role;
+ 
+$role = Role::create(['name' => 'Administrator']);
+
+
+use Spatie\Permission\Models\Permission;
+
+Permission::create(['name' => 'destroy_notes']);
+
+
+// La variable $role contiene el rol Administrator
+$role->givePermissionTo('destroy_notes');
+
+$role->hasPermissionTo('destroy_notes'); // Validamos que el rol contenga el permiso
+$role->revokePermissionTo('destroy_notes'); // Eliminamos el permiso del rol
+
+*/
                             
                         
 });
