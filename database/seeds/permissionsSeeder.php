@@ -49,7 +49,7 @@ class permissionsSeeder extends Seeder
         	'password' => bcrypt('Lacontraseñaincreiblementesecretadeladministrador1'),
         ]);
 
-        $user->assignRole('Admin');
+        $user->assignRole('admin');
     }
 }
 

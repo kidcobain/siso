@@ -136,7 +136,13 @@
                                             {{ $proautonomia->dsl?$proautonomia->dsl:0 }}
                                         </td>
 
-                                        <td class="accion"><a href="/fila/{{ $lote->numero}}/eliminar"> <button type="button" class="btn btn-danger">Eliminar</button></a></td>
+                                        <td class="accion">
+                                            @role('admin|avanzado')
+                                            <a href="/fila/{{ $lote->numero}}/eliminar"> 
+                                                <button type="button" class="btn btn-danger">Eliminar</button>
+                                            </a>
+                                            @endrole
+                                        </td>
                                         @break
                                         @endforeach
                                     </tr>
@@ -554,9 +560,7 @@ if (jQuery.ui) {
 
 //eliminar_lotes
 /*
-@can('eliminar_lotes')
-        alert('aloo');
-        @endcan
+
 
 */
 $('.busqueda.fecha').datepicker({
