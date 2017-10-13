@@ -13,6 +13,9 @@
     <!-- Styles -->
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/9712be8772.js"></script>
 
     <!-- Styles 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -117,6 +120,12 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+                                         @role('admin') {{-- Laravel-permission blade helper --}}
+                                        <a href="#"><i class="fa fa-btn fa-unlock"></i>Admin</a>
+                                        @endrole
+                                    </li>
+                                    <li>
+
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

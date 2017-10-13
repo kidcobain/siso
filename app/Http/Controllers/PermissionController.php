@@ -4,20 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\User;
 use Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Session;
 
-class UserController extends Controller
+class PermissionController extends Controller
 {
     public function __construct() 
     {
-        //$this->middleware(['auth', 'isAdmin']);
         $this->middleware(['role:admin']);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -25,9 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $permissions = Permission::all();
 
-        return view('users.index')->with('users', $users);
+        return view('permissions.index')->with('permissions', $permissions);
     }
 
     /**
@@ -38,7 +36,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::get();
-        return view('users.create', ['roles'=>$roles]);
+
+        return view('permissions.create')->with('roles', $roles);
     }
 
     /**
@@ -49,27 +48,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|min:6|confirmed'
+            'name'=>'required|max:40',
         ]);
 
-        $user = User::create($request->only('email', 'name', 'password'));
+        $name = $request['name'];
+        $permission = new Permission();
+        $permission->name = $name;
 
         $roles = $request['roles'];
+        
+        $permission->save();
 
-        if (isset($roles)) {
-
+        if (!empty($request['roles'])) {
             foreach ($roles as $role) {
-            $role_r = Role::where('id', '=', $role)->firstOrFail();            
-            $user->assignRole($role_r);
-            }
-        }        
+                $r = Role::where('id', '=', $role)->firstOrFail(); //Match input role to db record
 
-        return redirect()->route('users.index')
+                $permission = Permission::where('name', '=', $name)->first();   
+                $r->givePermissionTo($permission);
+            }
+        }
+
+        return redirect()->route('permissions.index')
             ->with('flash_message',
-             'User successfully added.');
+             'Permission'. $permission->name.' added!');
     }
 
     /**
@@ -80,7 +83,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return redirect('users');
+        return redirect('permissions');
     }
 
     /**
@@ -91,10 +94,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $roles = Role::get();
-
-        return view('users.edit', compact('user', 'roles'));
+        $permission = Permission::find($id);
+        
+        return view('permissions.edit', compact('permission'));
     }
 
     /**
@@ -106,26 +108,18 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $permission = Permission::findOrFail($id);
+
         $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>'required|email|unique:users,email,'.$id,
-            'password'=>'required|min:6|confirmed'
+            'name'=>'required|max:40',
         ]);
+        
+        $input = $request->all();
+        $permission->fill($input)->save();
 
-        $input = $request->only(['name', 'email', 'password']);
-        $roles = $request['roles'];
-        $user->fill($input)->save();
-
-        if (isset($roles)) {        
-            $user->roles()->sync($roles);            
-        }        
-        else {
-            $user->roles()->detach();
-        }
-        return redirect()->route('users.index')
+        return redirect()->route('permissions.index')
             ->with('flash_message',
-             'User successfully edited.');
+             'Permission'. $permission->name.' updated!');
     }
 
     /**
@@ -136,11 +130,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
-
-        return redirect()->route('users.index')
+        $permission = Permission::findOrFail($id);
+        
+        if ($permission->name == "Administer roles & permissions") {
+            return redirect()->route('permissions.index')
             ->with('flash_message',
-             'User successfully deleted.');
+             'Cannot delete this Permission!');
+        }
+        
+        $permission->delete();
+
+        return redirect()->route('permissions.index')
+            ->with('flash_message',
+             'Permission deleted!');
     }
 }

@@ -11,6 +11,8 @@ class permissionsSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     *php artisan db:seed --class=UsersTableSeeder
+     *
      * @return void
      */
     public function run()
@@ -22,6 +24,7 @@ class permissionsSeeder extends Seeder
         Permission::create(['name' => 'agregar_lotes']);
         Permission::create(['name' => 'editar_lotes']);
         Permission::create(['name' => 'eliminar_lotes']);
+        Permission::create(['name' => 'agregar_usuarios']);
         Permission::create(['name' => 'editar_usuarios']);
         Permission::create(['name' => 'eliminar_usuarios']);
 
@@ -35,15 +38,18 @@ class permissionsSeeder extends Seeder
 		$role->givePermissionTo('agregar_lotes');
         $role->givePermissionTo('editar_lotes');
         $role->givePermissionTo('eliminar_lotes');
-        $role->givePermissionTo('publish articles');
-        $role->givePermissionTo('unpublish articles');
+        $role->givePermissionTo('agregar_usuarios');
+        $role->givePermissionTo('editar_usuarios');
+        $role->givePermissionTo('eliminar_usuarios');
 
 
-        DB::table('users')->insert([
+        $user = \App\User::create([
         	'name' => 'administrador',
         	'email' => 'administrador@admin.com',
-        	'password' => bcrypt('1!lacontraseñaincreiblementesecretadeladministrador'),
+        	'password' => bcrypt('Lacontraseñaincreiblementesecretadeladministrador1'),
         ]);
+
+        $user->assignRole('Admin');
     }
 }
 

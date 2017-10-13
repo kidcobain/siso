@@ -1,4 +1,3 @@
-{{-- \resources\views\users\create.blade.php --}}
 @extends('layouts.app')
 
 @section('title', '| Add User')
@@ -7,13 +6,15 @@
 
 <div class='col-lg-4 col-lg-offset-4'>
 
-    <h1><i class='fa fa-user-plus'></i> Add User</h1>
+    <h1><i class='fa fa-user-plus'></i> Añadir usuario</h1>
     <hr>
+
+    {{-- @include ('errors.list') --}}
 
     {{ Form::open(array('url' => 'users')) }}
 
     <div class="form-group">
-        {{ Form::label('name', 'Name') }}
+        {{ Form::label('name', 'Nombre') }}
         {{ Form::text('name', '', array('class' => 'form-control')) }}
     </div>
 
@@ -31,18 +32,18 @@
     </div>
 
     <div class="form-group">
-        {{ Form::label('password', 'Password') }}<br>
+        {{ Form::label('password', 'Contraseña') }}<br>
         {{ Form::password('password', array('class' => 'form-control')) }}
 
     </div>
 
     <div class="form-group">
-        {{ Form::label('password', 'Confirm Password') }}<br>
+        {{ Form::label('password', 'Confirmar contraseña') }}<br>
         {{ Form::password('password_confirmation', array('class' => 'form-control')) }}
 
     </div>
 
-    {{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
+    {{ Form::submit('Añadir', array('class' => 'btn btn-primary')) }}
 
     {{ Form::close() }}
 

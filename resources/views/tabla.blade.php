@@ -148,19 +148,19 @@
                         <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
     <!-- /body -->
                     <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
-                    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
 
                     <!-- 
+                    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
                     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
                     <script src="include/bootstrap-datetimepicker.js" type="text/javascript"></script>
                      <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
                      <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
                     <script src="//www.fuelcdn.com/fuelux/3.13.0/js/fuelux.min.js"></script>
                     <link href="//www.fuelcdn.com/fuelux/3.13.0/css/fuelux.min.css" rel="stylesheet">
+                    <script src="js/bootstrap.min.js"></script>
                      -->
                     <script src="js/bootstrap-datepicker.js"></script>
                     <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
-                    <script src="js/bootstrap.min.js"></script>
                     <script src="js/sweetalert2.all.min.js"></script>
                     <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
                         <script>
@@ -378,6 +378,7 @@
                                 }
                                 
                             };
+@role('admin|avanzado')
 
 
                             $('.latabla ').on('click','td', editarCelda);
@@ -385,6 +386,7 @@
                             $('.latabla').on('blur','.editando', guardarDatoCelda);
                                     
                             $('.agregar').on('click',agregarFila);
+@endrole
 
                             //$('td ').on('click', editarCelda);
                                 //$('.latabla > td ').on('click', editarCelda);

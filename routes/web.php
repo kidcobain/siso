@@ -50,10 +50,17 @@ Route::get('/buscarlotefecha',['uses' => 'PruebaController@buscarfecha','as' => 
 
 //});
 
-
+/*
 Route::group(['middleware' => ['permission:destroy_notes']], function () {
     Route::get('notes/{id}/destroy', 'NotesController@destroy')->name('notes.destroy');
 });
+*/
+
+Route::resource('users', 'UserController');
+
+Route::resource('roles', 'RoleController');
+
+Route::resource('permissions', 'PermissionController');
 
 
 
