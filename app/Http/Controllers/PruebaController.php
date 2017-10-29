@@ -30,9 +30,13 @@ class PruebaController extends Controller
     }
 
     public function buscarfecha(Request $request)
-    {
+    {   if ($request->fecha) {
             $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
-            $lotes = Lote::all()->where('fecha_entrada', $fecha);
+        }
+        else{
+            $fecha = '';
+        }
+            $lotes = Lote::paginate(15)->where('fecha_entrada', $fecha);
             return view('tabla', compact('lotes')); 
     }
 
@@ -142,6 +146,20 @@ class PruebaController extends Controller
                   proyeccion::create([
 
                     'tipo' => 'inicial',
+
+                     'g95' => 0,
+                    
+                     'g91' => 0,
+                    
+                     'dsl' => 0,
+
+                     'lote_id' => $ident->id,
+
+                 ]);
+
+                proyeccion::create([
+
+                    'tipo' => 'ventas',
 
                      'g95' => 0,
                     

@@ -20,7 +20,7 @@ Auth::routes();
 //Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/tabla', function () {
-    $lotes = App\Lote::all();
+    $lotes = App\Lote::paginate(15);
 	    return view('tabla', compact('lotes'));
 });
 

@@ -39,12 +39,13 @@
                 <div class="panel-heading">proyeccion</div>
                 <div class="panel-body">
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
-                            <tr>
+                            <thead>
                                 <tr>
                                     <th>lote</th>
                                     <th colspan="1">fecha</th>
                                     <th colspan="3">Reposicion por poliducto</th>
                                     <th colspan="3">Inventario inicial</th>
+                                    <th colspan="3">ventas</th>
                                     <th colspan="3">Inventario final</th>
                                     <th colspan="3">Autonomia</th>
                                     <th colspan="1">accion</th>
@@ -56,8 +57,14 @@
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>G95</th> <th>G91</th> <th>DSL</th>
+                                    <th>G95</th> <th>G91</th> <th>DSL</th>
                                     <th>accion</th>
                                 </tr>
+                            </thead>
+                            @if(count($lotes)>=1)
+                                <tbody>
+                                    
+                                
                                 @foreach ($lotes as $lote)           
                                     <tr class="datos" id="{{ $lote->numero}}">
                                         <td class="nombrelote">{{ $lote->numero}}</td>
@@ -88,6 +95,9 @@
                                         $proinicial = $pro::where('lote_id', $lote->id)
                                           ->where('tipo','inicial')->firstorfail();
 
+                                        $proventas = $pro::where('lote_id', $lote->id)
+                                          ->where('tipo','ventas')->firstorfail();
+
                                         $profinal = $pro::where('lote_id', $lote->id)
                                           ->where('tipo','final')->firstorfail();
 
@@ -114,6 +124,16 @@
                                         </td>
                                         <td class="inicial dsl">
                                             {{ $proinicial->dsl?$proinicial->dsl:0 }}
+                                        </td>
+                                        
+                                        <td class="ventas g95">
+                                            {{ (isset($proventas->g95))?$proventas->g95:0 }}
+                                        </td>
+                                        <td class="ventas g91">
+                                            {{ (isset($proventas->g91))?$proventas->g91:0 }}
+                                        </td>
+                                        <td class="ventas dsl">
+                                            {{ (isset($proventas->dsl))?$proventas->dsl:0 }}
                                         </td>
 
                                         <td class="final g95">
@@ -147,9 +167,20 @@
                                         @endforeach
                                     </tr>
                                 @endforeach
-                            
-                            </tr>
-                        </table>
+                                    </tbody>
+                                    @else
+                                        
+                                    </table>
+                                    <div class="sinregistros">
+                                        <p> Por los momentos no existen proyecciones registradas en el sistema </p>
+                                    </div>
+                                              
+                                    @endif
+                                </table>
+                                    @if(method_exists($lotes,'links'))
+                                        {{$lotes->links()}}
+                                    @endif
+
                         <p></p>
                         <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
     <!-- /body -->
@@ -182,6 +213,10 @@
                                     <td class="inicial g95">0</td> \
                                     <td class="inicial g91">0</td> \
                                     <td class="inicial dsl">0</td> \
+                     \
+                                    <td class="ventas g95">0</td> \
+                                    <td class="ventas g91">0</td> \
+                                    <td class="ventas dsl">0</td> \
                      \
                                     <td class="final g95">0</td> \
                                     <td class="final g91">0</td> \
@@ -226,7 +261,7 @@
                                     }
                                     else{
 
-                                        $(this).html('<input class="editando" type="number" size="3" max="300" value="'+texto+'">');
+                                        $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="'+texto+'">');
                                     }
                                 var $el = $(this).find('input');
 
@@ -256,6 +291,8 @@
                             };
 
                             var agregarFila = function () {
+
+                                if($('.sinregistros')){$('.sinregistros').html('')};
 
                                 $('.latabla tr:last').after(elhtml);
                                 //var el = $('tr:last > td');

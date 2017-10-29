@@ -121,7 +121,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                          @role('admin') {{-- Laravel-permission blade helper --}}
-                                        <a href="#"><i class="fa fa-btn fa-unlock"></i>Admin</a>
+                                        <a href="/permissions"><i class="fa fa-btn fa-unlock"></i>Admin</a>
                                         @endrole
                                     </li>
                                     <li>
