@@ -1,9 +1,17 @@
 @extends('layouts.app')
-
+{{-- \Debugbar::disable() --}}
 @section('content')
 <link rel="stylesheet" href="css/sweetalert2.css">
 <div class="container" style=" width: unset;">
-
+        {{-- dd(session('success')['lote']) --}}
+    {{-- 
+    @if (session('success'))
+        <div class="alert alert-success col-sm-offset-2 col-sm-8 mensaje">
+            {{ session('success') }}
+        </div>
+    @endif
+    --}}
+     
     <div class="row">
         <div class="mensaje " style="height: 80px">
         </div>
@@ -236,10 +244,8 @@
                             } else {
                                 $.fn.bootstrapDP = $.fn.datepicker;
                             }
-                            
-                            
-                            
-                                    
+                           
+                                  
 
                             var editarCelda = function () {
 
@@ -533,11 +539,14 @@ var mostrar_mensaje = function( informacion ){
     });         
 }
 */
+
 var mostrarMensaje = function(informacion){
             var html = "";
             if( informacion.respuesta == "actualizarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong> se ha actualizado el lote numero "+informacion.oldlote+" a "+informacion.lote+"</div>";
             else if( informacion.respuesta == "agregarLote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha registrado un nuevo lote</div>";
             else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+" de "+informacion.columna+"del lote "+informacion.lote+"</div>";
+            else if( informacion.respuesta == "eliminarlote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha eliminate el lote "+informacion.lote+"</div>";
+                console.log(informacion);
 
 
             $(".mensaje").html( html );
@@ -637,7 +646,14 @@ $role->revokePermissionTo('destroy_notes'); // Eliminamos el permiso del rol
              '. $post->title.' created');
 
 */
-                            
+    @if (session('success'))
+         {{-- dd(session('success')) --}}
+         //var variable = [];
+         var variable = {!! json_encode(session('success')) !!};
+         //console.log(variable);
+         mostrarMensaje(variable);
+     
+    @endif                         
                         
 });
                         </script>

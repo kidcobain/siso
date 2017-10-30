@@ -55,46 +55,14 @@ class PruebaController extends Controller
     	//Lote::destroy( ($request->numero) );
     	//$data = 
     	$this->buscarPorNumero($numero)->delete();
-    	return redirect()->back();
+        $informacion["lote"]      = $numero;
+        $informacion["respuesta"] = "eliminarlote";
+                //json_encode( $informacion );
+        return redirect()->back()->withSuccess($informacion);
+    	//return redirect()->back()->withSuccess('Se han eliminado los datos satisfactoriamente');
     }
 
     
-
-    public function store(Request $request)
-    {
-        //dd($request);
-        //dd($request->cedula);
-        
-        $request->validate([
-            'cedula' => 'required|string|max:9|unique:personas',
-          
-        ]);
-        
-         personas::create([
-            'cedula' => $request->cedula,
-           
-            
-
-        ]);
-         return redirect('/persona/'.$request->cedula);
-     }
-
-     public function editar(Request $request, $id)
-     {
-     	$solicitud = solicitudes::find($id);
-
-     	$solicitud->lugar = $request->lugar;
-     	$solicitud->tipo = $request->tipo;
-     	$solicitud->solicitud = $request->solicitud;
-     	$solicitud->observaciones = $request->observaciones;
-     	$solicitud->fundo = $request->fundo;
-     	$solicitud->persona_Cedula = $request->persona_Cedula;
-     	$solicitud->funcionario_Cedula = $request->funcionario_Cedula;
-
-     	$solicitud->save();
-     	return redirect('/persona/'.$request->persona_Cedula);
-     }
-
      public function guardar(Request $request)
      {
         $informacion = [];
@@ -106,8 +74,8 @@ class PruebaController extends Controller
      			$lote = $this->buscarPorNumero($request->oldidfila);
      			$lote->numero = $request->idfila;
      			$lote->save();
-                $informacion["oldlote"] = $request->oldidfila;
-                $informacion["lote"] = $request->idfila;
+                $informacion["oldlote"]   = $request->oldidfila;
+                $informacion["lote"]      = $request->idfila;
                 $informacion["respuesta"] = "actualizarLote";
                         //echo json_encode( $informacion );
      			return json_encode( $informacion );
@@ -222,10 +190,10 @@ class PruebaController extends Controller
                //$fecha = Carbon::createFromFormat('Y-m-d',$request->valor )->toDateTimeString();
                 $lote->fecha_entrada = $fecha;
                 $lote->save();
-                $informacion["oldlote"] = $request->oldidfila;
+                $informacion["oldlote"]    = $request->oldidfila;
                 $informacion["fechanueva"] = $request->valor;
-                $informacion["lote"] = $request->idfila;
-                $informacion["respuesta"] = "actualizarLote";
+                $informacion["lote"]       = $request->idfila;
+                $informacion["respuesta"]  = "actualizarLote";
                         //echo json_encode( $informacion );
                 return json_encode( $informacion ); 
 
@@ -255,9 +223,9 @@ class PruebaController extends Controller
 
 
                 //$lote->save();
-                $informacion["columna"] = $tipo;
-                $informacion["tipo"] = $request->tipofila;
-                $informacion["lote"] = $request->idfila;
+                $informacion["columna"]   = $tipo;
+                $informacion["tipo"]      = $request->tipofila;
+                $informacion["lote"]      = $request->idfila;
                 $informacion["respuesta"] = "actualizardata";
                         //echo json_encode( $informacion );
                 return json_encode( $informacion );

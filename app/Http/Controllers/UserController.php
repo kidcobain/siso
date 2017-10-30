@@ -68,8 +68,7 @@ class UserController extends Controller
         }        
 
         return redirect()->route('users.index')
-            ->with('flash_message',
-             'User successfully added.');
+            ->withSuccess('Usuario agregado satisfactoriamente.');
     }
 
     /**
@@ -124,8 +123,7 @@ class UserController extends Controller
             $user->roles()->detach();
         }
         return redirect()->route('users.index')
-            ->with('flash_message',
-             'User successfully edited.');
+            ->withSuccess('Usuario actualizado satisfactoriamente.');
     }
 
     /**
@@ -140,7 +138,6 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')
-            ->with('flash_message',
-             'User successfully deleted.');
+            ->withSuccess('Usuario eliminado!.');
     }
 }
