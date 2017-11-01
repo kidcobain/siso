@@ -211,14 +211,21 @@ class PruebaController extends Controller
             //App\Lote::with('proyeccion')->first()->proyeccion->where('tipo','inicial');
             // App\Lote::first()->proyeccion->where('tipo','inicial')
             //App\Lote::where('numero','123434')->first()->proyeccion->where('tipo','inicial')
+            $tipofila = $request->tipofila;
+            
+            $final = $lote->proyeccion->where('tipo','final');
+            $final->first()->update([$tipofila => $request->final]);
+
+            $autonomia = $lote->proyeccion->where('tipo','autonomia');
+            $autonomia->first()->update([$tipofila => $request->autonomia]);
+
+
             $columna = $lote->proyeccion->where('tipo',$tipo);
             //dd($request->valor);
             //var_dump($columna);
-            $tipofila = $request->tipofila;
             $valor = $request->valor;
             //$columna->first()->$tipofila = $valor;
-            $columna->first()
-            ->update([$tipofila => $valor]);
+            $columna->first()->update([$tipofila => $valor]);
             //$columna->first()->$request->tipofila = $request->valor;
 
 

@@ -202,6 +202,7 @@
     </div>
 </div>
 <script src="js/bootstrap-datepicker.js"></script>
+<script src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
 <script src="js/sweetalert2.all.min.js"></script>
 <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
@@ -309,11 +310,11 @@ $(document).ready(function() {
     };
 
     var guardarDatoCelda = function () {
-        //console.log(texto);
+        ////console.log(texto);
         var $el = $('.editando');
 
         var valor = $el.val();
-        console.log(valor);
+        //console.log(valor);
 
         var idfila = 0;
         var colfila = 0;
@@ -334,7 +335,7 @@ $(document).ready(function() {
             trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
         }
         idfila = trow.attr('id');
-        console.log(idfila);
+        //console.log(idfila);
 
         if (!valor || valor == "" ) {
             if($el.parent().hasClass('nombrelote')){
@@ -352,13 +353,15 @@ $(document).ready(function() {
 
 
             //formulas
+            //parseFloat(s,radix);
+            //$('.final.g95').effect('highlight',{},1000); 
 
             var reposicionval = parseInt($('.reposicion.'+clases[1]).text());
-            var inicialval = parseInt($('.inicial.'+clases[1]).text());
-            var ventasval = parseInt($('.ventas.'+clases[1]).text());
+            var inicialval    = parseInt($('.inicial.'+clases[1]).text());
+            var ventasval     = parseInt($('.ventas.'+clases[1]).text());
 
-                var final = (reposicionval + inicialval) - ventasval;
-                $('.final.'+clases[1]).text(final);
+            var final = (reposicionval + inicialval) - ventasval;
+            $('.final.'+clases[1]).text(final).effect('highlight',{},1000);
 
             if(final != 0 ){
                 var autotipo = [];
@@ -366,8 +369,9 @@ $(document).ready(function() {
                 autotipo['g91'] = 2.8;
                 autotipo['dsl'] = 1.2;
                 var autonomia = final / autotipo[clases[1]];
-                console.log('autonomia: '+autonomia);
-                $('.autonomia.'+clases[1]).text(autonomia.toFixed(2));
+                autonomia = autonomia.toFixed(2);
+                //console.log('autonomia: '+autonomia);
+                $('.autonomia.'+clases[1]).text(autonomia).effect('highlight',{},1000);
             }
 
 
@@ -385,11 +389,13 @@ $(document).ready(function() {
                         data: {
                             valor:valor,
 
-                            idfila: idfila,
+                            idfila    : idfila,
                             oldidfila : texto,
-                            colfila: colfila,
-                            tipofila: tipofila,
-                            lote_id: idfila,
+                            colfila   : colfila,
+                            tipofila  : tipofila,
+                            lote_id   : idfila,
+                            final     : final,
+                            autonomia : autonomia
 
 
                         },
@@ -463,7 +469,7 @@ var mostrarMensaje = function(informacion){
             else if( informacion.respuesta == "agregarLote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha registrado un nuevo lote</div>";
             else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+" de "+informacion.columna+"del lote "+informacion.lote+"</div>";
             else if( informacion.respuesta == "eliminarlote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha eliminate el lote "+informacion.lote+"</div>";
-                console.log(informacion);
+                //console.log(informacion);
 
 
             $(".mensaje").html( html );
