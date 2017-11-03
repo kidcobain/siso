@@ -165,11 +165,11 @@
                                         </td>
 
                                         <td class="accion">
-                                            @role('admin|avanzado')
+                                            @can('eliminar_lotes')
                                             <a href="/fila/{{ $lote->numero}}/eliminar"> 
                                                 <button type="button" class="btn btn-danger">Eliminar</button>
                                             </a>
-                                            @endrole
+                                            @endcan
                                         </td>
                                         @break
                                         @endforeach
@@ -190,7 +190,9 @@
                                     @endif
 
                         <p></p>
-                        <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
+                        @can('agregar_lotes')
+-                           <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
+-                        @endcan
     <!-- /body -->
                     <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
 
@@ -356,12 +358,12 @@ $(document).ready(function() {
             //parseFloat(s,radix);
             //$('.final.g95').effect('highlight',{},1000); 
 
-            var reposicionval = parseInt($('.reposicion.'+clases[1]).text());
-            var inicialval    = parseInt($('.inicial.'+clases[1]).text());
-            var ventasval     = parseInt($('.ventas.'+clases[1]).text());
+            var reposicionval = parseInt($('[id=\"'+idfila+'\"] .reposicion.'+clases[1]).text());
+            var inicialval    = parseInt($('[id=\"'+idfila+'\"] .inicial.'+clases[1]).text());
+            var ventasval     = parseInt($('[id=\"'+idfila+'\"] .ventas.'+clases[1]).text());
 
             var final = (reposicionval + inicialval) - ventasval;
-            $('.final.'+clases[1]).text(final).effect('highlight',{},1000);
+            $('[id=\"'+idfila+'\"] .final.'+clases[1]).text(final).effect('highlight',{},1000);
 
             if(final != 0 ){
                 var autotipo = [];
@@ -371,7 +373,7 @@ $(document).ready(function() {
                 var autonomia = final / autotipo[clases[1]];
                 autonomia = autonomia.toFixed(2);
                 //console.log('autonomia: '+autonomia);
-                $('.autonomia.'+clases[1]).text(autonomia).effect('highlight',{},1000);
+                $('[id=\"'+idfila+'\"] .autonomia.'+clases[1]).text(autonomia).effect('highlight',{},1000);
             }
 
 
@@ -414,15 +416,18 @@ $(document).ready(function() {
         }
         
     };
-@role('admin|avanzado')
-
+//role('admin|avanzado')
+@can('editar_lotes')
 
                             $('.latabla ').on('click','td', editarCelda);
 
                             $('.latabla').on('blur','.editando', guardarDatoCelda);
+@endcan
+
+@can('agregar_lotes')   
                                     
                             $('.agregar').on('click',agregarFila);
-@endrole
+@endcan
 
                            
                             

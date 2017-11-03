@@ -13,9 +13,9 @@
     <!-- Styles -->
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="js/jquery-2.1.4.js" type="text/javascript"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="https://use.fontawesome.com/9712be8772.js"></script>
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/js/jquery-2.1.4.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <!-- Styles 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -94,7 +94,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/tabla') }}">
-                        <div class="logoheader"><img src="img/PDVSA-Logo.png" alt=""></div>
+                        <div class="logoheader"><img src="/img/PDVSA-Logo.png" alt=""></div>
                         {{-- <img src="img/logo.svg"> --}}
                         {{ config('app.name', 'Sisor') }}
                     </a>
@@ -111,7 +111,9 @@
                         <!-- Authentication Links -->
                         @guest
                             <li><a href="{{ route('login') }}">Iniciar sesion</a></li>
+                            {{-- 
                             <li><a href="{{ route('register') }}">Registrarse</a></li>
+                                --}}
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
