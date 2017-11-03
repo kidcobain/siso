@@ -4,13 +4,9 @@
 <link rel="stylesheet" href="css/sweetalert2.css">
 <div class="container" style=" width: unset;">
         {{-- dd(session('success')['lote']) --}}
-    {{-- 
-    @if (session('success'))
-        <div class="alert alert-success col-sm-offset-2 col-sm-8 mensaje">
-            {{ session('success') }}
-        </div>
-    @endif
-    --}}
+    
+    
+    
      
     <div class="row">
         <div class="mensaje " style="height: 80px">
@@ -33,8 +29,13 @@
                 </div>
                 <div class="buscarfecha">
                     <form action="/buscarlotefecha" method="get">
-                        <label for="fecha">buscar por fecha</label>
-                        <input name="fecha" type="text" class="busqueda fecha">
+                        <p>buscar por fecha</p>
+                        <label for="fechainicio">desde</label>
+                        <input name="fechainicio" type="text" class="busqueda fecha">
+
+                        <label for="fechafin">hasta</label>
+                        <input name="fechafin" type="text" class="busqueda fecha">
+
                         <input type="submit" value="buscar">
                     </form>
                 </div>
@@ -43,6 +44,12 @@
     </div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2"">
+                @if (!empty($exito))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                        <strong>{{ $exito }}</strong>
+                </div>
+                @endif
             <div class="panel panel-default">
                 <div class="panel-heading">proyeccion</div>
                 <div class="panel-body">
@@ -191,8 +198,8 @@
 
                         <p></p>
                         @can('agregar_lotes')
--                           <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
--                        @endcan
+                           <input type="button" class="agregar btn btn-info" value="agregar nueva fila">
+                        @endcan
     <!-- /body -->
                     <link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
 

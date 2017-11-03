@@ -30,14 +30,25 @@ class PruebaController extends Controller
     }
 
     public function buscarfecha(Request $request)
-    {   if ($request->fecha) {
-            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+    {   
+        if ($request->fechainicio) {
+            $fechainicio = Carbon::createFromFormat('d/m/Y', $request->fechainicio)->toDateString();
         }
+
         else{
-            $fecha = '';
+            $fechainicio = '';
         }
-            $lotes = Lote::paginate(15)->where('fecha_entrada', $fecha);
-            return view('tabla', compact('lotes')); 
+        if ($request->fechafin) {
+            $fechafin = Carbon::createFromFormat('d/m/Y', $request->fechafin)->toDateString();
+        }
+        
+        else{
+            $fechafin = '';
+        }
+            //$lotes = Lote::paginate(15)->where('fecha_entrada', $fecha);
+            $lotes = Lote::whereBetween('fecha_entrada', [$fechainicio, $fechafin])->paginate(10);
+            //$lotes = Lote::where('fecha_entrada', '>=', $fechainicio)->where('fecha_entrada', '<=', $fechafin)->paginate(10);
+            return view('tabla')->with('lotes',$lotes)->with('exito','Mostrando lotes desde: '.$request->fechainicio.' hasta: '.$request->fechafin); 
     }
 
     public function buscarPorNumero($numero)
