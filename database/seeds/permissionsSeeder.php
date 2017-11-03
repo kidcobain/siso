@@ -24,9 +24,12 @@ class permissionsSeeder extends Seeder
         Permission::create(['name' => 'agregar_lotes']);
         Permission::create(['name' => 'editar_lotes']);
         Permission::create(['name' => 'eliminar_lotes']);
+
         Permission::create(['name' => 'agregar_usuarios']);
         Permission::create(['name' => 'editar_usuarios']);
         Permission::create(['name' => 'eliminar_usuarios']);
+
+        Permission::create(['name' => 'lectura']);
 
         // create roles and assign existing permissions
         $role = Role::create(['name' => 'avanzado']);
@@ -35,7 +38,7 @@ class permissionsSeeder extends Seeder
         $role->givePermissionTo('eliminar_lotes');
 
         $role = Role::create(['name' => 'admin']);
-		$role->givePermissionTo('agregar_lotes');
+        $role->givePermissionTo('agregar_lotes');
         $role->givePermissionTo('editar_lotes');
         $role->givePermissionTo('eliminar_lotes');
         $role->givePermissionTo('agregar_usuarios');
@@ -43,13 +46,17 @@ class permissionsSeeder extends Seeder
         $role->givePermissionTo('eliminar_usuarios');
 
 
+
         $user = \App\User::create([
-        	'name' => 'administrador',
-        	'email' => 'administrador@admin.com',
-        	'password' => bcrypt('Lacontraseñaincreiblementesecretadeladministrador1'),
+            'name' => 'administrador',
+            'email' => 'administrador@admin.com',
+            'password' => bcrypt('Lacontraseñaincreiblementesecretadeladministrador1'),
         ]);
 
         $user->assignRole('admin');
+        
+        $role = Role::create(['name' => 'usuario']);
+        $role->givePermissionTo('lectura');
     }
 }
 

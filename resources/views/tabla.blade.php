@@ -15,7 +15,7 @@
     </div>
     <div class="row">
      <div class="col-md-8 col-md-offset-2">
-         <div class="panel panel-default">
+         <div class="panel panel-default panelbusqueda">
 
             <div class="panel-heading">busqueda</div>
 
@@ -51,7 +51,7 @@
                 </div>
                 @endif
             <div class="panel panel-default">
-                <div class="panel-heading">proyeccion</div>
+                <div class="panel-heading">proyeccion -> <a href="javascript:window.print()">imprimir</a></div>
                 <div class="panel-body">
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <thead>

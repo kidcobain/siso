@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/tabla', function () {
     $lotes = App\Lote::paginate(15);
@@ -48,7 +48,7 @@ Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
 Route::get('/buscarlote',['uses' => 'PruebaController@buscar','as' => 'buscar']);
 Route::get('/buscarlotefecha',['uses' => 'PruebaController@buscarfecha','as' => 'buscarfecha']);
 
-//});
+});
 
 /*
 Route::group(['middleware' => ['permission:destroy_notes']], function () {
