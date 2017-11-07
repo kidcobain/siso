@@ -377,6 +377,14 @@ $(document).ready(function() {
         }
         else{
 
+            var decimales = (colfila=='inicial')? 2 : 1;
+            if (colfila == 'reposicion'){
+                valor = parseInt(valor);
+            }
+            else{
+                valor = parseFloat(valor,decimales).toFixed(decimales);
+            }
+
             $el.parent().text(valor);
             trow.css('background-color', '');
             $('.latabla').on('click','td', editarCelda);
@@ -388,10 +396,14 @@ $(document).ready(function() {
             //$('.final.g95').effect('highlight',{},1000); 
 
             var reposicionval = parseInt($('[id=\"'+idfila+'\"] .reposicion.'+clases[1]).text());
-            var inicialval    = parseInt($('[id=\"'+idfila+'\"] .inicial.'+clases[1]).text());
-            var ventasval     = parseInt($('[id=\"'+idfila+'\"] .ventas.'+clases[1]).text());
+            var inicialval    = parseFloat($('[id=\"'+idfila+'\"] .inicial.'+clases[1]).text(),2);
+            //inicialval    = inicialval.toFixed(2);
+            var ventasval     = parseFloat($('[id=\"'+idfila+'\"] .ventas.'+clases[1]).text(),1);
+            //ventasval = ventasval.toFixed(1);
 
             var final = (reposicionval + inicialval) - ventasval;
+            final = final.toFixed(1);
+
             $('[id=\"'+idfila+'\"] .final.'+clases[1]).text(final).effect('highlight',{},1000);
 
             if(final != 0 ){
@@ -400,7 +412,8 @@ $(document).ready(function() {
                 autotipo['g91'] = 2.8;
                 autotipo['dsl'] = 1.2;
                 var autonomia = final / autotipo[clases[1]];
-                autonomia = autonomia.toFixed(2);
+                //autonomia = autonomia.toFixed(2);
+                autonomia = Math.round(autonomia);
                 //console.log('autonomia: '+autonomia);
                 $('[id=\"'+idfila+'\"] .autonomia.'+clases[1]).text(autonomia).effect('highlight',{},1000);
             }
@@ -449,15 +462,19 @@ $(document).ready(function() {
 @can('editar_lotes')
 
                             $('.latabla ').on('click','td', editarCelda);
-                            $('.latabla').on('blur','.editando', guardarDatoCelda);
+                            
 @endcan
 
 @can('agregar_lotes')   
                                     
                             $('.agregar').on('click',agregarFila);
-                            $('.latabla').on('blur','.editando', guardarDatoCelda);
 @endcan
 
+@can(['agregar_lotes','agregar_lotes'])  
+
+                            $('.latabla').on('blur','.editando', guardarDatoCelda);
+
+@endcan
                            
                             
 
