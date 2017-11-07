@@ -111,8 +111,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Iniciar sesion</a></li>
                             {{-- 
+                            <li><a href="{{ route('login') }}">Iniciar sesion</a></li>
                             <li><a href="{{ route('register') }}">Registrarse</a></li>
                                 --}}
                         @else

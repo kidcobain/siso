@@ -50,7 +50,7 @@ class permissionsSeeder extends Seeder
         $user = \App\User::create([
             'name' => 'administrador',
             'email' => 'administrador@admin.com',
-            'password' => bcrypt('Lacontraseñaincreiblementesecretadeladministrador1'),
+            'password' => 'Lacontraseñaincreiblementesecretadeladministrador1',
         ]);
 
         $user->assignRole('admin');

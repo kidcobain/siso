@@ -1,7 +1,8 @@
 @extends('layouts.app')
 {{-- \Debugbar::disable() --}}
 @section('content')
-<link rel="stylesheet" href="css/sweetalert2.css">
+<link rel="stylesheet" href="/css/sweetalert2.css">
+<link rel="stylesheet" href="/css/tablestyle.css">
 <div class="container" style=" width: unset;">
         {{-- dd(session('success')['lote']) --}}
     
@@ -56,24 +57,40 @@
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <thead>
                                 <tr>
-                                    <th>lote</th>
-                                    <th colspan="1">fecha</th>
-                                    <th colspan="3">Reposicion por poliducto</th>
-                                    <th colspan="3">Inventario inicial</th>
-                                    <th colspan="3">ventas</th>
-                                    <th colspan="3">Inventario final</th>
-                                    <th colspan="3">Autonomia</th>
-                                    <th colspan="1">accion</th>
+                                    <th colspan="1" class="lote">lote</th>
+                                    <th colspan="1" class="fecha">fecha</th>
+                                    <th colspan="3" class="reposicion">Reposicion por poliducto</th>
+                                    <th colspan="3" class="inicial">Inventario inicial</th>
+                                    <th colspan="3" class="ventas">ventas</th>
+                                    <th colspan="3" class="final">Inventario final</th>
+                                    <th colspan="3" class="autonomia">Autonomia</th>
+                                    <th colspan="1" class="accion">accion</th>
                                 </tr>
                                 <tr>
-                                    <th>nombre</th>
-                                    <th class="fecha">fecha</th>
-                                    <th>G95</th> <th>G91</th> <th>DSL</th>
-                                    <th>G95</th> <th>G91</th> <th>DSL</th>
-                                    <th>G95</th> <th>G91</th> <th>DSL</th>
-                                    <th>G95</th> <th>G91</th> <th>DSL</th>
-                                    <th>G95</th> <th>G91</th> <th>DSL</th>
-                                    <th>accion</th>
+                                    <th class="lote"></th>
+                                    <th class="fecha"></th>
+
+                                    <th class="reposicion">G95</th>
+                                    <th class="reposicion">G91</th>
+                                    <th class="reposicion">DSL</th>
+                                    
+                                    <th class="inicial">G95</th> 
+                                    <th class="inicial">G91</th> 
+                                    <th class="inicial">DSL</th>
+                                    
+                                    <th class="ventas">G95</th> 
+                                    <th class="ventas">G91</th> 
+                                    <th class="ventas">DSL</th>
+                                    
+                                    <th class="final">G95</th> 
+                                    <th class="final">G91</th> 
+                                    <th class="final">DSL</th>
+                                    
+                                    <th class="autonomia">G95</th> 
+                                    <th class="autonomia">G91</th> 
+                                    <th class="autonomia">DSL</th>
+                                    
+                                    <th class="accion"></th>
                                 </tr>
                             </thead>
                             @if(count($lotes)>=1)
@@ -104,71 +121,76 @@
                                          {{-- $proyection = collect($pro)--}}
 
                                           @php
-                                        $proreposicion = $pro::where('lote_id', $lote->id)
-                                          ->where('tipo','reposicion')->firstorfail();
+                                            $proreposicion = 0;
+                                            $proreposicion = $pro::where('lote_id', $lote->id)
+                                              ->where('tipo','reposicion')->firstorfail();
 
-                                        $proinicial = $pro::where('lote_id', $lote->id)
-                                          ->where('tipo','inicial')->firstorfail();
+                                            $proinicial = 0;
+                                            $proinicial = $pro::where('lote_id', $lote->id)
+                                              ->where('tipo','inicial')->firstorfail();
 
-                                        $proventas = $pro::where('lote_id', $lote->id)
-                                          ->where('tipo','ventas')->firstorfail();
+                                            $proventas = 0;
+                                            $proventas = $pro::where('lote_id', $lote->id)
+                                              ->where('tipo','ventas')->firstorfail();
 
-                                        $profinal = $pro::where('lote_id', $lote->id)
-                                          ->where('tipo','final')->firstorfail();
+                                            $profinal = 0;
+                                            $profinal = $pro::where('lote_id', $lote->id)
+                                              ->where('tipo','final')->firstorfail();
 
-                                        $proautonomia = $pro::where('lote_id', $lote->id)
-                                          ->where('tipo','autonomia')->firstorfail();
+                                            $proautonomia = 0;
+                                            $proautonomia = $pro::where('lote_id', $lote->id)
+                                              ->where('tipo','autonomia')->firstorfail();
 
                                           @endphp
 
                                         <td class="reposicion g95">
-                                            {{ $proreposicion->g95?$proreposicion->g95:0 }}
+                                            {{ $proreposicion->g95 }}
                                         </td>
                                         <td class="reposicion g91">
-                                            {{ $proreposicion->g91?$proreposicion->g91:0 }}
+                                            {{ $proreposicion->g91 }}
                                         </td>
                                         <td class="reposicion dsl">
-                                            {{ $proreposicion->dsl?$proreposicion->dsl:0 }}
+                                            {{ $proreposicion->dsl }}
                                         </td>
 
                                         <td class="inicial g95">
-                                            {{ $proinicial->g95?$proinicial->g95:0 }}
+                                            {{ $proinicial->g95 }}
                                         </td>
                                         <td class="inicial g91">
-                                            {{ $proinicial->g91?$proinicial->g91:0 }}
+                                            {{ $proinicial->g91 }}
                                         </td>
                                         <td class="inicial dsl">
-                                            {{ $proinicial->dsl?$proinicial->dsl:0 }}
+                                            {{ $proinicial->dsl }}
                                         </td>
                                         
                                         <td class="ventas g95">
-                                            {{ (isset($proventas->g95))?$proventas->g95:0 }}
+                                            {{ $proventas->g95 }}
                                         </td>
                                         <td class="ventas g91">
-                                            {{ (isset($proventas->g91))?$proventas->g91:0 }}
+                                            {{ $proventas->g91 }}
                                         </td>
                                         <td class="ventas dsl">
-                                            {{ (isset($proventas->dsl))?$proventas->dsl:0 }}
+                                            {{ $proventas->dsl }}
                                         </td>
 
                                         <td class="final g95">
-                                            {{ $profinal->g95?$profinal->g95:0 }}
+                                            {{ $profinal->g95 }}
                                         </td>
                                         <td class="final g91">
-                                            {{ $profinal->g91?$profinal->g91:0 }}
+                                            {{ $profinal->g91 }}
                                         </td>
                                         <td class="final dsl">
-                                            {{ $profinal->dsl?$profinal->dsl:0 }}
+                                            {{ $profinal->dsl }}
                                         </td>
 
                                         <td class="autonomia g95">
-                                            {{ $proautonomia->g95?$proautonomia->g95:0 }}
+                                            {{ $proautonomia->g95 }}
                                         </td>
                                         <td class="autonomia g91">
-                                            {{ $proautonomia->g91?$proautonomia->g91:0 }}
+                                            {{ $proautonomia->g91 }}
                                         </td>
                                         <td class="autonomia dsl">
-                                            {{ $proautonomia->dsl?$proautonomia->dsl:0 }}
+                                            {{ $proautonomia->dsl }}
                                         </td>
 
                                         <td class="accion">
@@ -427,13 +449,13 @@ $(document).ready(function() {
 @can('editar_lotes')
 
                             $('.latabla ').on('click','td', editarCelda);
-
                             $('.latabla').on('blur','.editando', guardarDatoCelda);
 @endcan
 
 @can('agregar_lotes')   
                                     
                             $('.agregar').on('click',agregarFila);
+                            $('.latabla').on('blur','.editando', guardarDatoCelda);
 @endcan
 
                            
@@ -477,10 +499,10 @@ $(document).ready(function() {
 
 var mostrarMensaje = function(informacion){
             var html = "";
-            if( informacion.respuesta == "actualizarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong> se ha actualizado el lote numero "+informacion.oldlote+" a "+informacion.lote+"</div>";
+            if( informacion.respuesta == "actualizarLote" )    html = "<div class='alert alert-success col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha actualizado el lote numero "+informacion.oldlote+" a "+informacion.lote+"</div>";
             else if( informacion.respuesta == "agregarLote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha registrado un nuevo lote</div>";
-            else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha actualizado el campo "+informacion.tipo+" de "+informacion.columna+"del lote "+informacion.lote+"</div>";
-            else if( informacion.respuesta == "eliminarlote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito</strong>,se ha eliminate el lote "+informacion.lote+"</div>";
+            else if( informacion.respuesta == "actualizardata" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha actualizado el campo "+informacion.tipo+" de "+informacion.columna+"del lote "+informacion.lote+"</div>";
+            else if( informacion.respuesta == "eliminarlote" )   html = "<div class='alert alert-info col-sm-offset-2 col-sm-8'><strong>Exito!</strong>, se ha eliminate el lote "+informacion.lote+"</div>";
                 //console.log(informacion);
 
 
