@@ -31,7 +31,8 @@ th.autonomia {
 }
 
 th.final {
-    background: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, rgb(190, 192, 67)), color-stop(0.51, rgb(178, 198, 66)), color-stop(0.87, rgb(217, 216, 41)) );
+    background-color: #29d9c9;
+    background: -webkit-gradient( linear, left bottom, left top, color-stop(0.02, rgb(67, 181, 192)), color-stop(0.51, rgb(66, 186, 198)), color-stop(0.87, rgb(41, 217, 213)) );
 }
 
 th.ventas {
@@ -60,7 +61,7 @@ td.ventas {
 }
 
 td.final {
-    background-color: rgba(217, 216, 41, 0.19);
+    background-color: rgba(41, 217, 213, 0.12);
 }
 
 td.autonomia {

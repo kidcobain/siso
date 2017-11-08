@@ -307,6 +307,7 @@ $(document).ready(function() {
         
         $('.fecha > .editando').datepicker({
             format: "dd/mm/yyyy",
+            endDate: "0d",
             maxViewMode: 3,
             todayBtn: "linked",
             clearBtn: true,
@@ -534,11 +535,12 @@ var mostrarMensaje = function(informacion){
 
 $('.busqueda.fecha').datepicker({
             format: "dd/mm/yyyy",
+            endDate: "0d",
             maxViewMode: 3,
             todayBtn: "linked",
             clearBtn: true,
             language: "es",
-            autoclose: true
+            autoclose: true,
         });
 
       
