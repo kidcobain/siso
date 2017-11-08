@@ -381,7 +381,8 @@ $(document).ready(function() {
             if (colfila == 'reposicion'){
                 valor = parseInt(valor);
             }
-            else{
+            else if (colfila == 'reposicion' || colfila == 'inicial' || colfila == 'ventas')
+            {
                 valor = parseFloat(valor,decimales).toFixed(decimales);
             }
 
