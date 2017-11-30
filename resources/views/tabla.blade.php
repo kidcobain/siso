@@ -95,6 +95,66 @@
                             </thead>
                             @if(count($lotes)>=1)
                                 <tbody>
+                                    <tr class="datos" id="123-asd">
+                                                                            <td class="nombrelote">123-asd</td>
+                                                                            <td class="fecha">02/11/2017</td>
+                                                                              
+                                                                            <td class="reposicion g95">
+                                                                                3
+                                                                            </td>
+                                                                            <td class="reposicion g91">
+                                                                                2
+                                                                            </td>
+                                                                            <td class="reposicion dsl">
+                                                                                0
+                                                                            </td>
+
+                                                                            <td class="inicial g95">
+                                                                                1
+                                                                            </td>
+                                                                            <td class="inicial g91">
+                                                                                0
+                                                                            </td>
+                                                                            <td class="inicial dsl">
+                                                                                0
+                                                                            </td>
+                                                                            
+                                                                            <td class="ventas g95">
+                                                                                0
+                                                                            </td>
+                                                                            <td class="ventas g91">
+                                                                                0
+                                                                            </td>
+                                                                            <td class="ventas dsl">
+                                                                                0
+                                                                            </td>
+
+                                                                            <td class="final g95">
+                                                                                4
+                                                                            </td>
+                                                                            <td class="final g91">
+                                                                                2
+                                                                            </td>
+                                                                            <td class="final dsl">
+                                                                                0
+                                                                            </td>
+
+                                                                            <td class="autonomia g95">
+                                                                                2.22
+                                                                            </td>
+                                                                            <td class="autonomia g91">
+                                                                                0.71
+                                                                            </td>
+                                                                            <td class="autonomia dsl">
+                                                                                0
+                                                                            </td>
+
+                                                                            <td class="accion">
+                                                                                                                            <a href="/fila/123-asd/eliminar"> 
+                                                                                    <button type="button" class="btn btn-danger">Eliminar</button>
+                                                                                </a>
+                                                                                                                        </td>
+                                                                                                                </tr>
                                     <tr class="desplegable">
                                         <td colspan="6">
                                             
@@ -310,6 +370,10 @@ $(document).ready(function() {
     $('.agregarlotedesplegable').click(function(event) {
        $('.datosdesplegable').after(filadesplegable);
        //$('.desplegable ').append(filadesplegable);
+    });
+    $('.latabla').on('click','.eliminarlotedesplegable', function(event) {
+        //$(this).parent().parent().remove();
+        $(this).parent().parent().remove();
     });
     var editarCelda = function () {
 
