@@ -98,7 +98,7 @@
                                     <tr class="desplegable">
                                         <td colspan="6">
                                             
-                                            <tr class="datos" id="123-kjh">
+                                            <tr class="datosdesplegable" id="123-kjh">
                                                 <td class="nombrelote">123-kjh</td>
                                                 <td class="hora">06:05 pm</td>
                                                 <td class="reposicion g95">
@@ -110,11 +110,11 @@
                                                 <td class="reposicion dsl">
                                                     0
                                                 </td>
-                                                <td colspan="2"><input type="button" value="eliminar lote"></td>
-                                                
+                                                <td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>
                                             </tr>
+
                                             <tr>
-                                                <td><input type="button" value="agregar lote"></td>
+                                                <td><input type="button" value="agregar lote" class="agregarlotedesplegable"></td>
                                             </tr>
 
                                         </td>
@@ -289,7 +289,28 @@
             </tr> \
         ';
 
+var filadesplegable = '\
+                        <tr class="datos" id="123-kjh">\
+                            <td class="nombrelote">123-kjh</td>\
+                            <td class="hora">06:05 pm</td>\
+                            <td class="reposicion g95">\
+                                12\
+                            </td>\
+                            <td class="reposicion g91">\
+                                5\
+                            </td>\
+                            <td class="reposicion dsl">\
+                                0\
+                            </td>\
+                            <td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>\
+                        </tr>\
+                        ';
+
 $(document).ready(function() {
+    $('.agregarlotedesplegable').click(function(event) {
+       $('.datosdesplegable').after(filadesplegable);
+       //$('.desplegable ').append(filadesplegable);
+    });
     var editarCelda = function () {
 
           var texto = $(this).text();
@@ -486,7 +507,7 @@ $(document).ready(function() {
 //role('admin|avanzado')
 @can('editar_lotes')
 
-                            $('.latabla ').on('click','td', editarCelda);
+                            //$('.latabla ').on('click','td', editarCelda);
                             
 @endcan
 
