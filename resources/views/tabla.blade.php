@@ -95,7 +95,30 @@
                             </thead>
                             @if(count($lotes)>=1)
                                 <tbody>
-                                    
+                                    <tr class="desplegable">
+                                        <td colspan="6">
+                                            
+                                            <tr class="datos" id="123-kjh">
+                                                <td class="nombrelote">123-kjh</td>
+                                                <td class="hora">06:05 pm</td>
+                                                <td class="reposicion g95">
+                                                    12
+                                                </td>
+                                                <td class="reposicion g91">
+                                                    5
+                                                </td>
+                                                <td class="reposicion dsl">
+                                                    0
+                                                </td>
+                                                <td colspan="2"><input type="button" value="eliminar lote"></td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td><input type="button" value="agregar lote"></td>
+                                            </tr>
+
+                                        </td>
+                                    </tr>
                                 
                                 @foreach ($lotes as $lote)           
                                     <tr class="datos" id="{{ $lote->numero}}">
