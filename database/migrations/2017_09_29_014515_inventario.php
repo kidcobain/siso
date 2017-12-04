@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Proyeccion extends Migration
+class Inventario extends Migration
 {
     /**
      * Run the migrations.
@@ -20,7 +20,7 @@ class Proyeccion extends Migration
             $table->string('g95');
             $table->string('g91');
             $table->string('dsl');
-            $table->integer('lote_id')->unsigned();
+            $table->integer('proyeccion_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();  //deleted_at
 

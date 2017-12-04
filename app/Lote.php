@@ -15,6 +15,6 @@ class Lote extends Model
         return $this->hasMany(proyeccion::class);
     }
     protected $fillable = [
-        'numero','tipo','fecha_entrada','fecha_salida' ];
+        'numero','tipo','fecha_entrada','hora', 'proyeccion_id' ];
 
 }
