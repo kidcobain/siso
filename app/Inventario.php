@@ -4,19 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lote extends Model
+class Inventario extends Model
 {
-    protected $table = 'lote';
+    protected $table = 'inventario';
     //
-
     public function proyeccion()
     {
         //return $this->hasMany(proyeccion::class, 'lote_id', 'id');
         //return $this->hasMany(proyeccion::class);
         return $this->belongsTo(Proyeccion::class, 'proyeccion_id', 'id');
     }
-    
+
     protected $fillable = [
-        'id','numero','tipo','fecha_entrada','hora', 'proyeccion_id' ];
+        'id','tipo','g95','g91','dsl','proyeccion_id' ];
 
 }
