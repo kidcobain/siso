@@ -57,7 +57,7 @@
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <thead>
                                 <tr>
-                                    <th colspan="1" class="lotes">lote</th>
+                                    <th colspan="1" class="lote">lote</th>
                                     <th colspan="1" class="fecha">fecha</th>
                                     <th colspan="3" class="reposicion">Reposicion por poliducto</th>
                                     <th colspan="3" class="inicial">Inventario inicial</th>
@@ -93,8 +93,7 @@
                                     <th class="accion"></th>
                                 </tr>
                             </thead>
-                            {{-- @if(count($lotes)>=1) --}}
-                            @if(1)
+                            @if(count($lotes)>=1)
                                 <tbody>
                                     <tr class="datos" id="123-asd">
                                                                             <td class="nombrelote">123-asd</td>
@@ -157,7 +156,7 @@
                                                                                                                         </td>
                                                                                                                 </tr>
                                     <tr class="desplegable">
-                                        <td colspan="6"> 
+                                        <td colspan="6">
                                             
                                             <tr class="datosdesplegable" id="123-kjh">
                                                 <td class="nombrelote">123-kjh</td>
@@ -324,7 +323,7 @@
 <script>
     var elhtml = ' \
             <tr class="datos " id="">  \
-                <td class="tdlote"><input class="editando" type="text" size="5"/></td> \
+                <td class="nombrelote"><input class="editando" type="text" size="5"/></td> \
                 <td class="fecha">00/00/000</td> \
  \
                 <td class="reposicion g95">0</td> \
@@ -352,21 +351,13 @@
 
 var filadesplegable = '\
                         <tr class="datos" id="123-kjh">\
-                            <td class="nombrelote"><input class="editando" type="text" size="3" maxlength="3" /> - \
-                            <select name="tipo">\
-                                <option value="">tipo</option>\
-                                <option value="G95">G95</option>\
-                                <option value="G91">G91</option>\
-                                <option value="DSL">DSL</option>\
-                                option\
-                            </select>\
-                            </td>\
-                            <td class="hora">06:00 am</td>\
+                            <td class="nombrelote">123-kjh</td>\
+                            <td class="hora">06:05 pm</td>\
                             <td class="reposicion g95">\
-                                0\
+                                12\
                             </td>\
                             <td class="reposicion g91">\
-                                0\
+                                5\
                             </td>\
                             <td class="reposicion dsl">\
                                 0\
@@ -374,7 +365,7 @@ var filadesplegable = '\
                             <td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>\
                         </tr>\
                         ';
-                       
+
 $(document).ready(function() {
     $('.agregarlotedesplegable').click(function(event) {
        $('.datosdesplegable').after(filadesplegable);
@@ -384,74 +375,6 @@ $(document).ready(function() {
         //$(this).parent().parent().remove();
         $(this).parent().parent().remove();
     });
-
-
-    var editarLote = function () {
-
-          var texto = $(this).text();
-          var valores = texto.split('-');
-          //console.log(valores);
-        if(!$(this).hasClass('accion')){
-
-       //<option value="analista" {{-- old('cargo', $funcionario->cargo) == "analista" ? 'selected' : '' --}}>Analista</option>
-
-            if($(this).hasClass('nombrelote')){
-                $(this).html('<input class="editando" type="text" size="3" maxlength="3" /> - \
-                            <select name="tipo">\
-                                <option value="">tipo '+ (valores[1])? selected :"" +'</option>\
-                                <option value="G95">G95 '+ (valores[1])? selected :"" +'</option>\
-                                <option value="G91">G91 '+ (valores[1])? selected :"" +'</option>\
-                                <option value="DSL">DSL '+ (valores[1])? selected :"" +'</option>\
-                                option\
-                            </select>\ value="'+texto+'">');
-                $(this).attr('id',texto);
-
-            }
-            else if($(this).hasClass('fecha')){
-                $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
-
-            }
-            else if($(this).hasClass('autonomia')){
-               return;
-
-            }
-            else if($(this).hasClass('final')){
-               return;
-
-            }
-            else{
-
-                $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="'+parseInt(texto)+'">');
-            }
-        var $el = $(this).find('input');
-
-            $el.focus();
-            $el.click(function(event){
-                event.stopPropagation();
-            });
-            $('.latabla').off('click','td');
-        $('.agregar').off('click');
-
-        
-        $('.fecha > .editando').datepicker({
-            format: "dd/mm/yyyy",
-            endDate: "0d",
-            maxViewMode: 3,
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es",
-            autoclose: false
-        });
-
-        
-        
-        
-        $el.focus();
-        $el.trigger('click');
-        }
-    };
-
-
     var editarCelda = function () {
 
           var texto = $(this).text();
@@ -648,18 +571,18 @@ $(document).ready(function() {
 //role('admin|avanzado')
 @can('editar_lotes')
 
-                            $('.latabla ').on('click','.nombrelote', editarLote);
+                            //$('.latabla ').on('click','td', editarCelda);
                             
 @endcan
 
 @can('agregar_lotes')   
                                     
-                            //$('.agregar').on('click',agregarFila);
+                            $('.agregar').on('click',agregarFila);
 @endcan
 
 @can(['agregar_lotes','agregar_lotes'])  
 
-                            //$('.latabla').on('blur','.editando', guardarDatoCelda);
+                            $('.latabla').on('blur','.editando', guardarDatoCelda);
 
 @endcan
                            
