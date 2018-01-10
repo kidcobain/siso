@@ -50,6 +50,11 @@ class PruebaController extends Controller
             //$lotes = Lote::where('fecha_entrada', '>=', $fechainicio)->where('fecha_entrada', '<=', $fechafin)->paginate(10);
             return view('tabla')->with('lotes',$lotes)->with('exito','Mostrando lotes desde: '.$request->fechainicio.' hasta: '.$request->fechafin); 
     }
+    public function mostrarlotes(Request $request)
+    {
+        //return Proyeccion::find($request->id)->lotes()->get();
+        return Proyeccion::find($request->id)->lote()->get();
+    }
 
     public function buscarPorNumero($numero)
     {
@@ -254,3 +259,42 @@ class PruebaController extends Controller
      }
 
 }
+/*
+[
+    {
+        "id": 1,
+        "numero": "1",
+        "tipo": "g91",
+        "cantidad": "4",
+        "fecha_entrada": "2018-01-02",
+        "hora": "08:07 am",
+
+        "proyeccion_id": 1,
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null 
+    },
+    
+    {
+        "id": 2,
+        "numero": "2",
+        "tipo": "g95",
+        "cantidad": "8",
+        "fecha_entrada": "2018-01-04",
+        "hora": "09:08 am",
+
+        "proyeccion_id": 1,
+        "created_at": null,
+        "updated_at": null,
+        "deleted_at": null 
+    }
+]
+
+$.each(json, function(i, item) {
+    console.log(json[i].tipo);
+});
+
+for(var i in json){
+    console.log(json[i].tipo);
+}
+*/

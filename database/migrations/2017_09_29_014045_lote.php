@@ -18,8 +18,9 @@ class Lote extends Migration
             $table->increments('id');
             $table->string('numero');
             $table->string('tipo');
+            $table->integer('cantidad');
             $table->date('fecha_entrada')->nullable();
-            $table->date('hora')->nullable();
+            $table->string('hora')->nullable();
             $table->integer('proyeccion_id')->unsigned();
             //$table->datetime('fecha_salida')->nullable();
             $table->timestamps();

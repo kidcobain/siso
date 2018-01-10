@@ -47,6 +47,10 @@ td.ventas {
     background-color: rgba(50, 125, 210, 0.17);
 }
 
+td.lotes {
+    width: 130px;
+}
+
 .latabla tbody td {
     padding: 10px;
     text-align: center;

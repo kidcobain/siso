@@ -15,13 +15,15 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
+Route::get('/lotes', 'Pruebacontroller@mostrarlotes');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/tabla', function () {
-    $lotes = App\Lote::paginate(15);
-	    return view('tabla', compact('lotes'));
+    $proyecciones = App\Proyeccion::paginate(15);
+	    return view('tabla', compact('proyecciones'));
 });
 
 Route::get('/pruebatabla', function () {
