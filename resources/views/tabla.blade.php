@@ -1,5 +1,6 @@
 @extends('layouts.app')
-{{-- \Debugbar::disable() --}}
+{{ \Debugbar::disable() }}
+{{-- app('debugbar')->disable(); --}}
 @section('content')
 <link rel="stylesheet" href="/css/sweetalert2.css">
 <link rel="stylesheet" href="/css/tablestyle.css">
@@ -205,15 +206,7 @@
 $(document).ready(function() {
     
 //"05/06/1986".replace(/\//g,"-")
-function showTime() {
-  var timeNow = new Date();
-  var hours   = timeNow.getHours();
-  var minutes = timeNow.getMinutes();
-  var timeString = "" + ((hours > 12) ? hours - 12 : hours);
-  timeString  += ((minutes < 10) ? ":0" : ":") + minutes;
-  timeString  += (hours >= 12) ? " pm" : " am";
-  return timeString;
-}
+
 var elhtml = `
 <tr class="proyecciondatos " id="">
     <td class="tdlote"><input class="editando" type="text" size="5"/></td>
@@ -241,188 +234,48 @@ var elhtml = `
     <td class="accion"><a href="/eliminarfila/"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
 </tr>
 `;
-var filadesplegable = `
-<tr class="lotedatos" colspan="6">
-    
-    <td class="nombrelote"><input class="editando" type="text" size="3" maxlength="3" /> -
-    <select name="tipo" class="editando">
-        <option value="">tipo</option>
-        <option value="G95">G95</option>
-        <option value="G91">G91</option>
-        <option value="DSL">DSL</option>
-        option
-    </select>
-    <p>
-        <a href="#" class="lotecancelar">cancelar</a>
-        <a href="#" class="loteguardar">guardar</a>
-    </p>
-</td>
-<td class="hora"></td>
-<td class="reposicion g95">
-    0
-</td>
-<td class="reposicion g91">
-    0
-</td>
-<td class="reposicion dsl">
-    0
-</td>
-<td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>
-</tr>
-`;
-var eliminarlotedesplegable = function() {
-    //console.log($(this));
-    //var $este = dis || $(this);
-    var $este = $(this)
-    $este.parent().parent()
-        .find('td')
-        .wrapInner('<div style="display: block;" />')
-        .parent()
-        .find('td > div')
-        .slideUp(700, function() {
-
-            $este.parent().parent().remove();
-
-        });
-}
-
-var habilitarListeners = function(){
-//$('.latabla').on('click','.nombrelote', editarLote);
-$('.latabla').on('click','.eliminarlotedesplegable', eliminarlotedesplegable);
-$('.latabla').on('click','.agregarlotedesplegable', agregarlotedesplegable);
-$('.latabla').on('click','.loteguardar', guardarCelda);
-$('.latabla').on('click','.lotecancelar', cancelarCelda);
-
-};
-
-var deshabilitarListeners = function(){
-        $('.latabla').off('click','td');
-    $('.agregarlotedesplegable').off('click');
-    $('.eliminarlotedesplegable').off('click');
-    //$('.latabla').off('click', '.eliminarlotedesplegable');
-};
 
 
-var agregarlotedesplegable = function() {
+var botondelotes = `
+        <tr class="rowagregarlotes">
+            <td>
+                <input type="button" value="agregar lote" class="agregarlotedesplegable">
+            </td>
+        </tr>
+    `;
 
-    //otrafila += filadesplegable;
-
-    var $filadesplegable = $(filadesplegable);
-    $(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
-    var horaActual = showTime();
-    //$filadesplegable.find('.hora').text(hour);
-
-    //$filadesplegable.css('background-color', 'gray');
-    /*
-       $('.lotedatos').find('> td')
-       .css({'height':'0px'})
-       .wrapInner('<div style=\"display:block;\" />')
-       .parent().find('td > div')
-       .slideUp('slow', function() {
-        $(this).parent().parent().remove();
-
-    });
-    */
-
-    //$('.lotedatos')
-    $filadesplegable
-        .find('td')
-        .wrapInner('<div style="display: none;" />')
-        .parent()
-        .find('td > div')
-        .slideDown(700, function() {
-
-            var $set = $(this);
-            $set.replaceWith($set.contents());
-
-        });
-
-    /*
-
-    $('.lotedatos').each(function(){
-     $(this)
-    .find('td')
-     .wrapInner('<div style="display: block;" />')
-     .parent()
-     .find('td > div')
-     .slideUp(700, function(){
-
-      $(this).parent().parent().remove();
-
-     })
-    });
-    */
-
-
-    $(this).click(function(event) {
-        event.stopPropagation();
-    });
-    //deshabilitarListeners();
-}
-
-
-$('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
-
-
-
-
-var editarLote = function() {
-
+var aaediatarCelda = function() {
 
     var texto = $(this).text();
-    console.log(texto);
-    var valores = texto.split('-');
-    console.log(valores);
     if (!$(this).hasClass('accion')) {
 
 
-        var seleccionado = "selected";
-        var noSeleccionado = "";
-
-
-        var inputslote = `<input class="editando" type="text" size="3" maxlength="3" value="${valores[0]}"/> - 
-                            <select name="tipo" class="selectipo editando">
-                                <option value="">tipo </option>
-                                <option value="G95" ${ (valores[1] == "G95")? seleccionado : noSeleccionado }>G95</option>
-                                <option value="G91" ${ (valores[1] == "G91")? seleccionado : noSeleccionado }>G91</option>
-                                <option value="DSL" ${ (valores[1] == "DSL")? seleccionado : noSeleccionado }>DSL</option>
-                            </select>
-                            <p>
-                                <a href="#" class="lotecancelar">cancelar</a>
-                                <a href="#" class="loteguardar">guardar</a>
-                            </p>
-
-                            `;
-
 
         if ($(this).hasClass('nombrelote')) {
-            $(this).html(inputslote);
-            //$(this).attr('id', texto);
+            $(this).html('<input class="editando" type="text" size="5" value="' + texto + '">');
+            $(this).attr('id', texto);
 
         } else if ($(this).hasClass('fecha')) {
             $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
 
-        } 
+        } else if ($(this).hasClass('autonomia')) {
+            return;
 
-        } else {
+        } else if ($(this).hasClass('final')) {
+            return;
+
+        } else if ($(this).hasClass('finala')) {
 
             $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
         }
-        var $input = $(this).find('.editando');
+        var $el = $(this).find('input');
 
-        $input.focus();
-
-        $(this).click(function(event) {
+        $el.focus();
+        $el.click(function(event) {
             event.stopPropagation();
         });
-
-        $('.latabla').off('click', 'td');
-        $('.agregarlotedesplegable').off('click');
-        $('.eliminarlotedesplegable').off('click');
-
-        $('.latabla').on('click','.loteguardar', guardarCelda);
-        //var _this = $(this);
-        $('.lotecancelar').on('click', function(){cancelarCelda(event,texto,$(this))});
+        //$('.latabla').off('click', 'td');
+        //$('.agregar').off('click');
 
 
         $('.fecha > .editando').datepicker({
@@ -437,9 +290,22 @@ var editarLote = function() {
 
 
 
-    
+
+        $el.focus();
+        $el.trigger('click');
+    }
 };
 
+
+function showTime() {
+  var timeNow = new Date();
+  var hours   = timeNow.getHours();
+  var minutes = timeNow.getMinutes();
+  var timeString = "" + ((hours > 12) ? hours - 12 : hours);
+  timeString  += ((minutes < 10) ? ":0" : ":") + minutes;
+  timeString  += (hours >= 12) ? " pm" : " am";
+  return timeString;
+}
 
 var identificarCelda = function(argument) {
     var $el = $('.editando');
@@ -457,174 +323,6 @@ var identificarCelda = function(argument) {
     trow = $el.parent().parent();
     console.log(trow);
 };
-
-var cancelarCelda = function(event, datos, _this) {
-    event.preventDefault();
-    //if ($(this).parent().parent().parent().attr('id')) {
-    if (datos) {
-        //var datos = cargardatos();
-        _this.parent().parent().text(datos);
-    } else {
-        //eliminarlotedesplegable();
-        //var $este = $(this);
-        //eliminarlotedesplegable($este);
-
-
-        $(this).parent().parent().parent()
-            .find('td')
-            .wrapInner('<div style="display: block;" />')
-            .parent()
-            .find('td > div')
-            .slideUp(700, function() {
-
-                $(this).parent().parent().remove();
-
-            });
-
-    }
-};
-var botondelotes = `
-        <tr class="rowagregarlotes">
-            <td>
-                <input type="button" value="agregar lote" class="agregarlotedesplegable">
-            </td>
-        </tr>
-    `;
-
-
-$('.latabla').on('click', '.lotes', function(event) {
-    event.preventDefault();
-    //console.log($(this));
-    //console.log($(this).parent().next('.lotedatos'));
-    if ($(this).parent().next('.lotedatos').length > 0 || $(this).parent().next('.rowagregarlotes').length > 0) {
-
-        
-        //$(this).parent().nextAll('.lotedatos:first, .rowagregarlotes:first').find('td')
-
-        $(this).parent().nextAll('.lotedatos, .rowagregarlotes').find('td')
-            .wrapInner('<div style="display: block;" />')
-            .parent()
-            .find('td > div')
-            .slideUp(700, function() {
-
-                $(this).parent().parent().remove();
-
-            });
-        
-        
-    } else {
-
-
-        var idpro = $(this).parent().attr('id');
-
-        $.ajax({
-            type: 'get',
-            url: '/lotes',
-            data: {
-                id: idpro,
-                
-
-
-            },
-
-            dataType: 'json',
-            complete: function() {},
-
-            success: function(data) {
-                //mostrarMensaje(data);
-                var filasdesplegables= "";
-                for(var i in data){
-
-                filasdesplegables += `
-                <tr class="lotedatos" colspan="6">
-                    <td class="nombrelote">${data[i].numero}-${data[i].tipo}</td>
-                    <td class="hora">${data[i].hora}</td>
-                    <td class="reposicion g95">${(data[i].tipo=="G95")? data[i].cantidad : 0}</td>
-                    <td class="reposicion g91">${(data[i].tipo=="G91")? data[i].cantidad : 0}</td>
-                    <td class="reposicion dsl">${(data[i].tipo=="DSL")? data[i].cantidad : 0}</td>
-                    <td colspan="2">
-                        <input type="button" value="eliminar lote" class="eliminarlotedesplegable">
-                    </td>
-                </tr>
-                    `;
-                }
-                var $filasdesplegables = $(filasdesplegables);
-                $('#'+idpro)
-                .after(botondelotes)
-                .after($filasdesplegables);                
-
-                $filasdesplegables
-                    .find('td')
-                    .wrapInner('<div style="display: none;" />')
-                    .parent()
-                    .find('td > div')
-                    .slideDown(700, function() {
-
-                        var $set = $(this);
-                        $set.replaceWith($set.contents());
-
-                    });
-            }
-        });
-    }
-    //$('.desplegable').slideToggle('slow');
-    //$(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
-    /*
-    $(this > ).parent().parent()
-     .find('td')
-     .wrapInner('<div style="display: block;" />')
-     .parent()
-     .find('td > div')
-     .slideUp(700, function(){
-
-      $(this).parent().parent().remove();
-      console.log($this);
-
-     });
-     */
-
-
-});
-var cargardatos = function() {
-    var $el = $('.editando');
-
-    var valornum = $el[0].value;
-    var valortipo = $el[1].value;
-    //console.log(valornum+' '+valortipo);
-
-    var valor = valornum + '-' + valortipo;
-    return valor;
-};
-
-var guardarCelda = function(event) {
-    event.preventDefault();
-
-    var $fila = $(this).parent().parent().parent();
-    var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
-
-    $fila.attr('id', $idproyeccion);
-    $fila.addClass($idproyeccion)
-
-    var $el = $(this).parent().parent();
-    var $editando = $el.find('.editando');
-
-    var valornum = $editando[0].value;
-    var valortipo = $editando[1].value;
-
-    var valor = valornum + '-' + valortipo;
-
-
-    if ($editando.hasClass('nombrelote')) {
-        $el.attr('id', valor)
-        //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
-    }
-
-    $el.text(valor);
-    $el.css('background-color', '');
-    //habilitarListeners();
-
-};
-
 
 var operaciones = function() {
 idfila = trow.attr('id');
@@ -653,8 +351,6 @@ if (!valor || valor == "") {
     var texto = anterior || valor;
     }
 };
-
-
 
 
 
@@ -709,42 +405,180 @@ var mandarDatos = function() {
     });
 };
 
+var cargardatos = function() {
+    var $el = $('.editando');
+
+    var valornum = $el[0].value;
+    var valortipo = $el[1].value;
+    //console.log(valornum+' '+valortipo);
+
+    var valor = valornum + '-' + valortipo;
+    return valor;
+};
+
+
+var habilitarListeners = function(){
+//$('.latabla').on('click','.nombrelote', editarLote);
+$('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
+$('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
+$('.latabla').on('click', '.lotes', desplegarlotes);
+$('.latabla').on('click', '.nombrelote', editarLote);
+$('.latabla').on('click', '.loteguardar', guardarCelda);
+$('.latabla').on('click', '.lotecancelar', cancelarCelda);
+
+};
+
+var deshabilitarListeners = function(){
+        $('.latabla').off('click','td');
+    $('.agregarlotedesplegable').off('click');
+    $('.eliminarlotedesplegable').off('click');
+    //$('.latabla').off('click', '.eliminarlotedesplegable');
+};
+
+var eliminarlotedesplegable = function() {
+    //console.log($(this));
+    //var $este = dis || $(this);
+    //var $este = $(this)
+    $(this).parent().parent()
+        .find('td')
+        .wrapInner('<div style="display: block;" />')
+        .parent()
+        .find('td > div')
+        .slideUp(700, function() {
+
+            $(this).parent().parent().remove();
+
+        });
+}
 
 
 
 
-var editarCelda = function() {
+var agregarlotedesplegable = function(event) {
+    //event.stopPropagation();
+    $('.latabla').off('click','.agregarlotedesplegable');
+    $('.latabla').off('click','.eliminarlotedesplegable');
+    $('.latabla').off('click','.lotedatos .nombrelote');
 
+    var horaActual = showTime();
+    var filadesplegable = `
+    <tr class="lotedatos" colspan="6">
+        
+        <td class="nombrelote"><input class="editando" type="text" size="3" maxlength="3" /> -
+        <select name="tipo" class="editando">
+            <option value="">tipo</option>
+            <option value="G95">G95</option>
+            <option value="G91">G91</option>
+            <option value="DSL">DSL</option>
+            option
+        </select>
+        <p>
+            <a href="#" class="lotecancelar">cancelar</a>
+            <a href="#" class="loteguardar">guardar</a>
+        </p>
+    </td>
+    <td class="hora">${horaActual}</td>
+    <td class="reposicion g95">
+        0
+    </td>
+    <td class="reposicion g91">
+        0
+    </td>
+    <td class="reposicion dsl">
+        0
+    </td>
+    <td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>
+    </tr>
+    `;
+
+    var $filadesplegable = $(filadesplegable);
+    $(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
+
+    $filadesplegable
+        .find('td')
+        .wrapInner('<div style="display: none;" />')
+        .parent()
+        .find('td > div')
+        .slideDown(700, function() {
+
+            var $set = $(this);
+            $set.replaceWith($set.contents());
+
+        });
+        
+    /*$(this).click(function(event) {
+        event.stopPropagation();
+    });*/
+
+    //deshabilitarListeners();
+    
+
+}
+
+
+
+
+
+var editarLote = function(event) {
+    //event.stopPropagation();
+    //$(this)= _this;
     var texto = $(this).text();
+    var valores = texto.split('-');
     if (!$(this).hasClass('accion')) {
 
 
+            if ($(this).hasClass('nombrelote')) {
+                var seleccionado = "selected";
+                var noSeleccionado = "";
 
-        if ($(this).hasClass('nombrelote')) {
-            $(this).html('<input class="editando" type="text" size="5" value="' + texto + '">');
-            $(this).attr('id', texto);
 
-        } else if ($(this).hasClass('fecha')) {
-            $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
+                var inputslote = `<input class="editando" type="text" size="3" maxlength="3" value="${valores[0]}"/> - 
+                                    <select name="tipo" class="selectipo editando">
+                                        <option value="">tipo </option>
+                                        <option value="G95" ${ (valores[1] == "G95")? seleccionado : noSeleccionado }>G95</option>
+                                        <option value="G91" ${ (valores[1] == "G91")? seleccionado : noSeleccionado }>G91</option>
+                                        <option value="DSL" ${ (valores[1] == "DSL")? seleccionado : noSeleccionado }>DSL</option>
+                                    </select>
+                                    <p>
+                                        <a href="#" class="lotecancelar">cancelar</a>
+                                        <a href="#" class="loteguardar">guardar</a>
+                                    </p>
 
-        } else if ($(this).hasClass('autonomia')) {
-            return;
+                                    `;
 
-        } else if ($(this).hasClass('final')) {
-            return;
 
-        } else if ($(this).hasClass('finala')) {
+                $(this).html(inputslote);
 
-            $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
+            } else if ($(this).hasClass('fecha')) {
+                $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
+
+            } else{
+                $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
+            }
+
+        } else {
+
+            //$(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
         }
-        var $el = $(this).find('input');
 
-        $el.focus();
-        $el.click(function(event) {
-            event.stopPropagation();
-        });
+        var $input = $(this).find('.editando');
+
+        $input.focus();
+
+            $(this).children().click(function(event) {
+                event.stopPropagation();
+            });
+        
         //$('.latabla').off('click', 'td');
-        //$('.agregar').off('click');
+        $('.latabla').off('click','.agregarlotedesplegable');
+        $('.latabla').off('click','.eliminarlotedesplegable');
+        $('.latabla').off('click','.lotedatos .nombrelote');
+
+        //$('.agregarlotedesplegable').off('click');
+        //$('.eliminarlotedesplegable').off('click');
+
+        $('.loteguardar').on('click', guardarCelda);
+        $('.lotecancelar').on('click', function(){cancelarCelda(event, texto, $(this))});
 
 
         $('.fecha > .editando').datepicker({
@@ -759,11 +593,191 @@ var editarCelda = function() {
 
 
 
-
-        $el.focus();
-        $el.trigger('click');
-    }
 };
+
+
+
+
+
+
+
+var desplegarlotes = function(event) {
+    event.preventDefault();
+    var $este = $(this);
+    if ($(this).parent().next('.lotedatos').length > 0 || $(this).parent().next('.rowagregarlotes').length > 0) {
+
+        
+        //$(this).parent().nextAll('.lotedatos:first, .rowagregarlotes:first').find('td')
+
+        $(this).parent().nextAll('.lotedatos, .rowagregarlotes').find('td')
+            .wrapInner('<div style="display: block;" />')
+            .parent()
+            .find('td > div')
+            .slideUp(700, function() {
+
+                $(this).parent().parent().remove();
+
+            });
+        
+        
+    } else {
+
+        if ($este.attr('data-envio') == undefined || $este.attr('data-envio')=='abierto'){
+            var idpro = $este.parent().attr('id');
+
+            $.ajax({
+                type: 'get',
+                url: '/lotes',
+                data: {
+                    id: idpro,
+                    
+
+
+                },
+                beforeSend: function(){ 
+                    $este.attr('data-envio', 'cerrado');
+                },
+
+                dataType: 'json',
+                complete: function(){ 
+                    $este.attr('data-envio', 'abierto');
+                },
+
+                success: function(data) {
+                    //mostrarMensaje(data);
+                    var filasdesplegables= "";
+                    for(var i in data){
+
+                    filasdesplegables += `
+                    <tr class="lotedatos" colspan="6">
+                        <td class="nombrelote">${data[i].numero}-${data[i].tipo}</td>
+                        <td class="hora">${data[i].hora}</td>
+                        <td class="reposicion g95">${(data[i].tipo=="G95")? data[i].cantidad : 0}</td>
+                        <td class="reposicion g91">${(data[i].tipo=="G91")? data[i].cantidad : 0}</td>
+                        <td class="reposicion dsl">${(data[i].tipo=="DSL")? data[i].cantidad : 0}</td>
+                        <td colspan="2">
+                            <input type="button" value="eliminar lote" class="eliminarlotedesplegable">
+                        </td>
+                    </tr>
+                        `;
+                    }
+                    var $filasdesplegables = $(filasdesplegables);
+                    $('#'+idpro)
+                    .after(botondelotes)
+                    .after($filasdesplegables);                
+
+                    $filasdesplegables
+                        .find('td')
+                        .wrapInner('<div style="display: none;" />')
+                        .parent()
+                        .find('td > div')
+                        .slideDown(700, function() {
+
+                            var $set = $(this);
+                            $set.replaceWith($set.contents());
+
+                        });
+                }
+            });
+        }
+    }
+    //$('.desplegable').slideToggle('slow');
+    //$(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
+    /*
+    $(this > ).parent().parent()
+     .find('td')
+     .wrapInner('<div style="display: block;" />')
+     .parent()
+     .find('td > div')
+     .slideUp(700, function(){
+
+      $(this).parent().parent().remove();
+      console.log($this);
+
+     });
+     */
+
+
+};
+
+var cancelarCelda = function(event, datos, _this) {
+    event.preventDefault();
+    //if ($(this).parent().parent().parent().attr('id')) {
+
+    if (datos!=undefined) {
+        //var datos = cargardatos();
+        _this.parent().parent().text(datos);
+    } else {
+       
+
+        
+        $(this).parent().parent().parent()
+            .find('td')
+            .wrapInner('<div style="display: block;" />')
+            .parent()
+            .find('td > div')
+            .slideUp(700, function() {
+
+                $(this).parent().parent().remove();
+
+            });
+            
+
+    }
+    $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
+    $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
+    $('.latabla').on('click','.lotedatos > .nombrelote', editarLote);
+    $('.latabla').on('click','.lotedatos > .reposicion', editarLote);
+    $('.latabla').on('click','.ventas', editarLote);
+
+    
+};
+
+var guardarCelda = function(event) {
+    event.preventDefault();
+
+    var $fila = $(this).parent().parent().parent();
+    var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
+
+    $fila.attr('id', $idproyeccion);
+    $fila.addClass($idproyeccion)
+
+    var $el = $(this).parent().parent();
+    var $editando = $el.find('.editando');
+
+    var valornum = $editando[0].value;
+    var valortipo = $editando[1].value;
+
+    var valor = valornum + '-' + valortipo;
+
+
+    if ($editando.hasClass('nombrelote')) {
+        $el.attr('id', valor)
+        //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
+    }
+
+    $el.text(valor);
+    $el.css('background-color', '');
+    //habilitarListeners();
+    $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
+    $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
+    $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
+
+};
+
+$('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
+$('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
+$('.latabla').on('click', '.lotes', desplegarlotes);
+$('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
+
+$('.latabla').on('click', 'a.loteguardar', guardarCelda);
+$('.latabla').on('click', 'a.lotecancelar', cancelarCelda);
+
+
+
+
+
+
 
 //**********************************************************************************
 var agregarFila = function() {
@@ -786,7 +800,7 @@ var agregarFila = function() {
     
 @can('editar_lotes')
 
-                            $('.latabla ').on('click','.nombrelote', editarLote);
+                            
                             
 @endcan
 
@@ -799,9 +813,7 @@ var agregarFila = function() {
 
 //$('.latabla').on('blur','.editando', guardarDatoCelda);
 //$('.latabla').on('blur','.editando', guardarCelda);
-$('.latabla').on('click','.loteguardar', guardarCelda);
-$('.latabla').on('click','.lotecancelar', cancelarCelda);
-$('.latabla').on('click','.eliminarlotedesplegable', eliminarlotedesplegable);
+
 //$('.latabla').on('click','td', editarCelda);
 
 @endcan
