@@ -53,7 +53,9 @@ class PruebaController extends Controller
     public function mostrarlotes(Request $request)
     {
         //return Proyeccion::find($request->id)->lotes()->get();
-        return Proyeccion::find($request->id)->lote()->get();
+        return Proyeccion::find($request->id)->lote()
+        ->select('id','proyeccion_id', 'numero','tipo','cantidad','hora')
+        ->get();
     }
 
     public function buscarPorNumero($numero)
@@ -70,7 +72,8 @@ class PruebaController extends Controller
     {
     	//Lote::destroy( ($request->numero) );
     	//$data = 
-    	$this->buscarPorNumero($numero)->delete();
+        //$this->buscarPorNumero($numero)->delete();
+    	Proyeccion::find($numero)->delete();
         $informacion["lote"]      = $numero;
         $informacion["respuesta"] = "eliminarlote";
                 //json_encode( $informacion );

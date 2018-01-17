@@ -14,9 +14,11 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/fuelux.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/print.css" type="text/css" media="print" />
     <script src="/js/jquery-2.1.4.js" type="text/javascript"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/fuelux.min.js"></script>
 
     <!-- Styles 
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -75,6 +77,14 @@
         .buscarnumero label {
             margin-right: 5px;
         }
+
+        .paneltabla {
+            
+                /*background: url(/img/Ellipsis.svg) no-repeat center center;*/
+                /* width: 32px; */
+                /* height: 32px; */
+            }
+        
 
     </style>
 

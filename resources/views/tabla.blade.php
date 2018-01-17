@@ -4,13 +4,61 @@
 @section('content')
 <link rel="stylesheet" href="/css/sweetalert2.css">
 <link rel="stylesheet" href="/css/tablestyle.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    i.glyphicon.glyphicon-ok {
+        background-color: #94cf35;
+        border-radius: 5px;
+    }
+
+    i.glyphicon.glyphicon-remove {
+        background-color: #f68989;
+        border-radius: 5px;
+    }
+
+    span.loteguardar, span.lotecancelar {
+        cursor: pointer;
+    }
+    span.opciones {
+        position: absolute;
+        height: 20px;
+        width: 20px;
+    }
+    input.editando {
+        width: 40px;
+    }
+    table  {
+     position: relative;
+    }
+   
+
+    table.loading tbody:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        /*background-color: rgba(0, 0, 0, 0.6);*/
+        background-color: rgba(117, 203, 90, 0.6);
+        
+        background-image: url(/img/Ellipsis.svg);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 50px 50px;
+        content: "";
+    }
+</style>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
+    {{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
 <div class="container" style=" width: unset;">
     <div class="row">
         <div class="mensaje " style="height: 80px">
+            <i class="glyphicon glyphicon-ok"></i>
+            <i class="glyphicon glyphicon-remove"></i>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-9 col-md-offset-2">
+        <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default panelbusqueda">
                 <div class="panel-heading">busqueda</div>
                 <div class="panel-body">
@@ -35,7 +83,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-9 col-md-offset-2"">
+            <div class="col-md-10 col-md-offset-1"">
                 @if (!empty($exito))
                 <div class="alert alert-success alert-block">
                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -44,7 +92,8 @@
                 @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">proyeccion -> <a href="javascript:window.print()">imprimir</a></div>
-                    <div class="panel-body">
+                    <div class="panel-body paneltabla">
+                        {{-- <img src="/img/Ellipsis.svg" alt=""> --}}
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <thead>
                                 <tr>
@@ -98,6 +147,7 @@
                                 {{ ($fecha)?$fecha :'00/00/0000' }}
                                 
                             </td>
+                            {{-- eager load para cargar inventarios --}}
                             @foreach($proyeccion->inventario as $pro)
                             @php
                             $proreposicion = 0;
@@ -472,10 +522,14 @@ var agregarlotedesplegable = function(event) {
             <option value="DSL">DSL</option>
             option
         </select>
-        <p>
-            <a href="#" class="lotecancelar">cancelar</a>
-            <a href="#" class="loteguardar">guardar</a>
-        </p>
+        <span class="opciones">
+            <span class="loteguardar">
+                <i class="glyphicon glyphicon-ok"></i>
+            </span>
+            <span class="lotecancelar">
+                <i class="glyphicon glyphicon-remove"></i>
+            </span>
+        </span>
     </td>
     <td class="hora">${horaActual}</td>
     <td class="reposicion g95">
@@ -539,10 +593,14 @@ var editarLote = function(event) {
                                         <option value="G91" ${ (valores[1] == "G91")? seleccionado : noSeleccionado }>G91</option>
                                         <option value="DSL" ${ (valores[1] == "DSL")? seleccionado : noSeleccionado }>DSL</option>
                                     </select>
-                                    <p>
-                                        <a href="#" class="lotecancelar">cancelar</a>
-                                        <a href="#" class="loteguardar">guardar</a>
-                                    </p>
+                                    <span class="opciones">
+                                        <span class="loteguardar">
+                                            <i class="glyphicon glyphicon-ok"></i>
+                                        </span>
+                                        <span class="lotecancelar">
+                                            <i class="glyphicon glyphicon-remove"></i>
+                                        </span>
+                                    </span>
 
                                     `;
 
@@ -553,7 +611,20 @@ var editarLote = function(event) {
                 $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
 
             } else{
-                $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
+                var elementos =`
+                <input class="editando" type="number" size="3" max="300" min="0" value="${parseInt(texto)}" />
+
+
+                <span class="opciones">
+                    <span class="loteguardar">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </span>
+                    <span class="lotecancelar">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </span>
+                </span>
+                `; 
+            $(this).html(elementos);
             }
 
         } else {
@@ -573,6 +644,8 @@ var editarLote = function(event) {
         $('.latabla').off('click','.agregarlotedesplegable');
         $('.latabla').off('click','.eliminarlotedesplegable');
         $('.latabla').off('click','.lotedatos .nombrelote');
+        $('.latabla').off('click','.lotedatos .reposicion');
+        $('.latabla').off('click','.ventas');
 
         //$('.agregarlotedesplegable').off('click');
         //$('.eliminarlotedesplegable').off('click');
@@ -604,12 +677,18 @@ var editarLote = function(event) {
 var desplegarlotes = function(event) {
     event.preventDefault();
     var $este = $(this);
-    if ($(this).parent().next('.lotedatos').length > 0 || $(this).parent().next('.rowagregarlotes').length > 0) {
+    var idproyeccion = $este.parent().attr('id');
+
+    if ( $este.attr('data-desplegado')=='abierto') {
 
         
         //$(this).parent().nextAll('.lotedatos:first, .rowagregarlotes:first').find('td')
 
-        $(this).parent().nextAll('.lotedatos, .rowagregarlotes').find('td')
+        //$('.datos:last').find('*[data-envio="abierto"]')
+        // $(this).parent().next('.lotedatos').length > 0 || $(this).parent().next('.rowagregarlotes').length > 0
+
+        // $(this).parent().nextAll('.lotedatos, .rowagregarlotes').find('td')
+        $('*[data-idproyeccion=\"'+idproyeccion+'\"]').find('td')
             .wrapInner('<div style="display: block;" />')
             .parent()
             .find('td > div')
@@ -618,38 +697,52 @@ var desplegarlotes = function(event) {
                 $(this).parent().parent().remove();
 
             });
+            $este.attr('data-desplegado', 'cerrado');
+
+            //quitar events de edicion y activar los demas. o desativar evento de desplegar durante edicion
+            // comprobacion desplegar
         
         
     } else {
 
-        if ($este.attr('data-envio') == undefined || $este.attr('data-envio')=='abierto'){
-            var idpro = $este.parent().attr('id');
+        if ($este.attr('data-desplegado') == undefined || $este.attr('data-desplegado')=='cerrado'){
+            //var idpro = $este.parent().attr('id');
 
             $.ajax({
                 type: 'get',
                 url: '/lotes',
                 data: {
-                    id: idpro,
+                    id: idproyeccion,
                     
 
 
                 },
                 beforeSend: function(){ 
-                    $este.attr('data-envio', 'cerrado');
+                    // $este.attr('data-envio', 'cerrado');
+                    $('.latabla').addClass('loading');
                 },
 
                 dataType: 'json',
                 complete: function(){ 
-                    $este.attr('data-envio', 'abierto');
-                },
+                    $este.attr('data-desplegado', 'abierto');
+                    $('.latabla').removeClass('loading');
+                }
+            })
 
-                success: function(data) {
+                .done( function(data) {
                     //mostrarMensaje(data);
                     var filasdesplegables= "";
+                    var botondelotes = `
+                            <tr class="rowagregarlotes" data-idproyeccion="${idproyeccion}">
+                                <td>
+                                    <input type="button" value="agregar lote" class="agregarlotedesplegable">
+                                </td>
+                            </tr>
+                        `;
                     for(var i in data){
-
+// coloca clase fecha id  
                     filasdesplegables += `
-                    <tr class="lotedatos" colspan="6">
+                    <tr class="lotedatos" data-idlote="${data[i].id}" data-idproyeccion="${data[i].proyeccion_id}" colspan="6">
                         <td class="nombrelote">${data[i].numero}-${data[i].tipo}</td>
                         <td class="hora">${data[i].hora}</td>
                         <td class="reposicion g95">${(data[i].tipo=="G95")? data[i].cantidad : 0}</td>
@@ -662,25 +755,25 @@ var desplegarlotes = function(event) {
                         `;
                     }
                     var $filasdesplegables = $(filasdesplegables);
-                    $('#'+idpro)
+                    $('#'+idproyeccion)
                     .after(botondelotes)
                     .after($filasdesplegables);                
 
-                    $filasdesplegables
+                    $filasdesplegables.add(botondelotes)
                         .find('td')
                         .wrapInner('<div style="display: none;" />')
                         .parent()
                         .find('td > div')
                         .slideDown(700, function() {
 
-                            var $set = $(this);
-                            $set.replaceWith($set.contents());
+                            // var $set = $(this);
+                            $(this).replaceWith($set.contents());
 
                         });
-                }
-            });
+                });
+            }
         }
-    }
+    
     //$('.desplegable').slideToggle('slow');
     //$(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
     /*
@@ -726,8 +819,8 @@ var cancelarCelda = function(event, datos, _this) {
     }
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
-    $('.latabla').on('click','.lotedatos > .nombrelote', editarLote);
-    $('.latabla').on('click','.lotedatos > .reposicion', editarLote);
+    $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
+    $('.latabla').on('click','.lotedatos .reposicion', editarLote);
     $('.latabla').on('click','.ventas', editarLote);
 
     
@@ -739,6 +832,8 @@ var guardarCelda = function(event) {
     var $fila = $(this).parent().parent().parent();
     var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
 
+    //.attr("class").split(' ');
+
     $fila.attr('id', $idproyeccion);
     $fila.addClass($idproyeccion)
 
@@ -746,32 +841,61 @@ var guardarCelda = function(event) {
     var $editando = $el.find('.editando');
 
     var valornum = $editando[0].value;
-    var valortipo = $editando[1].value;
-
-    var valor = valornum + '-' + valortipo;
+        
 
 
-    if ($editando.hasClass('nombrelote')) {
+
+    if ($el.hasClass('nombrelote')) {
+        var valortipo = $editando[1].value;
+        var valor = valornum + '-' + valortipo;
         $el.attr('id', valor)
+        $el.text(valor);
         //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
+
+        $.ajax({
+            type: 'get',
+            url: '/lotes',
+            data: {
+                id: idpro,
+            },
+            
+
+            dataType: 'json',
+            
+        })
+
+            .done( function(data) {
+                
+                                
+            });
+
+    }else{
+        
+        $el.text(valornum);
     }
 
-    $el.text(valor);
     $el.css('background-color', '');
     //habilitarListeners();
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
     $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
+    $('.latabla').on('click','.lotedatos .reposicion', editarLote);
+    $('.latabla').on('click','.ventas', editarLote);
 
 };
 
+$('.latabla').on('click', '.lotes', desplegarlotes);
+
 $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
 $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
-$('.latabla').on('click', '.lotes', desplegarlotes);
-$('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
 
-$('.latabla').on('click', 'a.loteguardar', guardarCelda);
-$('.latabla').on('click', 'a.lotecancelar', cancelarCelda);
+$('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
+$('.latabla').on('click','.lotedatos .reposicion', editarLote);
+$('.latabla').on('click','.ventas', editarLote);
+
+$('.latabla').on('click', '.loteguardar', guardarCelda);
+$('.latabla').on('click', '.lotecancelar', cancelarCelda);
+
 
 
 

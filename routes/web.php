@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Route::get('/lotes', 'Pruebacontroller@mostrarlotes');
 
+Route::get('/lote', 'Pruebacontroller@guardarlote');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
