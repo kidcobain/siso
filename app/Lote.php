@@ -9,7 +9,7 @@ class Lote extends Model
     protected $table = 'lote';
     //
 
-    public function proyeccion()
+    public function Proyeccion()
     {
         //return $this->hasMany(proyeccion::class, 'lote_id', 'id');
         //return $this->hasMany(proyeccion::class);
@@ -17,6 +17,6 @@ class Lote extends Model
     }
     
     protected $fillable = [
-        'id','numero','tipo','fecha_entrada','hora', 'proyeccion_id' ];
+        'id','numero','tipo','fecha_entrada','hora', 'proyeccion_id', 'cantidad' ];
 
 }

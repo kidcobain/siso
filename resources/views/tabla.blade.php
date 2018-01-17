@@ -509,10 +509,12 @@ var agregarlotedesplegable = function(event) {
     $('.latabla').off('click','.agregarlotedesplegable');
     $('.latabla').off('click','.eliminarlotedesplegable');
     $('.latabla').off('click','.lotedatos .nombrelote');
+    var idproyeccion = $(this).parent().parent().attr('data-idproyeccion');
+    //console.log(idproyeccion);
 
     var horaActual = showTime();
     var filadesplegable = `
-    <tr class="lotedatos" colspan="6">
+    <tr class="lotedatos" data-idproyeccion="${idproyeccion}"colspan="6">
         
         <td class="nombrelote"><input class="editando" type="text" size="3" maxlength="3" /> -
         <select name="tipo" class="editando">
@@ -759,15 +761,15 @@ var desplegarlotes = function(event) {
                     .after(botondelotes)
                     .after($filasdesplegables);                
 
-                    $filasdesplegables.add(botondelotes)
+                    $filasdesplegables
                         .find('td')
                         .wrapInner('<div style="display: none;" />')
                         .parent()
                         .find('td > div')
                         .slideDown(700, function() {
 
-                            // var $set = $(this);
-                            $(this).replaceWith($set.contents());
+                             var $set = $(this);
+                            $set.replaceWith($set.contents());
 
                         });
                 });
@@ -830,33 +832,43 @@ var guardarCelda = function(event) {
     event.preventDefault();
 
     var $fila = $(this).parent().parent().parent();
-    var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
+    // var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
 
     //.attr("class").split(' ');
 
-    $fila.attr('id', $idproyeccion);
-    $fila.addClass($idproyeccion)
+    //$fila.attr('id', $idproyeccion);
+    //$fila.addClass($idproyeccion)
 
-    var $el = $(this).parent().parent();
-    var $editando = $el.find('.editando');
+    var $elemento = $(this).parent().parent();
+    var $editando = $elemento.find('.editando');
 
     var valornum = $editando[0].value;
+    var hora = $fila.find('.hora').text();
         
 
 
 
-    if ($el.hasClass('nombrelote')) {
+    if ($elemento.hasClass('nombrelote')) {
+        var $idproyeccion = ($fila.attr('data-idproyeccion'))?$fila.attr('data-idproyeccion') : "vacio";   
+        var $idlote = ($fila.attr('data-idlote'))? $fila.attr('data-idlote') : "vacio";
+
         var valortipo = $editando[1].value;
         var valor = valornum + '-' + valortipo;
-        $el.attr('id', valor)
-        $el.text(valor);
+        //$elemento.attr('id', valor)
+        $elemento.text(valor);
+
         //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
 
         $.ajax({
             type: 'get',
-            url: '/lotes',
+            url: '/lote',
             data: {
-                id: idpro,
+                idlote       : $idlote,
+                idproyeccion : $idproyeccion,
+                numero       : valornum,
+                tipo         : valortipo,
+                hora         : hora,
+
             },
             
 
@@ -869,12 +881,36 @@ var guardarCelda = function(event) {
                                 
             });
 
-    }else{
-        
-        $el.text(valornum);
     }
 
-    $el.css('background-color', '');
+    /*
+    else{
+        
+        $elemento.text(valornum);
+
+        $.ajax({
+            type: 'get',
+            url: '/lotes',
+            data: {
+                id: idproyeccion,
+                numero: valornum,
+                tipo:valortipo,
+
+            },
+            
+
+            dataType: 'json',
+            
+        })
+
+            .done( function(data) {
+                
+                                
+            });
+    }
+    */
+
+    $elemento.css('background-color', '');
     //habilitarListeners();
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);

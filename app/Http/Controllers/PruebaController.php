@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lote;
-use App\proyeccion;
+use App\Proyeccion;
 use \Carbon\Carbon ;
 
 class PruebaController extends Controller
@@ -82,24 +82,61 @@ class PruebaController extends Controller
     }
 
     
-     public function guardar(Request $request)
+     public function guardarlote(Request $request)
      {
         $informacion = [];
-     	if($request->colfila=='nombrelote')
-        { 
+     	
+ 		if($request->idlote != "vacio")
+ 		{
+            $valor = $request->numero .'-'. $request->tipo;
 
-     		if(count($this->buscarPorNumero($request->oldidfila))>0)
-     		{
-     			$lote = $this->buscarPorNumero($request->oldidfila);
-     			$lote->numero = $request->idfila;
-     			$lote->save();
-                $informacion["oldlote"]   = $request->oldidfila;
-                $informacion["lote"]      = $request->idfila;
-                $informacion["respuesta"] = "actualizarLote";
-                        //echo json_encode( $informacion );
-     			return json_encode( $informacion );
-     		}
+            $lote = Lote::find($request->idlote);
+            $lote->numero = $request->numero;
+ 			$lote->tipo = $request->tipo;
+ 			$lote->save();
+            $informacion["oldlote"]   = $request->idlote;
+            $informacion["lote"]      = valor;
+            $informacion["respuesta"] = "actualizarLote";
+                    //echo json_encode( $informacion );
+ 			return json_encode( $informacion );
+ 		}
+        else{
+
+            $loteguardado = Lote::create([
+                'numero' => $request->numero,
+                'tipo' => $request->tipo,
+                'hora' => $request->hora,
+                'cantidad' => 0,
+                'proyeccion_id' => $request->idproyeccion,
+            ]);
+            $elid =$loteguardado->id;
+
+            $informacion["respuesta"] = "agregarLote";
+            $informacion["idloteguardado"] = $elid;
+             return json_encode( $informacion );
+
+        }
+
         
+    }
+
+    public function guardar(Request $request)
+    {
+       $informacion = [];
+        if($request->colfila=='nombrelote')
+       { 
+
+            if(count($this->buscarPorNumero($request->oldidfila))>0)
+            {
+                $lote = $this->buscarPorNumero($request->oldidfila);
+                $lote->numero = $request->idfila;
+                $lote->save();
+               $informacion["oldlote"]   = $request->oldidfila;
+               $informacion["lote"]      = $request->idfila;
+               $informacion["respuesta"] = "actualizarLote";
+                       //echo json_encode( $informacion );
+                return json_encode( $informacion );
+            }
         
 
             else{
@@ -107,6 +144,7 @@ class PruebaController extends Controller
                 
                  //$this->buscarPorNumero($request->oldidfila);
                     $fecha = Carbon::now();
+
                     //$fecha = DateTime::createFromFormat('d-m-Y');
                 $ident = Lote::create([
                     'numero' => $request->idfila,
