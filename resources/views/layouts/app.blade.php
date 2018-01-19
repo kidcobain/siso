@@ -105,10 +105,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/tabla') }}">
-                        <div class="logoheader"><img src="/img/PDVSA-Logo.png" alt=""></div>
-                        {{-- <img src="img/logo.svg"> --}}
-                        {{ config('app.name', 'Sisor') }}
-                    </a>
+                        <div class="logoheader"><img src="/img/PDVSA-Logo.png" alt="PDVSA"></div>{{ config('app.name', 'Sisor') }}</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">

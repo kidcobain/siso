@@ -4,7 +4,12 @@
 @section('content')
 <link rel="stylesheet" href="/css/sweetalert2.css">
 <link rel="stylesheet" href="/css/tablestyle.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap-material-design.min.css">
+<link rel="stylesheet" href="/css/ripples.min.css">
+<link rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <style>
     i.glyphicon.glyphicon-ok {
         background-color: #94cf35;
@@ -91,7 +96,7 @@
                 </div>
                 @endif
                 <div class="panel panel-default">
-                    <div class="panel-heading">proyeccion -> <a href="javascript:window.print()">imprimir</a></div>
+                    <div class="panel-heading">proyecciones<span class="imprimir"> -> <a href="javascript:window.print()">imprimir</a></span></div>
                     <div class="panel-body paneltabla">
                         {{-- <img src="/img/Ellipsis.svg" alt=""> --}}
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
@@ -247,11 +252,17 @@
 </div>
 </div>
 </div>
-<script src="js/bootstrap-datepicker.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
-<script src="js/sweetalert2.all.min.js"></script>
-<script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
+{{-- <script src="js/bootstrap-datepicker.js"></script> --}}
+{{-- <script src="/js/moment-with-locales.min.js"></script> --}}
+<script src="/js/moment-with-locales.min.js"></script>
+<script src="/js/material.min.js"></script>
+<script src="/js/ripples.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap-material-datetimepicker.js"></script>
+{{-- <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script> --}}
+<script src="/js/sweetalert2.all.min.js"></script>
+{{-- <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script> --}}
+
 <script>
 $(document).ready(function() {
     
@@ -262,25 +273,25 @@ var elhtml = `
     <td class="tdlote"><input class="editando" type="text" size="5"/></td>
     <td class="fecha">00/00/000</td>
     
-    <td class="reposicion g95">0</td>
-    <td class="reposicion g91">0</td>
-    <td class="reposicion dsl">0</td>
+    <td class="reposicion G95">0</td>
+    <td class="reposicion G91">0</td>
+    <td class="reposicion DSL">0</td>
     
-    <td class="inicial g95">0</td>
-    <td class="inicial g91">0</td>
-    <td class="inicial dsl">0</td>
+    <td class="inicial G95">0</td>
+    <td class="inicial G91">0</td>
+    <td class="inicial DSL">0</td>
     
-    <td class="ventas g95">0</td>
-    <td class="ventas g91">0</td>
-    <td class="ventas dsl">0</td>
+    <td class="ventas G95">0</td>
+    <td class="ventas G91">0</td>
+    <td class="ventas DSL">0</td>
     
-    <td class="final g95">0</td>
-    <td class="final g91">0</td>
-    <td class="final dsl">0</td>
+    <td class="final G95">0</td>
+    <td class="final G91">0</td>
+    <td class="final DSL">0</td>
     
-    <td class="autonomia g95">0</td>
-    <td class="autonomia g91">0</td>
-    <td class="autonomia dsl">0</td>
+    <td class="autonomia G95">0</td>
+    <td class="autonomia G91">0</td>
+    <td class="autonomia DSL">0</td>
     <td class="accion"><a href="/eliminarfila/"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
 </tr>
 `;
@@ -534,13 +545,13 @@ var agregarlotedesplegable = function(event) {
         </span>
     </td>
     <td class="hora">${horaActual}</td>
-    <td class="reposicion g95">
+    <td class="reposicion G95">
         0
     </td>
-    <td class="reposicion g91">
+    <td class="reposicion G91">
         0
     </td>
-    <td class="reposicion dsl">
+    <td class="reposicion DSL">
         0
     </td>
     <td colspan="2"><input type="button" value="eliminar lote" class="eliminarlotedesplegable"></td>
@@ -610,10 +621,18 @@ var editarLote = function(event) {
                 $(this).html(inputslote);
 
             } else if ($(this).hasClass('fecha')) {
+
                 $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
 
-            } else{
-                var elementos =`
+            } else if ($(this).hasClass('reposicion')) {
+
+                var textolote = $(this).parent().find('.nombrelote').text()
+                var valoresinput = textolote.split('-');
+                var clases = $(this).attr('class').split(' ');                
+                if(clases[1] != valoresinput[1]){
+                    return;
+                }
+                var editarinput =`
                 <input class="editando" type="number" size="3" max="300" min="0" value="${parseInt(texto)}" />
 
 
@@ -626,8 +645,26 @@ var editarLote = function(event) {
                     </span>
                 </span>
                 `; 
-            $(this).html(elementos);
+                $(this).html(editarinput);
+
+            } else{
+                    var editarinput =`
+                    <input class="editando" type="number" size="3" max="300" min="0" value="${parseInt(texto)}" />
+
+
+                    <span class="opciones">
+                        <span class="loteguardar">
+                            <i class="glyphicon glyphicon-ok"></i>
+                        </span>
+                        <span class="lotecancelar">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </span>
+                    </span>
+                    `; 
+                $(this).html(editarinput);
             }
+
+
 
         } else {
 
@@ -652,7 +689,8 @@ var editarLote = function(event) {
         //$('.agregarlotedesplegable').off('click');
         //$('.eliminarlotedesplegable').off('click');
 
-        $('.loteguardar').on('click', guardarCelda);
+        // $('.loteguardar').on('click', guardarCelda);
+        $('.loteguardar').on('click', function(){guardarCelda(event,texto, $(this))});
         $('.lotecancelar').on('click', function(){cancelarCelda(event, texto, $(this))});
 
 
@@ -747,9 +785,9 @@ var desplegarlotes = function(event) {
                     <tr class="lotedatos" data-idlote="${data[i].id}" data-idproyeccion="${data[i].proyeccion_id}" colspan="6">
                         <td class="nombrelote">${data[i].numero}-${data[i].tipo}</td>
                         <td class="hora">${data[i].hora}</td>
-                        <td class="reposicion g95">${(data[i].tipo=="G95")? data[i].cantidad : 0}</td>
-                        <td class="reposicion g91">${(data[i].tipo=="G91")? data[i].cantidad : 0}</td>
-                        <td class="reposicion dsl">${(data[i].tipo=="DSL")? data[i].cantidad : 0}</td>
+                        <td class="reposicion G95">${(data[i].tipo=="G95")? data[i].cantidad : 0}</td>
+                        <td class="reposicion G91">${(data[i].tipo=="G91")? data[i].cantidad : 0}</td>
+                        <td class="reposicion DSL">${(data[i].tipo=="DSL")? data[i].cantidad : 0}</td>
                         <td colspan="2">
                             <input type="button" value="eliminar lote" class="eliminarlotedesplegable">
                         </td>
@@ -828,10 +866,12 @@ var cancelarCelda = function(event, datos, _this) {
     
 };
 
-var guardarCelda = function(event) {
+var guardarCelda = function(event, texto, _this) {
     event.preventDefault();
 
-    var $fila = $(this).parent().parent().parent();
+    var valores = texto.split('-');
+
+    var $fila = _this.parent().parent().parent();
     // var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
 
     //.attr("class").split(' ');
@@ -839,22 +879,44 @@ var guardarCelda = function(event) {
     //$fila.attr('id', $idproyeccion);
     //$fila.addClass($idproyeccion)
 
-    var $elemento = $(this).parent().parent();
+    var $elemento = _this.parent().parent();
+
+    //var clases = $elemento.attr("class").split(' ');
+    //var columna = clases[0];
+    //var coltipo = clases[1];
+
     var $editando = $elemento.find('.editando');
 
     var valornum = $editando[0].value;
     var hora = $fila.find('.hora').text();
-        
 
+    var $idproyeccion = ($fila.attr('data-idproyeccion'))?$fila.attr('data-idproyeccion') : "vacio";   
+    var $idlote = ($fila.attr('data-idlote'))? $fila.attr('data-idlote') : "vacio";
+
+
+    if($elemento.hasClass('reposicion')){
+
+        $.ajax({
+            type: 'get',
+            url: '/reposicion',
+            data: {
+                idlote       : $idlote,
+                idproyeccion : $idproyeccion,
+                numero       : valornum,
+            },
+            dataType: 'json',
+        })
+
+        .done( function(data) {
+        });
+
+    }   
 
 
     if ($elemento.hasClass('nombrelote')) {
-        var $idproyeccion = ($fila.attr('data-idproyeccion'))?$fila.attr('data-idproyeccion') : "vacio";   
-        var $idlote = ($fila.attr('data-idlote'))? $fila.attr('data-idlote') : "vacio";
 
         var valortipo = $editando[1].value;
         var valor = valornum + '-' + valortipo;
-        //$elemento.attr('id', valor)
         $elemento.text(valor);
 
         //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
@@ -868,55 +930,35 @@ var guardarCelda = function(event) {
                 numero       : valornum,
                 tipo         : valortipo,
                 hora         : hora,
-
             },
-            
-
             dataType: 'json',
-            
         })
 
-            .done( function(data) {
-                
-                                
-            });
+        .done( function(data) {
+            if (valortipo != valores[1]){
+                console.log(valortipo);
+                console.log(valores[1]);
+                console.log($fila.find('.'+valores[1]));
+                var oldvalor = $fila.find('.'+valores[1]).text();
+                //var newvalor = $fila.find('.'+valortipo).text();
+                $fila.find('.'+valores[1]).text("0");
+                $fila.find('.'+valortipo).text(oldvalor);
+
+
+            }
+        });
 
     }
 
-    /*
-    else{
-        
-        $elemento.text(valornum);
-
-        $.ajax({
-            type: 'get',
-            url: '/lotes',
-            data: {
-                id: idproyeccion,
-                numero: valornum,
-                tipo:valortipo,
-
-            },
-            
-
-            dataType: 'json',
-            
-        })
-
-            .done( function(data) {
-                
-                                
-            });
-    }
-    */
+    
 
     $elemento.css('background-color', '');
     //habilitarListeners();
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
-    $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
-    $('.latabla').on('click','.lotedatos .reposicion', editarLote);
-    $('.latabla').on('click','.ventas', editarLote);
+    $('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
+    $('.latabla').on('click', '.lotedatos .reposicion', editarLote);
+    $('.latabla').on('click', '.ventas', editarLote);
 
 };
 
@@ -926,8 +968,8 @@ $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
 $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
 
 $('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
-$('.latabla').on('click','.lotedatos .reposicion', editarLote);
-$('.latabla').on('click','.ventas', editarLote);
+$('.latabla').on('click', '.lotedatos .reposicion', editarLote);
+$('.latabla').on('click', '.ventas', editarLote);
 
 $('.latabla').on('click', '.loteguardar', guardarCelda);
 $('.latabla').on('click', '.lotecancelar', cancelarCelda);
@@ -1032,7 +1074,7 @@ var mostrarMensaje = function(informacion){
     });         
 }
 
-
+/*
 $('.busqueda.fecha').datepicker({
     format: "dd/mm/yyyy",
     endDate: "0d",
@@ -1042,8 +1084,33 @@ $('.busqueda.fecha').datepicker({
     language: "es",
     autoclose: true,
 });
+*/
+$('.busqueda.fecha').bootstrapMaterialDatePicker({ 
+    weekStart : 0, 
+    time: false, 
+    lang: 'es',
+    format: 'DD/MM/YYYY',
+    cancelText : 'cancelar',
+    nowButton : true,
+    nowText: 'hoy',
+    switchOnClick: true
+});
 
-      
+$('.busqueda.numero').bootstrapMaterialDatePicker
+({
+    date: false,
+    shortTime: true,
+    lang: 'es',
+    format: 'HH:mm a',
+    nowButton : true,
+    nowText: 'ahora',
+    switchOnClick: true,
+});
+
+
+$.material.init();
+
+
 
     @if (session('success'))
          var variable = {!! json_encode(session('success')) !!};
@@ -1052,6 +1119,6 @@ $('.busqueda.fecha').datepicker({
     @endif                         
                         
 });
-
+//opcion cerrar/desplegar todos los lotes
                         </script>
 @endsection

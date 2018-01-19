@@ -81,7 +81,19 @@ class PruebaController extends Controller
     	//return redirect()->back()->withSuccess('Se han eliminado los datos satisfactoriamente');
     }
 
+    public function reposicionactualizar(Request $request)
+    {
+       $informacion = [];
     
+       $lote = Lote::find($request->idlote);
+       $lote->cantidad = $request->numero;
+        $lote->save();
+
+       $informacion["oldlote"]   = $request->idlote;
+       $informacion["lote"]      = $request->numero;
+       $informacion["respuesta"] = "reposicion actualizar";
+        return json_encode( $informacion );
+    }
      public function guardarlote(Request $request)
      {
         $informacion = [];
@@ -95,7 +107,7 @@ class PruebaController extends Controller
  			$lote->tipo = $request->tipo;
  			$lote->save();
             $informacion["oldlote"]   = $request->idlote;
-            $informacion["lote"]      = valor;
+            $informacion["lote"]      = $valor;
             $informacion["respuesta"] = "actualizarLote";
                     //echo json_encode( $informacion );
  			return json_encode( $informacion );

@@ -1,4 +1,8 @@
-.accion a {
+.accion {
+    display: none;
+}
+
+.imprimir{
     display: none;
 }
 
