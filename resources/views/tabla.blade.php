@@ -171,50 +171,50 @@
                             $proautonomia = $pro::where('proyeccion_id', $proyeccion->id)
                             ->where('tipo','autonomia')->firstorfail();
                             @endphp
-                            <td class="reposicion g95">
+                            <td class="reposicion G95">
                                 {{ $proreposicion->g95 }}
                             </td>
-                            <td class="reposicion g91">
+                            <td class="reposicion G91">
                                 {{ $proreposicion->g91 }}
                             </td>
-                            <td class="reposicion dsl">
+                            <td class="reposicion DSL">
                                 {{ $proreposicion->dsl }}
                             </td>
-                            <td class="inicial g95">
+                            <td class="inicial G95">
                                 {{ $proinicial->g95 }}
                             </td>
-                            <td class="inicial g91">
+                            <td class="inicial G91">
                                 {{ $proinicial->g91 }}
                             </td>
-                            <td class="inicial dsl">
+                            <td class="inicial DSL">
                                 {{ $proinicial->dsl }}
                             </td>
                             
-                            <td class="ventas g95">
+                            <td class="ventas G95">
                                 {{ $proventas->g95 }}
                             </td>
-                            <td class="ventas g91">
+                            <td class="ventas G91">
                                 {{ $proventas->g91 }}
                             </td>
-                            <td class="ventas dsl">
+                            <td class="ventas DSL">
                                 {{ $proventas->dsl }}
                             </td>
-                            <td class="final g95">
+                            <td class="final G95">
                                 {{ $profinal->g95 }}
                             </td>
-                            <td class="final g91">
+                            <td class="final G91">
                                 {{ $profinal->g91 }}
                             </td>
-                            <td class="final dsl">
+                            <td class="final DSL">
                                 {{ $profinal->dsl }}
                             </td>
-                            <td class="autonomia g95">
+                            <td class="autonomia G95">
                                 {{ $proautonomia->g95 }}
                             </td>
-                            <td class="autonomia g91">
+                            <td class="autonomia G91">
                                 {{ $proautonomia->g91 }}
                             </td>
-                            <td class="autonomia dsl">
+                            <td class="autonomia DSL">
                                 {{ $proautonomia->dsl }}
                             </td>
                             <td class="accion">
@@ -415,12 +415,12 @@ if (!valor || valor == "") {
 
 
 
-var calcular = function() {
+var calcular = function(idfila, clases) {
 
     var reposicionval = parseInt($('[id=\"' + idfila + '\"] .reposicion.' + clases[1]).text());
     var inicialval = parseFloat($('[id=\"' + idfila + '\"] .inicial.' + clases[1]).text(), 2);
     var ventasval = parseFloat($('[id=\"' + idfila + '\"] .ventas.' + clases[1]).text(), 1);
-
+    console.log('calculando');
     var final = (reposicionval + inicialval) - ventasval;
     final = final.toFixed(1);
 
@@ -428,9 +428,9 @@ var calcular = function() {
 
     if (final != 0) {
         var autotipo = [];
-        autotipo['g95'] = 1.8;
-        autotipo['g91'] = 2.8;
-        autotipo['dsl'] = 1.2;
+        autotipo['G95'] = 1.8;
+        autotipo['G91'] = 2.8;
+        autotipo['DSL'] = 1.2;
         var autonomia = final / autotipo[clases[1]];
         autonomia = Math.round(autonomia);
         $('[id=\"' + idfila + '\"] .autonomia.' + clases[1]).text(autonomia).effect('highlight', {}, 1000);
@@ -936,14 +936,25 @@ var guardarCelda = function(event, texto, _this) {
 
         .done( function(data) {
             if (valortipo != valores[1]){
-                console.log(valortipo);
-                console.log(valores[1]);
-                console.log($fila.find('.'+valores[1]));
-                var oldvalor = $fila.find('.'+valores[1]).text();
-                //var newvalor = $fila.find('.'+valortipo).text();
-                $fila.find('.'+valores[1]).text("0");
-                $fila.find('.'+valortipo).text(oldvalor);
 
+                var oldvalor = parseInt($fila.find('.'+valores[1]).text());
+                $fila.find('.'+valores[1]).text("0").effect('highlight', {}, 1000);
+                $fila.find('.'+valortipo).text(oldvalor).effect('highlight', {}, 1000);
+
+                var oldtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valores[1]).text());
+
+                var newtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo).text());
+
+                oldtotal = oldtotal - oldvalor;
+                newtotal = newtotal + oldvalor;
+
+                $('#'+$idproyeccion).find('.reposicion.'+valortipo).text(newtotal).effect('highlight', {}, 1000);;
+                
+                $('#'+$idproyeccion).find('.reposicion.'+valores[1]).text(oldtotal).effect('highlight', {}, 1000);;
+
+                var tipo = [0,valortipo];
+                calcular($idproyeccion, tipo);
+                calcular($idproyeccion, valores);
 
             }
         });
@@ -1101,7 +1112,7 @@ $('.busqueda.numero').bootstrapMaterialDatePicker
     date: false,
     shortTime: true,
     lang: 'es',
-    format: 'HH:mm a',
+    format: 'hh:mm a',
     nowButton : true,
     nowText: 'ahora',
     switchOnClick: true,
