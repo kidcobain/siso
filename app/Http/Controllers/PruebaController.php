@@ -29,6 +29,12 @@ class PruebaController extends Controller
             return view('tabla', compact('lotes')); 
     }
 
+    public function ultimo(Request $request)
+    {
+            //$lotes = $this->buscarPorNumeroget($request->numero);
+            return Lote::all(['numero'])->last(); 
+    }
+
     public function buscarfecha(Request $request)
     {   
         if ($request->fechainicio) {

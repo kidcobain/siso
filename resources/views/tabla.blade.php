@@ -517,6 +517,15 @@ var eliminarlotedesplegable = function() {
 
 var agregarlotedesplegable = function(event) {
     //event.stopPropagation();
+    var ultimo = '';
+    /*
+    $.get( "/ultimo", function( data ){
+        //$filadesplegable.find('input .editando').val(data.numero);
+        console.log(data.numero);
+        ultimo = data.numero;
+        console.log(ultimo);
+    });
+    */
     $('.latabla').off('click','.agregarlotedesplegable');
     $('.latabla').off('click','.eliminarlotedesplegable');
     $('.latabla').off('click','.lotedatos .nombrelote');
@@ -524,10 +533,11 @@ var agregarlotedesplegable = function(event) {
     //console.log(idproyeccion);
 
     var horaActual = showTime();
+       //$consulta = App\Lote::all(['numero'])->last();
     var filadesplegable = `
     <tr class="lotedatos" data-idproyeccion="${idproyeccion}"colspan="6">
         
-        <td class="nombrelote"><input class="editando" type="text" size="3" maxlength="3" /> -
+        <td class="nombrelote"><input class="editando numero" type="text" size="3" maxlength="3" value="${ultimo}"/> -
         <select name="tipo" class="editando">
             <option value="">tipo</option>
             <option value="G95">G95</option>
@@ -573,6 +583,10 @@ var agregarlotedesplegable = function(event) {
 
         });
         
+   $.get( "/ultimo", function( data ){
+        $filadesplegable.find('.editando:first').val(data.numero);
+    });
+
     /*$(this).click(function(event) {
         event.stopPropagation();
     });*/
@@ -949,7 +963,7 @@ var guardarCelda = function(event, texto, _this) {
                 newtotal = newtotal + oldvalor;
 
                 $('#'+$idproyeccion).find('.reposicion.'+valortipo).text(newtotal).effect('highlight', {}, 1000);;
-                
+
                 $('#'+$idproyeccion).find('.reposicion.'+valores[1]).text(oldtotal).effect('highlight', {}, 1000);;
 
                 var tipo = [0,valortipo];

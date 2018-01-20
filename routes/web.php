@@ -21,6 +21,8 @@ Route::get('/lotes', 'Pruebacontroller@mostrarlotes');
 
 Route::get('/lote', 'Pruebacontroller@guardarlote');
 
+Route::get('/ultimo', 'Pruebacontroller@ultimo');
+
 Route::get('/reposicion', 'Pruebacontroller@reposicionactualizar');
 
 Auth::routes();
