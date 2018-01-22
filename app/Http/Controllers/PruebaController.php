@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Lote;
 use App\Proyeccion;
+use App\Inventario;
 use \Carbon\Carbon ;
 
 class PruebaController extends Controller
@@ -21,7 +22,113 @@ class PruebaController extends Controller
         ]);
     }
 
+    //$pro = App\Proyeccion::all()->sortBy('fecha_entrada')->last()
+    //$pro->inventario()->where('tipo','final')->get()
 
+
+    public function nuevaproyeccion(Request $request)
+    {
+
+            $pro = Proyeccion::all()->sortBy('fecha_entrada')->last();
+            $final = $pro->inventario()->where('tipo','final')->get()->first();
+
+            // dd($final);
+
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+            $pro = Proyeccion::create([
+                'fecha_entrada' => $fecha,
+            ]);
+            $elid =$pro->id;
+                
+
+             Inventario::create([
+
+                'tipo' => 'reposicion',
+
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
+
+                 'proyeccion_id' => $pro->id,
+
+             ]);
+
+
+              Inventario::create([
+
+                'tipo' => 'inicial',
+
+                 'g95' => (isset($final->g95))?$final->g95:0,
+                
+                 'g91' => (isset($final->g91))?$final->g91:0,
+                
+                 'dsl' => (isset($final->dsl))?$final->dsl:0,
+
+                 'proyeccion_id' => $pro->id,
+
+             ]);
+
+
+            Inventario::create([
+
+                'tipo' => 'ventas',
+
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
+
+                 'proyeccion_id' => $pro->id,
+
+             ]);
+
+              Inventario::create([
+
+                'tipo' => 'final',
+
+                 'g95' => (isset($final->g95))?$final->g95:0,
+                 
+                 'g91' => (isset($final->g91))?$final->g91:0,
+                 
+                 'dsl' => (isset($final->dsl))?$final->dsl:0,
+
+                 'proyeccion_id' => $pro->id,
+
+
+             ]);
+                
+        
+              
+              Inventario::create([
+
+                'tipo' => 'autonomia',
+
+                 'g95' => 0,
+                
+                 'g91' => 0,
+                
+                 'dsl' => 0,
+
+                 'proyeccion_id' => $pro->id,
+                
+
+             ]);
+
+
+                 
+                       $informacion["respuesta"] = "agregarproyeccion";
+                       $informacion["idproyeccionguardado"] = $pro->id;
+
+                       $informacion["g95"] = (isset($final->g95))?$final->g95:0;
+                       $informacion["g91"] = (isset($final->g91))?$final->g91:0;
+                       $informacion["dsl"] = (isset($final->dsl))?$final->dsl:0;
+
+                               //echo json_encode( $informacion );
+                        return json_encode( $informacion );
+    }
 
     public function buscar(Request $request)
     {
@@ -42,19 +149,19 @@ class PruebaController extends Controller
         }
 
         else{
-            $fechainicio = '';
+            $fechainicio = '2010-01-01';
         }
         if ($request->fechafin) {
             $fechafin = Carbon::createFromFormat('d/m/Y', $request->fechafin)->toDateString();
         }
         
         else{
-            $fechafin = '';
+            $fechafin = Carbon::now();
         }
             //$lotes = Lote::paginate(15)->where('fecha_entrada', $fecha);
-            $lotes = Lote::whereBetween('fecha_entrada', [$fechainicio, $fechafin])->paginate(10);
-            //$lotes = Lote::where('fecha_entrada', '>=', $fechainicio)->where('fecha_entrada', '<=', $fechafin)->paginate(10);
-            return view('tabla')->with('lotes',$lotes)->with('exito','Mostrando lotes desde: '.$request->fechainicio.' hasta: '.$request->fechafin); 
+            $proyecciones = Proyeccion::whereBetween('fecha_entrada', [$fechainicio, $fechafin])->paginate(10);
+            //$proyecciones = Lote::where('fecha_entrada', '>=', $fechainicio)->where('fecha_entrada', '<=', $fechafin)->paginate(10);
+            return view('tabla')->with('proyecciones',$proyecciones)->with('exito','Mostrando proyecciones desde: '.$request->fechainicio.' hasta: '.$request->fechafin); 
     }
     public function mostrarlotes(Request $request)
     {
@@ -72,6 +179,14 @@ class PruebaController extends Controller
      public function buscarPorNumeroget($numero)
     {
         return Lote::where("numero", $numero)->get();
+    }
+
+    public function eliminarlote(Request $request)
+    {
+        Lote::find($request->idlote)->delete();
+        $informacion["lote"]      = $request->idlote;
+        $informacion["respuesta"] = "eliminarlote";
+        return json_encode( $informacion );
     }
 
     public function eliminar($numero)

@@ -15,15 +15,19 @@ Route::get('/', function () {
     return view('auth/login');
 });
 
-Route::get('/lotes', 'Pruebacontroller@mostrarlotes');
+Route::get('/lotes', 'PruebaController@mostrarlotes');
 
-//Route::get('/lote', 'Pruebacontroller@guardarlote');
+//Route::get('/lote', 'PruebaController@guardarlote');
 
-Route::get('/lote', 'Pruebacontroller@guardarlote');
+Route::get('/lote', 'PruebaController@guardarlote');
 
-Route::get('/ultimo', 'Pruebacontroller@ultimo');
+Route::get('/nuevapro', 'PruebaController@nuevaproyeccion');
 
-Route::get('/reposicion', 'Pruebacontroller@reposicionactualizar');
+Route::get('/ultimo', 'PruebaController@ultimo');
+
+Route::get('/eliminarlote', 'PruebaController@eliminarlote');
+
+Route::get('/reposicion', 'PruebaController@reposicionactualizar');
 
 Auth::routes();
 
@@ -47,9 +51,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::get('/sisor/public/datosAjax/InventarioPoliducto', 'PruebaController@prueba');
 
-Route::get('/poliducto', 'Pruebacontroller@guardar');
+Route::get('/poliducto', 'PruebaController@guardar');
 
-//Route::get('/buscarlote/{numero}', 'Pruebacontroller@buscar');
+//Route::get('/buscarlote/{numero}', 'PruebaController@buscar');
 
 Route::get('/fila/{numero}/eliminar', 'PruebaController@eliminar');
 

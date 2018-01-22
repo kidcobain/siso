@@ -16,6 +16,6 @@ class Inventario extends Model
     }
 
     protected $fillable = [
-        'id','tipo','g95','g91','dsl','proyeccion_id' ];
+        'id','tipo','g95','g91','dsl','proyeccion_id', 'fecha_entrada' ];
 
 }

@@ -269,9 +269,20 @@ $(document).ready(function() {
 //"05/06/1986".replace(/\//g,"-")
 
 var elhtml = `
-<tr class="proyecciondatos " id="">
-    <td class="tdlote"><input class="editando" type="text" size="5"/></td>
-    <td class="fecha">00/00/000</td>
+<tr class="datos " id="">
+    <td class="lotes lotestotal">0 lotes</td>
+    <td class="fecha">
+        <input class="editando datepicker" type="text" size="8">
+        <span class="opciones">
+            <span class="loteguardar">
+                <i class="glyphicon glyphicon-ok"></i>
+            </span>
+            <span class="lotecancelar">
+                <i class="glyphicon glyphicon-remove"></i>
+            </span>
+        </span>
+
+    </td>
     
     <td class="reposicion G95">0</td>
     <td class="reposicion G91">0</td>
@@ -500,14 +511,44 @@ var eliminarlotedesplegable = function() {
     //console.log($(this));
     //var $este = dis || $(this);
     //var $este = $(this)
-    $(this).parent().parent()
-        .find('td')
-        .wrapInner('<div style="display: block;" />')
-        .parent()
-        .find('td > div')
-        .slideUp(700, function() {
 
-            $(this).parent().parent().remove();
+    if ($(this).parent().parent().attr('data-idlote')){
+        //eliminar lote en servidor
+        /*
+        $.get( "/eliminarlote", function( data ){
+             $filadesplegable.find('.editando:first').val(data.numero);
+         });
+        */
+        var idlote = $(this).parent().parent().attr('data-idlote');
+        var idproyeccion = $(this).parent().parent().attr('data-idproyeccion');
+        $.ajax({
+            type: 'get',
+            url: '/eliminarlote',
+            data: {
+                idlote: idlote,
+            },
+            dataType: 'json',
+            success: function(data) {
+                //mostrarMensaje(data);
+            }
+        });
+        var tipolote = $(this).parent().parent().find('.nombrelote').text().split('-');
+        var datolote = parseInt($(this).parent().parent().find('.'+tipolote[1]).text());
+
+        var valorpro = parseInt($('#'+idproyeccion).find('.reposicion.'+tipolote[1]).text());
+        var newvalor = valorpro - datolote;
+        $('#'+idproyeccion).find('.reposicion.'+tipolote[1]).text(newvalor);
+        calcular(idproyeccion, tipolote);
+
+    } 
+        $(this).parent().parent()
+            .find('td')
+            .wrapInner('<div style="display: block;" />')
+            .parent()
+            .find('td > div')
+            .slideUp(700, function() {
+
+                $(this).parent().parent().remove();
 
         });
 }
@@ -582,9 +623,10 @@ var agregarlotedesplegable = function(event) {
             $set.replaceWith($set.contents());
 
         });
-        
+    
    $.get( "/ultimo", function( data ){
-        $filadesplegable.find('.editando:first').val(data.numero);
+        var ultimo = parseInt(data.numero)+1;
+        $filadesplegable.find('.editando:first').val(ultimo);
     });
 
     /*$(this).click(function(event) {
@@ -883,7 +925,8 @@ var cancelarCelda = function(event, datos, _this) {
 var guardarCelda = function(event, texto, _this) {
     event.preventDefault();
 
-    var valores = texto.split('-');
+    var valores = (texto)?texto.split('-'):null;
+    _this=(_this)?_this:$(this);
 
     var $fila = _this.parent().parent().parent();
     // var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
@@ -909,6 +952,10 @@ var guardarCelda = function(event, texto, _this) {
 
 
     if($elemento.hasClass('reposicion')){
+        //var valortipo = $editando[1].value;
+        var valortipo = _this.parent().parent().attr("class").split(' ');
+        var oldvalor = parseInt(texto);
+        var newvalor = parseInt(valornum);
 
         $.ajax({
             type: 'get',
@@ -924,6 +971,44 @@ var guardarCelda = function(event, texto, _this) {
         .done( function(data) {
         });
 
+        var oldtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo[1]).text());
+
+        //var newtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo).text());
+
+        oldtotal = oldtotal - oldvalor;
+        newtotal = oldtotal + newvalor;
+
+        $('#'+$idproyeccion).find('.reposicion.'+valortipo[1]).text(newtotal).effect('highlight', {}, 1000);
+        _this.parent().parent().text(valornum).effect('highlight', {}, 1000);
+        var tipo = [0, valortipo[1]];
+        calcular($idproyeccion, tipo);
+
+
+
+    }
+
+    if($elemento.hasClass('ventas')){
+
+    }
+
+    if($elemento.hasClass('fecha')){
+        var fecha = $elemento.find('.editando').val();
+
+        $.ajax({
+            type: 'get',
+            url: '/nuevapro',
+            data: {
+                fecha         : fecha,
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            $elemento.parent().attr('id',data.idproyeccionguardado);
+            $elemento.text(fecha);
+
+            $('#'+data.idproyeccionguardado).find('.inicial.G95, .final.G95').text(data.g95);
+            $('#'+data.idproyeccionguardado).find('.inicial.G91, .final.G91').text(data.g91);
+            $('#'+data.idproyeccionguardado).find('.inicial.DSL, final.DSL').text(data.dsl);
+        });
     }   
 
 
@@ -934,6 +1019,7 @@ var guardarCelda = function(event, texto, _this) {
         $elemento.text(valor);
 
         //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
+        //filtrar por fecha
 
         $.ajax({
             type: 'get',
@@ -946,10 +1032,12 @@ var guardarCelda = function(event, texto, _this) {
                 hora         : hora,
             },
             dataType: 'json',
-        })
+        }).done(function (data) {
+            $elemento.parent().attr('data-idlote',data.idloteguardado);
+        });
 
-        .done( function(data) {
-            if (valortipo != valores[1]){
+        
+            if (valores[1]!==undefined && valortipo != valores[1]){
 
                 var oldvalor = parseInt($fila.find('.'+valores[1]).text());
                 $fila.find('.'+valores[1]).text("0").effect('highlight', {}, 1000);
@@ -971,7 +1059,6 @@ var guardarCelda = function(event, texto, _this) {
                 calcular($idproyeccion, valores);
 
             }
-        });
 
     }
 
@@ -1012,9 +1099,20 @@ var agregarFila = function() {
     if ($('.sinregistros')) { $('.sinregistros').html('') };
 
     $('.latabla tr:last').after(elhtml);
-    $('.latabla tr:last').css('background-color', 'gray');
-    $('.agregar').off('click');
-    $('.latabla').off('click', 'td');
+    //$('.latabla tr:last').css('background-color', 'gray');
+    //$('.agregar').off('click');
+    //$('.latabla').off('click', 'td');
+
+    $('.editando.datepicker').bootstrapMaterialDatePicker({ 
+        weekStart : 0, 
+        time: false, 
+        lang: 'es',
+        format: 'DD/MM/YYYY',
+        cancelText : 'cancelar',
+        nowButton : true,
+        nowText: 'hoy',
+        switchOnClick: true
+    });
 
     var el = $('.editando');
 
@@ -1033,7 +1131,7 @@ var agregarFila = function() {
 
 @can('agregar_lotes')   
                                     
-                            //$('.agregar').on('click',agregarFila);
+                            $('.agregar').on('click',agregarFila);
 @endcan
 
 @can(['agregar_lotes','agregar_lotes'])  
@@ -1111,6 +1209,17 @@ $('.busqueda.fecha').datepicker({
 });
 */
 $('.busqueda.fecha').bootstrapMaterialDatePicker({ 
+    weekStart : 0, 
+    time: false, 
+    lang: 'es',
+    format: 'DD/MM/YYYY',
+    cancelText : 'cancelar',
+    nowButton : true,
+    nowText: 'hoy',
+    switchOnClick: true
+});
+
+$('.editando.datepicker').bootstrapMaterialDatePicker({ 
     weekStart : 0, 
     time: false, 
     lang: 'es',
