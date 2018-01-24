@@ -8,15 +8,15 @@
 <link rel="stylesheet" href="/css/ripples.min.css">
 <link rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css">
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{{-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> --}}
 
 <style>
-    i.glyphicon.glyphicon-ok {
+    i.fa-check {
         background-color: #94cf35;
         border-radius: 5px;
     }
 
-    i.glyphicon.glyphicon-remove {
+    i.fa-times {
         background-color: #f68989;
         border-radius: 5px;
     }
@@ -38,6 +38,7 @@
    
 
     table.loading tbody:after {
+        /*background-image: url(/img/378.gif);*/
         position: absolute;
         top: 0;
         left: 0;
@@ -49,7 +50,7 @@
         background-image: url(/img/Ellipsis.svg);
         background-position: center;
         background-repeat: no-repeat;
-        background-size: 50px 50px;
+        /*background-size: 50px 50px;*/
         content: "";
     }
 </style>
@@ -58,8 +59,10 @@
 <div class="container" style=" width: unset;">
     <div class="row">
         <div class="mensaje " style="height: 80px">
-            <i class="glyphicon glyphicon-ok"></i>
-            <i class="glyphicon glyphicon-remove"></i>
+            <!-- 
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <i class="fa fa-times" aria-hidden="true"></i> 
+            -->
         </div>
     </div>
     <div class="row">
@@ -67,13 +70,13 @@
             <div class="panel panel-default panelbusqueda">
                 <div class="panel-heading">busqueda</div>
                 <div class="panel-body">
-                    <div class="buscarnumero">
-                        <form action="/buscarlote" method="get">
-                            <label for="numero">buscar por numero de lote</label>
-                            <input name="numero" type="text" class="busqueda numero">
-                            <input type="submit" value="buscar">
-                        </form>
-                    </div>
+                   <!--  <div class="buscarnumero">
+                       <form action="/buscarlote" method="get">
+                           <label for="numero">buscar por numero de lote</label>
+                           <input name="numero" type="text" class="busqueda numero">
+                           <input type="submit" value="buscar">
+                       </form>
+                   </div> -->
                     <div class="buscarfecha">
                         <form action="/buscarlotefecha" method="get">
                             <p>buscar por fecha</p>
@@ -98,7 +101,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">proyecciones<span class="imprimir"> -> <a href="javascript:window.print()">imprimir</a></span></div>
                     <div class="panel-body paneltabla">
-                        {{-- <img src="/img/Ellipsis.svg" alt=""> --}}
+                        <span class="none""><img src="/img/Ellipsis.svg" alt=""></span>
                         <table class="latabla table table-bordered table-striped table-responsive table-hover">
                             <thead>
                                 <tr>
@@ -255,8 +258,10 @@
 {{-- <script src="js/bootstrap-datepicker.js"></script> --}}
 {{-- <script src="/js/moment-with-locales.min.js"></script> --}}
 <script src="/js/moment-with-locales.min.js"></script>
-<script src="/js/material.min.js"></script>
-<script src="/js/ripples.min.js"></script>
+{{-- <script src="/js/material.min.js"></script> --}}
+<script src="{{ asset('js/material.min.js') }}"></script>
+<script src="{{ asset('js/ripples.min.js') }}"></script>
+{{-- <script src="/js/ripples.min.js"></script> --}}
 <script src="/js/jquery-ui.min.js"></script>
 <script src="/js/bootstrap-material-datetimepicker.js"></script>
 {{-- <script src="js/bootstrap-datepicker.es.min.js" type="text/javascript"></script> --}}
@@ -265,6 +270,9 @@
 
 <script>
 $(document).ready(function() {
+$('.none').hide('fast', function() {
+    
+});;
     
 //"05/06/1986".replace(/\//g,"-")
 
@@ -275,10 +283,10 @@ var elhtml = `
         <input class="editando datepicker" type="text" size="8">
         <span class="opciones">
             <span class="loteguardar">
-                <i class="glyphicon glyphicon-ok"></i>
+                <i class="fa fa-check" aria-hidden="true"></i>
             </span>
             <span class="lotecancelar">
-                <i class="glyphicon glyphicon-remove"></i>
+                <i class="fa fa-times" aria-hidden="true"></i>
             </span>
         </span>
 
@@ -588,10 +596,10 @@ var agregarlotedesplegable = function(event) {
         </select>
         <span class="opciones">
             <span class="loteguardar">
-                <i class="glyphicon glyphicon-ok"></i>
+                <i class="fa fa-check" aria-hidden="true"></i>
             </span>
             <span class="lotecancelar">
-                <i class="glyphicon glyphicon-remove"></i>
+                <i class="fa fa-times" aria-hidden="true"></i>
             </span>
         </span>
     </td>
@@ -625,8 +633,10 @@ var agregarlotedesplegable = function(event) {
         });
     
    $.get( "/ultimo", function( data ){
-        var ultimo = parseInt(data.numero)+1;
-        $filadesplegable.find('.editando:first').val(ultimo);
+
+        var ultimo = parseInt(data.numero) || 0;
+        var ultimonro = ultimo  + 1;
+        $filadesplegable.find('.editando:first').val(ultimonro);
     });
 
     /*$(this).click(function(event) {
@@ -664,10 +674,10 @@ var editarLote = function(event) {
                                     </select>
                                     <span class="opciones">
                                         <span class="loteguardar">
-                                            <i class="glyphicon glyphicon-ok"></i>
+                                            <i class="fa fa-check" aria-hidden="true"></i>
                                         </span>
                                         <span class="lotecancelar">
-                                            <i class="glyphicon glyphicon-remove"></i>
+                                            <i class="fa fa-times" aria-hidden="true"></i>
                                         </span>
                                     </span>
 
@@ -694,10 +704,10 @@ var editarLote = function(event) {
 
                 <span class="opciones">
                     <span class="loteguardar">
-                        <i class="glyphicon glyphicon-ok"></i>
+                        <i class="fa fa-check" aria-hidden="true"></i>
                     </span>
                     <span class="lotecancelar">
-                        <i class="glyphicon glyphicon-remove"></i>
+                        <i class="fa fa-times" aria-hidden="true"></i>
                     </span>
                 </span>
                 `; 
@@ -710,10 +720,10 @@ var editarLote = function(event) {
 
                     <span class="opciones">
                         <span class="loteguardar">
-                            <i class="glyphicon glyphicon-ok"></i>
+                            <i class="fa fa-check" aria-hidden="true"></i>
                         </span>
                         <span class="lotecancelar">
-                            <i class="glyphicon glyphicon-remove"></i>
+                            <i class="fa fa-times" aria-hidden="true"></i>
                         </span>
                     </span>
                     `; 
@@ -963,7 +973,9 @@ var guardarCelda = function(event, texto, _this) {
             data: {
                 idlote       : $idlote,
                 idproyeccion : $idproyeccion,
-                numero       : valornum,
+                cantidad       : valornum,
+                tipo       : valortipo[1],
+                oldvalor    : oldvalor,
             },
             dataType: 'json',
         })
@@ -988,6 +1000,32 @@ var guardarCelda = function(event, texto, _this) {
     }
 
     if($elemento.hasClass('ventas')){
+        var valortipo = $elemento.attr("class").split(' ');
+        var oldvalor = parseInt(texto);
+        var newvalor = parseInt(valornum);
+        var $idproyeccion = $elemento.parent().attr('id');
+
+        $.ajax({
+            type: 'get',
+            url: '/ventas',
+            data: {
+                idproyeccion       : $idproyeccion,
+                cantidad       : valornum,
+                tipo       : valortipo[1],
+                oldvalor    : oldvalor,
+            },
+            dataType: 'json',
+        })
+
+        .done( function(data) {
+        });
+
+        
+
+        //$('#'+$loteid).find('.ventas.'+valortipo[1]).text(newvalor).effect('highlight', {}, 1000);
+        _this.parent().parent().text(newvalor).effect('highlight', {}, 1000);
+        var tipo = [0, valortipo[1]];
+        calcular($idproyeccion, tipo);
 
     }
 
@@ -1007,7 +1045,7 @@ var guardarCelda = function(event, texto, _this) {
 
             $('#'+data.idproyeccionguardado).find('.inicial.G95, .final.G95').text(data.g95);
             $('#'+data.idproyeccionguardado).find('.inicial.G91, .final.G91').text(data.g91);
-            $('#'+data.idproyeccionguardado).find('.inicial.DSL, final.DSL').text(data.dsl);
+            $('#'+data.idproyeccionguardado).find('.inicial.DSL, .final.DSL').text(data.dsl);
         });
     }   
 
@@ -1037,26 +1075,29 @@ var guardarCelda = function(event, texto, _this) {
         });
 
         
-            if (valores[1]!==undefined && valortipo != valores[1]){
+            if (valores[1]!==undefined || valores[1]!==null) {
+                if (valortipo != valores[1]){
 
-                var oldvalor = parseInt($fila.find('.'+valores[1]).text());
-                $fila.find('.'+valores[1]).text("0").effect('highlight', {}, 1000);
-                $fila.find('.'+valortipo).text(oldvalor).effect('highlight', {}, 1000);
+                    var oldvalor = parseInt($fila.find('.'+valores[1]).text());
+                    $fila.find('.'+valores[1]).text("0").effect('highlight', {}, 1000);
+                    $fila.find('.'+valortipo).text(oldvalor).effect('highlight', {}, 1000);
 
-                var oldtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valores[1]).text());
+                    var oldtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valores[1]).text());
 
-                var newtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo).text());
+                    var newtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo).text());
 
-                oldtotal = oldtotal - oldvalor;
-                newtotal = newtotal + oldvalor;
+                    oldtotal = oldtotal - oldvalor;
+                    newtotal = newtotal + oldvalor;
 
-                $('#'+$idproyeccion).find('.reposicion.'+valortipo).text(newtotal).effect('highlight', {}, 1000);;
+                    $('#'+$idproyeccion).find('.reposicion.'+valortipo).text(newtotal).effect('highlight', {}, 1000);;
 
-                $('#'+$idproyeccion).find('.reposicion.'+valores[1]).text(oldtotal).effect('highlight', {}, 1000);;
+                    $('#'+$idproyeccion).find('.reposicion.'+valores[1]).text(oldtotal).effect('highlight', {}, 1000);;
 
-                var tipo = [0,valortipo];
-                calcular($idproyeccion, tipo);
-                calcular($idproyeccion, valores);
+                    var tipo = [0,valortipo];
+                    calcular($idproyeccion, tipo);
+                    calcular($idproyeccion, valores);
+
+                }
 
             }
 

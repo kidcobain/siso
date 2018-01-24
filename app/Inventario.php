@@ -8,7 +8,7 @@ class Inventario extends Model
 {
     protected $table = 'inventario';
     //
-    public function proyeccion()
+    public function Proyeccion()
     {
         //return $this->hasMany(proyeccion::class, 'lote_id', 'id');
         //return $this->hasMany(proyeccion::class);

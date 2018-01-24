@@ -29,6 +29,8 @@ Route::get('/eliminarlote', 'PruebaController@eliminarlote');
 
 Route::get('/reposicion', 'PruebaController@reposicionactualizar');
 
+Route::get('/ventas', 'PruebaController@ventasactualizar');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {

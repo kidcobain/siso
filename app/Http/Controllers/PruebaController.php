@@ -30,7 +30,9 @@ class PruebaController extends Controller
     {
 
             $pro = Proyeccion::all()->sortBy('fecha_entrada')->last();
-            $final = $pro->inventario()->where('tipo','final')->get()->first();
+            if( $pro ){
+                $final = $pro->inventario()->where('tipo','final')->get()->first();
+            }
 
             // dd($final);
 
@@ -149,7 +151,7 @@ class PruebaController extends Controller
         }
 
         else{
-            $fechainicio = '2010-01-01';
+            $fechainicio = '2000-01-01';
         }
         if ($request->fechafin) {
             $fechafin = Carbon::createFromFormat('d/m/Y', $request->fechafin)->toDateString();
@@ -167,7 +169,7 @@ class PruebaController extends Controller
     {
         //return Proyeccion::find($request->id)->lotes()->get();
         return Proyeccion::find($request->id)->lote()
-        ->select('id','proyeccion_id', 'numero','tipo','cantidad','hora')
+        ->select('id','proyeccion_id', 'numero','tipo', 'cantidad', 'hora')
         ->get();
     }
 
@@ -204,17 +206,89 @@ class PruebaController extends Controller
 
     public function reposicionactualizar(Request $request)
     {
+       $tipo = strtolower($request->tipo);
        $informacion = [];
     
+       $proyeccion = Proyeccion::find($request->idproyeccion);
        $lote = Lote::find($request->idlote);
-       $lote->cantidad = $request->numero;
-        $lote->save();
+       $lote->cantidad = $request->cantidad;
+       $lote->save();
+       
+       //App\Proyeccion::find(1)->inventario()->where('tipo','inicial')->get()->first()->g95
+
+       //$reposicionpro = $proyeccion->inventario()->where('tipo','inicial')->get()->first()->$tipo;
+       $reposicionpro = Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','reposicion')->get()->first()->$tipo;
+       //dd($reposicionpro);
+       $cantidad = $reposicionpro - $request->oldvalor;
+       $cantidadnueva = $cantidad + $request->cantidad;
+
+       Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','reposicion')->update([$tipo=>$cantidadnueva]);
+        //reposicion + inicial - ventas
+        //$inventario = $proyeccion->inventario()->where('tipo','autonomia')->get(['g95'])
+        //App\Lote::where('id',4)->get(['tipo'])
+        //$proyeccion->inventario()->where('tipo','final')->update(['g95'=> 4])
+        // $tipoa = "G91";
+        $reposicion = $cantidadnueva;
+        $inicial = $proyeccion->inventario()->where('tipo','inicial')->get([$tipo])->first()->$tipo;
+        $ventas = $proyeccion->inventario()->where('tipo','ventas')->get([$tipo])->first()->$tipo;
+        // exit($inicial->$tipoa);
+
+        $inventariofinal = ($reposicion + $inicial) - $ventas;
+
+        $proyeccion->inventario()->where('tipo','final')->update([$tipo => $inventariofinal]);
+
+        $autotipo = [];
+        $autotipo['g95'] = 1.8;
+        $autotipo['g91'] = 2.8;
+        $autotipo['dsl'] = 1.2;
+        $autonomia = $inventariofinal / $autotipo[$tipo];
+        $autonomia = round($autonomia);
+
+        $proyeccion->inventario()->where('tipo','autonomia')->update([$tipo=>$autonomia]);
+
+
 
        $informacion["oldlote"]   = $request->idlote;
-       $informacion["lote"]      = $request->numero;
+       $informacion["lote"]      = $request->cantidad;
        $informacion["respuesta"] = "reposicion actualizar";
         return json_encode( $informacion );
     }
+
+    public function ventasactualizar(Request $request)
+    {
+       $tipo = strtolower($request->tipo);
+       $informacion = [];
+    
+       $proyeccion = Proyeccion::find($request->idproyeccion);
+       Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','ventas')->update([$tipo=>$request->cantidad]);
+
+       $reposicion = Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','reposicion')->get()->first()->$tipo;
+       
+        $inicial = $proyeccion->inventario()->where('tipo','inicial')->get([$tipo])->first()->$tipo;
+        $ventas = $proyeccion->inventario()->where('tipo','ventas')->get([$tipo])->first()->$tipo;
+        // exit($inicial->$tipoa);
+
+        $inventariofinal = ($reposicion + $inicial) - $ventas;
+
+        $proyeccion->inventario()->where('tipo','final')->update([$tipo => $inventariofinal]);
+
+        $autotipo = [];
+        $autotipo['g95'] = 1.8;
+        $autotipo['g91'] = 2.8;
+        $autotipo['dsl'] = 1.2;
+        $autonomia = $inventariofinal / $autotipo[$tipo];
+        $autonomia = round($autonomia);
+
+        $proyeccion->inventario()->where('tipo','autonomia')->update([$tipo=>$autonomia]);
+
+
+
+       $informacion["oldlote"]   = $request->idlote;
+       $informacion["lote"]      = $request->cantidad;
+       $informacion["respuesta"] = "ventas actualizar";
+        return json_encode( $informacion );
+    }
+    
      public function guardarlote(Request $request)
      {
         $informacion = [];

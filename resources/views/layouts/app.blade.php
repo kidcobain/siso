@@ -13,7 +13,8 @@
     <!-- Styles -->
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    {{-- <link href="/css/font-awesome.min.css" rel="stylesheet"> --}}
     <link href="/css/fuelux.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/print.css" type="text/css" media="print" />
     <script src="/js/jquery-2.1.4.js" type="text/javascript"></script>
