@@ -32,6 +32,7 @@ class PruebaController extends Controller
             $pro = Proyeccion::all()->sortBy('fecha_entrada')->last();
             if( $pro ){
                 $final = $pro->inventario()->where('tipo','final')->get()->first();
+                $autonomia = $pro->inventario()->where('tipo','autonomia')->get()->first();
             }
 
             // dd($final);
@@ -108,11 +109,11 @@ class PruebaController extends Controller
 
                 'tipo' => 'autonomia',
 
-                 'g95' => 0,
+                 'g95' => (isset($autonomia->g95))?$autonomia->g95:0,
                 
-                 'g91' => 0,
+                 'g91' => (isset($autonomia->g91))?$autonomia->g91:0,
                 
-                 'dsl' => 0,
+                 'dsl' => (isset($autonomia->dsl))?$autonomia->dsl:0,
 
                  'proyeccion_id' => $pro->id,
                 
@@ -124,9 +125,13 @@ class PruebaController extends Controller
                        $informacion["respuesta"] = "agregarproyeccion";
                        $informacion["idproyeccionguardado"] = $pro->id;
 
-                       $informacion["g95"] = (isset($final->g95))?$final->g95:0;
-                       $informacion["g91"] = (isset($final->g91))?$final->g91:0;
-                       $informacion["dsl"] = (isset($final->dsl))?$final->dsl:0;
+                       $informacion["final"]["g95"] = (isset($final->g95))?$final->g95:0;
+                       $informacion["final"]["g91"] = (isset($final->g91))?$final->g91:0;
+                       $informacion["final"]["dsl"] = (isset($final->dsl))?$final->dsl:0;
+
+                       $informacion["autonomia"]["g95"] = (isset($autonomia->g95))?$autonomia->g95:0;
+                       $informacion["autonomia"]["g91"] = (isset($autonomia->g91))?$autonomia->g91:0;
+                       $informacion["autonomia"]["dsl"] = (isset($autonomia->dsl))?$autonomia->dsl:0;
 
                                //echo json_encode( $informacion );
                         return json_encode( $informacion );
@@ -184,8 +189,38 @@ class PruebaController extends Controller
     }
 
     public function eliminarlote(Request $request)
-    {
+    {   
+        $lote = Lote::find($request->idlote);
         Lote::find($request->idlote)->delete();
+        $tipo = strtolower($lote->tipo);
+        // $tipo = strtolower($request->tipo);
+        $informacion = [];
+        
+        $proyeccion = Proyeccion::find($lote->proyeccion_id);
+                
+        $reposicionpro = $proyeccion->inventario()->where('tipo','reposicion')->get()->first()->$tipo;
+
+        $cantidadnueva = $reposicionpro - $lote->cantidad;
+
+        $proyeccion->inventario()->where('tipo','reposicion')->update([$tipo=>$cantidadnueva]);
+        
+         $reposicion = $cantidadnueva;
+         $inicial = $proyeccion->inventario()->where('tipo','inicial')->get([$tipo])->first()->$tipo;
+         $ventas = $proyeccion->inventario()->where('tipo','ventas')->get([$tipo])->first()->$tipo;
+
+         $inventariofinal = ($reposicion + $inicial) - $ventas;
+
+         $proyeccion->inventario()->where('tipo','final')->update([$tipo => $inventariofinal]);
+
+         $autotipo = [];
+         $autotipo['g95'] = 1.8;
+         $autotipo['g91'] = 2.8;
+         $autotipo['dsl'] = 1.2;
+         $autonomia = $inventariofinal / $autotipo[$tipo];
+         $autonomia = round($autonomia);
+
+         $proyeccion->inventario()->where('tipo','autonomia')->update([$tipo=>$autonomia]);
+
         $informacion["lote"]      = $request->idlote;
         $informacion["respuesta"] = "eliminarlote";
         return json_encode( $informacion );
@@ -214,24 +249,16 @@ class PruebaController extends Controller
        $lote->cantidad = $request->cantidad;
        $lote->save();
        
-       //App\Proyeccion::find(1)->inventario()->where('tipo','inicial')->get()->first()->g95
-
-       //$reposicionpro = $proyeccion->inventario()->where('tipo','inicial')->get()->first()->$tipo;
        $reposicionpro = Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','reposicion')->get()->first()->$tipo;
-       //dd($reposicionpro);
+
        $cantidad = $reposicionpro - $request->oldvalor;
        $cantidadnueva = $cantidad + $request->cantidad;
 
        Proyeccion::find($request->idproyeccion)->inventario()->where('tipo','reposicion')->update([$tipo=>$cantidadnueva]);
-        //reposicion + inicial - ventas
-        //$inventario = $proyeccion->inventario()->where('tipo','autonomia')->get(['g95'])
-        //App\Lote::where('id',4)->get(['tipo'])
-        //$proyeccion->inventario()->where('tipo','final')->update(['g95'=> 4])
-        // $tipoa = "G91";
+       
         $reposicion = $cantidadnueva;
         $inicial = $proyeccion->inventario()->where('tipo','inicial')->get([$tipo])->first()->$tipo;
         $ventas = $proyeccion->inventario()->where('tipo','ventas')->get([$tipo])->first()->$tipo;
-        // exit($inicial->$tipoa);
 
         $inventariofinal = ($reposicion + $inicial) - $ventas;
 
@@ -288,7 +315,7 @@ class PruebaController extends Controller
        $informacion["respuesta"] = "ventas actualizar";
         return json_encode( $informacion );
     }
-    
+
      public function guardarlote(Request $request)
      {
         $informacion = [];

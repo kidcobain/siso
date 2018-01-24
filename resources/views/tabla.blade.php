@@ -271,11 +271,8 @@
 <script>
 $(document).ready(function() {
 $('.none').hide('fast', function() {
-    
 });;
     
-//"05/06/1986".replace(/\//g,"-")
-
 var elhtml = `
 <tr class="datos " id="">
     <td class="lotes lotestotal">0 lotes</td>
@@ -315,7 +312,6 @@ var elhtml = `
 </tr>
 `;
 
-
 var botondelotes = `
         <tr class="rowagregarlotes">
             <td>
@@ -323,59 +319,6 @@ var botondelotes = `
             </td>
         </tr>
     `;
-
-var aaediatarCelda = function() {
-
-    var texto = $(this).text();
-    if (!$(this).hasClass('accion')) {
-
-
-
-        if ($(this).hasClass('nombrelote')) {
-            $(this).html('<input class="editando" type="text" size="5" value="' + texto + '">');
-            $(this).attr('id', texto);
-
-        } else if ($(this).hasClass('fecha')) {
-            $(this).html('<input class="editando datepicker-here" data-language="es" type="text">');
-
-        } else if ($(this).hasClass('autonomia')) {
-            return;
-
-        } else if ($(this).hasClass('final')) {
-            return;
-
-        } else if ($(this).hasClass('finala')) {
-
-            $(this).html('<input class="editando" type="number" size="3" max="300" min="0" value="' + parseInt(texto) + '">');
-        }
-        var $el = $(this).find('input');
-
-        $el.focus();
-        $el.click(function(event) {
-            event.stopPropagation();
-        });
-        //$('.latabla').off('click', 'td');
-        //$('.agregar').off('click');
-
-
-        $('.fecha > .editando').datepicker({
-            format: "dd/mm/yyyy",
-            endDate: "0d",
-            maxViewMode: 3,
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es",
-            autoclose: false
-        });
-
-
-
-
-        $el.focus();
-        $el.trigger('click');
-    }
-};
-
 
 function showTime() {
   var timeNow = new Date();
@@ -386,53 +329,6 @@ function showTime() {
   timeString  += (hours >= 12) ? " pm" : " am";
   return timeString;
 }
-
-var identificarCelda = function(argument) {
-    var $el = $('.editando');
-    var idfila = 0;
-    var colfila = 0;
-    var tipofila = 0;
-
-    var clases = $('.editando').parent().attr("class").split(' ');
-    console.log(clases);
-    var anterior = $el.parent().attr('id');
-    console.log(anterior);
-
-    colfila = clases[0] || 0;
-    tipofila = clases[1] || 0;
-    trow = $el.parent().parent();
-    console.log(trow);
-};
-
-var operaciones = function() {
-idfila = trow.attr('id');
-
-if (!valor || valor == "") {
-    if ($el.parent().hasClass('nombrelote')) {
-
-        $(this).parent().parent().css('background-color', 'gray');
-    }
-    valor = 0;
-} else {
-
-    var decimales = (colfila == 'inicial') ? 2 : 1;
-    if (colfila == 'reposicion') {
-        valor = parseInt(valor);
-    } else if (colfila == 'reposicion' || colfila == 'inicial' || colfila == 'ventas') {
-        valor = parseFloat(valor, decimales).toFixed(decimales);
-    }
-
-    $el.parent().text(valor);
-    trow.css('background-color', '');
-    //$('.latabla').on('click','td', editarCelda);
-    $('.agregar').on('click', agregarFila);
-
-
-    var texto = anterior || valor;
-    }
-};
-
-
 
 var calcular = function(idfila, clases) {
 
@@ -458,89 +354,26 @@ var calcular = function(idfila, clases) {
 
 
 
-var mandarDatos = function() {
-    $.ajax({
-        type: 'get',
-        url: '/poliducto',
-        data: {
-            valor: valor,
-
-            idfila: idfila,
-            oldidfila: texto,
-            colfila: colfila,
-            tipofila: tipofila,
-            lote_id: idfila,
-            final: final,
-            autonomia: autonomia
-
-
-        },
-
-        dataType: 'json',
-        complete: function() {},
-
-        success: function(data) {
-            mostrarMensaje(data);
-        }
-    });
-};
-
-var cargardatos = function() {
-    var $el = $('.editando');
-
-    var valornum = $el[0].value;
-    var valortipo = $el[1].value;
-    //console.log(valornum+' '+valortipo);
-
-    var valor = valornum + '-' + valortipo;
-    return valor;
-};
-
-
-var habilitarListeners = function(){
-//$('.latabla').on('click','.nombrelote', editarLote);
-$('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
-$('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
-$('.latabla').on('click', '.lotes', desplegarlotes);
-$('.latabla').on('click', '.nombrelote', editarLote);
-$('.latabla').on('click', '.loteguardar', guardarCelda);
-$('.latabla').on('click', '.lotecancelar', cancelarCelda);
-
-};
-
-var deshabilitarListeners = function(){
-        $('.latabla').off('click','td');
-    $('.agregarlotedesplegable').off('click');
-    $('.eliminarlotedesplegable').off('click');
-    //$('.latabla').off('click', '.eliminarlotedesplegable');
-};
-
 var eliminarlotedesplegable = function() {
-    //console.log($(this));
-    //var $este = dis || $(this);
-    //var $este = $(this)
+
 
     if ($(this).parent().parent().attr('data-idlote')){
-        //eliminar lote en servidor
-        /*
-        $.get( "/eliminarlote", function( data ){
-             $filadesplegable.find('.editando:first').val(data.numero);
-         });
-        */
+       
         var idlote = $(this).parent().parent().attr('data-idlote');
         var idproyeccion = $(this).parent().parent().attr('data-idproyeccion');
+        var tipolote = $(this).parent().parent().find('.nombrelote').text().split('-');
         $.ajax({
             type: 'get',
             url: '/eliminarlote',
             data: {
                 idlote: idlote,
+
             },
             dataType: 'json',
             success: function(data) {
                 //mostrarMensaje(data);
             }
         });
-        var tipolote = $(this).parent().parent().find('.nombrelote').text().split('-');
         var datolote = parseInt($(this).parent().parent().find('.'+tipolote[1]).text());
 
         var valorpro = parseInt($('#'+idproyeccion).find('.reposicion.'+tipolote[1]).text());
@@ -561,23 +394,16 @@ var eliminarlotedesplegable = function() {
         });
 }
 
-
-
-
 var agregarlotedesplegable = function(event) {
     //event.stopPropagation();
     var ultimo = '';
-    /*
-    $.get( "/ultimo", function( data ){
-        //$filadesplegable.find('input .editando').val(data.numero);
-        console.log(data.numero);
-        ultimo = data.numero;
-        console.log(ultimo);
-    });
-    */
+
     $('.latabla').off('click','.agregarlotedesplegable');
     $('.latabla').off('click','.eliminarlotedesplegable');
     $('.latabla').off('click','.lotedatos .nombrelote');
+    $('.latabla').off('click','.lotedatos .reposicion');
+    $('.latabla').off('click','td.ventas');
+
     var idproyeccion = $(this).parent().parent().attr('data-idproyeccion');
     //console.log(idproyeccion);
 
@@ -638,14 +464,9 @@ var agregarlotedesplegable = function(event) {
         var ultimonro = ultimo  + 1;
         $filadesplegable.find('.editando:first').val(ultimonro);
     });
-
-    /*$(this).click(function(event) {
-        event.stopPropagation();
-    });*/
-
-    //deshabilitarListeners();
-    
-
+        
+    $('.loteguardar').click(guardarCelda);
+    $('.lotecancelar').click(cancelarCelda);
 }
 
 
@@ -750,35 +571,12 @@ var editarLote = function(event) {
         $('.latabla').off('click','.eliminarlotedesplegable');
         $('.latabla').off('click','.lotedatos .nombrelote');
         $('.latabla').off('click','.lotedatos .reposicion');
-        $('.latabla').off('click','.ventas');
+        $('.latabla').off('click','td.ventas');
 
-        //$('.agregarlotedesplegable').off('click');
-        //$('.eliminarlotedesplegable').off('click');
-
-        // $('.loteguardar').on('click', guardarCelda);
-        $('.loteguardar').on('click', function(){guardarCelda(event,texto, $(this))});
-        $('.lotecancelar').on('click', function(){cancelarCelda(event, texto, $(this))});
-
-
-        $('.fecha > .editando').datepicker({
-            format: "dd/mm/yyyy",
-            endDate: "0d",
-            maxViewMode: 3,
-            todayBtn: "linked",
-            clearBtn: true,
-            language: "es",
-            autoclose: false
-        });
-
-
+        $('.loteguardar').click( function(){guardarCelda(event,texto, $(this))});
+        $('.lotecancelar').click( function(){cancelarCelda(event, texto, $(this))});
 
 };
-
-
-
-
-
-
 
 var desplegarlotes = function(event) {
     event.preventDefault();
@@ -787,13 +585,7 @@ var desplegarlotes = function(event) {
 
     if ( $este.attr('data-desplegado')=='abierto') {
 
-        
-        //$(this).parent().nextAll('.lotedatos:first, .rowagregarlotes:first').find('td')
-
-        //$('.datos:last').find('*[data-envio="abierto"]')
-        // $(this).parent().next('.lotedatos').length > 0 || $(this).parent().next('.rowagregarlotes').length > 0
-
-        // $(this).parent().nextAll('.lotedatos, .rowagregarlotes').find('td')
+ 
         $('*[data-idproyeccion=\"'+idproyeccion+'\"]').find('td')
             .wrapInner('<div style="display: block;" />')
             .parent()
@@ -804,27 +596,19 @@ var desplegarlotes = function(event) {
 
             });
             $este.attr('data-desplegado', 'cerrado');
-
-            //quitar events de edicion y activar los demas. o desativar evento de desplegar durante edicion
-            // comprobacion desplegar
         
         
     } else {
 
         if ($este.attr('data-desplegado') == undefined || $este.attr('data-desplegado')=='cerrado'){
-            //var idpro = $este.parent().attr('id');
 
             $.ajax({
                 type: 'get',
                 url: '/lotes',
                 data: {
                     id: idproyeccion,
-                    
-
-
                 },
                 beforeSend: function(){ 
-                    // $este.attr('data-envio', 'cerrado');
                     $('.latabla').addClass('loading');
                 },
 
@@ -879,32 +663,13 @@ var desplegarlotes = function(event) {
                 });
             }
         }
-    
-    //$('.desplegable').slideToggle('slow');
-    //$(this).parent().parent().prevAll('.datos:first').after($filadesplegable);
-    /*
-    $(this > ).parent().parent()
-     .find('td')
-     .wrapInner('<div style="display: block;" />')
-     .parent()
-     .find('td > div')
-     .slideUp(700, function(){
-
-      $(this).parent().parent().remove();
-      console.log($this);
-
-     });
-     */
-
 
 };
 
 var cancelarCelda = function(event, datos, _this) {
     event.preventDefault();
-    //if ($(this).parent().parent().parent().attr('id')) {
 
     if (datos!=undefined) {
-        //var datos = cargardatos();
         _this.parent().parent().text(datos);
     } else {
        
@@ -920,15 +685,12 @@ var cancelarCelda = function(event, datos, _this) {
                 $(this).parent().parent().remove();
 
             });
-            
-
     }
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
     $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
     $('.latabla').on('click','.lotedatos .reposicion', editarLote);
-    $('.latabla').on('click','.ventas', editarLote);
-
+    $('.latabla').on('click','td.ventas', editarLote);
     
 };
 
@@ -936,21 +698,12 @@ var guardarCelda = function(event, texto, _this) {
     event.preventDefault();
 
     var valores = (texto)?texto.split('-'):null;
-    _this=(_this)?_this:$(this);
+
+    _this = (_this)?_this:$(this);
 
     var $fila = _this.parent().parent().parent();
-    // var $idproyeccion = $fila.prevAll('.datos:first').attr('id');
-
-    //.attr("class").split(' ');
-
-    //$fila.attr('id', $idproyeccion);
-    //$fila.addClass($idproyeccion)
 
     var $elemento = _this.parent().parent();
-
-    //var clases = $elemento.attr("class").split(' ');
-    //var columna = clases[0];
-    //var coltipo = clases[1];
 
     var $editando = $elemento.find('.editando');
 
@@ -962,7 +715,6 @@ var guardarCelda = function(event, texto, _this) {
 
 
     if($elemento.hasClass('reposicion')){
-        //var valortipo = $editando[1].value;
         var valortipo = _this.parent().parent().attr("class").split(' ');
         var oldvalor = parseInt(texto);
         var newvalor = parseInt(valornum);
@@ -984,8 +736,6 @@ var guardarCelda = function(event, texto, _this) {
         });
 
         var oldtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo[1]).text());
-
-        //var newtotal = parseInt($('#'+$idproyeccion).find('.reposicion.'+valortipo).text());
 
         oldtotal = oldtotal - oldvalor;
         newtotal = oldtotal + newvalor;
@@ -1020,9 +770,6 @@ var guardarCelda = function(event, texto, _this) {
         .done( function(data) {
         });
 
-        
-
-        //$('#'+$loteid).find('.ventas.'+valortipo[1]).text(newvalor).effect('highlight', {}, 1000);
         _this.parent().parent().text(newvalor).effect('highlight', {}, 1000);
         var tipo = [0, valortipo[1]];
         calcular($idproyeccion, tipo);
@@ -1039,13 +786,25 @@ var guardarCelda = function(event, texto, _this) {
                 fecha         : fecha,
             },
             dataType: 'json',
+            beforeSend: function(){ 
+                $('.latabla').addClass('loading');
+            },
         }).done(function (data) {
+            $('.latabla').removeClass('loading');
             $elemento.parent().attr('id',data.idproyeccionguardado);
             $elemento.text(fecha);
 
-            $('#'+data.idproyeccionguardado).find('.inicial.G95, .final.G95').text(data.g95);
-            $('#'+data.idproyeccionguardado).find('.inicial.G91, .final.G91').text(data.g91);
-            $('#'+data.idproyeccionguardado).find('.inicial.DSL, .final.DSL').text(data.dsl);
+            var $elem = $('#'+data.idproyeccionguardado);
+
+            $elem.find('.accion a').attr('href', '/fila/'+data.idproyeccionguardado+'/eliminar');;
+
+            $elem.find('.inicial.G95, .final.G95').text(data.final.g95);
+            $elem.find('.inicial.G91, .final.G91').text(data.final.g91);
+            $elem.find('.inicial.DSL, .final.DSL').text(data.final.dsl);
+
+            $elem.find('.autonomia.G95').text(data.autonomia.g95);
+            $elem.find('.autonomia.G91').text(data.autonomia.g91);
+            $elem.find('.autonomia.DSL').text(data.autonomia.dsl);
         });
     }   
 
@@ -1055,9 +814,6 @@ var guardarCelda = function(event, texto, _this) {
         var valortipo = $editando[1].value;
         var valor = valornum + '-' + valortipo;
         $elemento.text(valor);
-
-        //trow.find('.accion > a').attr('href', '/fila/'+valor+'/eliminar');
-        //filtrar por fecha
 
         $.ajax({
             type: 'get',
@@ -1075,7 +831,7 @@ var guardarCelda = function(event, texto, _this) {
         });
 
         
-            if (valores[1]!==undefined || valores[1]!==null) {
+            if (!valortipo[1]===undefined) {
                 if (valortipo != valores[1]){
 
                     var oldvalor = parseInt($fila.find('.'+valores[1]).text());
@@ -1111,7 +867,7 @@ var guardarCelda = function(event, texto, _this) {
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
     $('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
     $('.latabla').on('click', '.lotedatos .reposicion', editarLote);
-    $('.latabla').on('click', '.ventas', editarLote);
+    $('.latabla').on('click', 'td.ventas', editarLote);
 
 };
 
@@ -1122,10 +878,10 @@ $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
 
 $('.latabla').on('click', '.lotedatos .nombrelote', editarLote);
 $('.latabla').on('click', '.lotedatos .reposicion', editarLote);
-$('.latabla').on('click', '.ventas', editarLote);
+$('.latabla').on('click', 'td.ventas', editarLote);
 
-$('.latabla').on('click', '.loteguardar', guardarCelda);
-$('.latabla').on('click', '.lotecancelar', cancelarCelda);
+//$('.latabla').on('click', '.loteguardar', guardarCelda);
+//$('.latabla').on('click', '.lotecancelar', cancelarCelda);
 
 
 
@@ -1140,9 +896,7 @@ var agregarFila = function() {
     if ($('.sinregistros')) { $('.sinregistros').html('') };
 
     $('.latabla tr:last').after(elhtml);
-    //$('.latabla tr:last').css('background-color', 'gray');
-    //$('.agregar').off('click');
-    //$('.latabla').off('click', 'td');
+
 
     $('.editando.datepicker').bootstrapMaterialDatePicker({ 
         weekStart : 0, 
@@ -1161,6 +915,14 @@ var agregarFila = function() {
         event.stopPropagation();
     });
     el.focus();
+    $('.latabla').off('click','.agregarlotedesplegable');
+    $('.latabla').off('click','.eliminarlotedesplegable');
+    $('.latabla').off('click','.lotedatos .nombrelote');
+    $('.latabla').off('click','.lotedatos .reposicion');
+    $('.latabla').off('click','td.ventas');
+    
+    $('.loteguardar').click( guardarCelda);
+    $('.lotecancelar').click( cancelarCelda);
 
 };
     
