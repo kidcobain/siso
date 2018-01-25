@@ -1,5 +1,5 @@
 @extends('layouts.app')
-{{ \Debugbar::disable() }}
+{{-- {{ \Debugbar::disable() }} --}}
 {{-- app('debugbar')->disable(); --}}
 @section('content')
 <link rel="stylesheet" href="/css/sweetalert2.css">
@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="/css/ripples.min.css">
 <link rel="stylesheet" href="/css/bootstrap-material-datetimepicker.css">
 
-{{-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> --}}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
     i.fa-check {
@@ -70,7 +70,7 @@
             <div class="panel panel-default panelbusqueda">
                 <div class="panel-heading">busqueda</div>
                 <div class="panel-body">
-                   <!--  <div class="buscarnumero">
+                   <!-- <div class="buscarnumero">
                        <form action="/buscarlote" method="get">
                            <label for="numero">buscar por numero de lote</label>
                            <input name="numero" type="text" class="busqueda numero">
@@ -686,6 +686,7 @@ var cancelarCelda = function(event, datos, _this) {
 
             });
     }
+
     $('.latabla').on('click', '.agregarlotedesplegable', agregarlotedesplegable);
     $('.latabla').on('click', '.eliminarlotedesplegable', eliminarlotedesplegable);
     $('.latabla').on('click','.lotedatos .nombrelote', editarLote);
@@ -920,7 +921,7 @@ var agregarFila = function() {
     $('.latabla').off('click','.lotedatos .nombrelote');
     $('.latabla').off('click','.lotedatos .reposicion');
     $('.latabla').off('click','td.ventas');
-    
+
     $('.loteguardar').click( guardarCelda);
     $('.lotecancelar').click( cancelarCelda);
 

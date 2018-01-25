@@ -21,6 +21,10 @@ class permissionsSeeder extends Seeder
         app()['cache']->forget('spatie.permission.cache');
 
         // create permissions
+        Permission::create(['name' => 'agregar_proyecciones']);
+        Permission::create(['name' => 'editar_proyecciones']);
+        Permission::create(['name' => 'eliminar_proyecciones']);
+
         Permission::create(['name' => 'agregar_lotes']);
         Permission::create(['name' => 'editar_lotes']);
         Permission::create(['name' => 'eliminar_lotes']);
@@ -32,15 +36,27 @@ class permissionsSeeder extends Seeder
         Permission::create(['name' => 'lectura']);
 
         // create roles and assign existing permissions
+        $role = Role::create(['name' => 'usuario']);
+        $role->givePermissionTo('lectura');
+        
         $role = Role::create(['name' => 'avanzado']);
         $role->givePermissionTo('agregar_lotes');
         $role->givePermissionTo('editar_lotes');
         $role->givePermissionTo('eliminar_lotes');
 
+        $role->givePermissionTo('agregar_proyecciones');
+        $role->givePermissionTo('editar_proyecciones');
+        $role->givePermissionTo('eliminar_proyecciones');
+
         $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo('agregar_proyecciones');
+        $role->givePermissionTo('editar_proyecciones');
+        $role->givePermissionTo('eliminar_proyecciones');
+
         $role->givePermissionTo('agregar_lotes');
         $role->givePermissionTo('editar_lotes');
         $role->givePermissionTo('eliminar_lotes');
+        
         $role->givePermissionTo('agregar_usuarios');
         $role->givePermissionTo('editar_usuarios');
         $role->givePermissionTo('eliminar_usuarios');
